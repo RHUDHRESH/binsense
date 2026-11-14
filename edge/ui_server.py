@@ -74,8 +74,43 @@ def get_model(pte: str, pack: str) -> BinSense:
     return MODELS[k]
 
 
-def run_one(m: BinSense, path: Path, sharp: float) -> dict:
-    t0 = time.perf_counter(); x = m.preprocess(path); t1 = time.perf_counter(); e = m.embed(x); t2 = time.perf_counter()
+THREADS = {"n": 0}
+
+
+def set_threads(n: int):
+    """Change how many CPU cores ExecuTorch uses. Models are reloaded so the change takes effect."""
+    if n and n != THREADS["n"]:
+        from executorch.extension.pybindings import portable_lib as pl
+        pl._unsafe_reset_threadpool(int(n)); THREADS["n"] = int(n); MODELS.clear()
+
+
+def prep(m: BinSense, path: Path, q: dict) -> np.ndarray:
+    """Photo -> tensor, with the tinkering options: crop style, brightness, contrast, blur."""
+    from PIL import Image, ImageEnhance, ImageFilter
+    crop, br, co, blur = q.get("crop", "centre"), float(q.get("brightness", 1)), float(q.get("contrast", 1)), float(q.get("blur", 0))
+    if crop == "centre" and br == 1 and co == 1 and blur == 0:
+        return m.preprocess(path)
+    im = Image.open(path).convert("RGB"); r = m.res
+    if br != 1:
+        im = ImageEnhance.Brightness(im).enhance(br)
+    if co != 1:
+        im = ImageEnhance.Contrast(im).enhance(co)
+    if blur > 0:
+        im = im.filter(ImageFilter.GaussianBlur(blur))
+    w, h = im.size
+    if crop == "whole":                       # squash the whole photo in, nothing cut off
+        im = im.resize((r, r), Image.BILINEAR)
+    else:
+        if crop == "zoom":                    # keep only the middle 60% before resizing
+            im = im.crop((int(w * .2), int(h * .2), int(w * .8), int(h * .8))); w, h = im.size
+        sc = r / min(w, h); im = im.resize((max(r, round(w * sc)), max(r, round(h * sc))), Image.BILINEAR); w, h = im.size
+        l, t = (w - r) // 2, (h - r) // 2; im = im.crop((l, t, l + r, t + r))
+    x = np.asarray(im, np.float32).transpose(2, 0, 1) / 255.0
+    return ((x - m.mean) / m.std)[None]
+
+
+def run_one(m: BinSense, path: Path, sharp: float, q: dict | None = None) -> dict:
+    t0 = time.perf_counter(); x = prep(m, path, q or {}); t1 = time.perf_counter(); e = m.embed(x); t2 = time.perf_counter()
     if m.label_emb is not None:
         raw = m.label_emb @ e; p = softmax(m.scale * sharp * raw); how = "similarity between the photo and each label's text"
         if m.head is not None:
@@ -92,16 +127,17 @@ def classify(q: dict) -> dict:
     path = (BASE / q["image"]).resolve()
     if BASE not in path.parents or not path.exists():
         raise ValueError("image not found")
+    set_threads(int(q.get("threads", 0)))
     main = get_model(q["pte"], q["pack"]); sharp = float(q.get("sharp", 1)); steps = []; used = "single model"
     final = None
     if q.get("gate_pte") and q.get("gate_pack"):
         g = get_model(q["gate_pte"], q["gate_pack"])
         if g.labels == main.labels:
-            s = run_one(g, path, sharp); s["role"] = "Fast model"; steps.append(s)
+            s = run_one(g, path, sharp, q); s["role"] = "Fast model"; steps.append(s)
             if max(s["probs"]) >= float(q.get("threshold", 0.9)):
                 final, used = s, "fast model"
     if final is None:
-        s = run_one(main, path, sharp); s["role"] = "Careful model" if steps else "Model"; steps.append(s); final = s
+        s = run_one(main, path, sharp, q); s["role"] = "Careful model" if steps else "Model"; steps.append(s); final = s
         used = "careful model" if len(steps) > 1 else "single model"
     probs = dict(zip(final["labels"], final["probs"])); top = max(probs, key=probs.get); conf = probs[top]
     multi = main.multi_from({"answer": top, "confidence": conf, "probabilities": probs}, final["nouls"],
@@ -110,6 +146,33 @@ def classify(q: dict) -> dict:
     return {"image": q["image"], "steps": steps, "answer": top, "confidence": round(conf, 4), "review": review, "used": used,
             "multi": multi["labels"] + multi["tags"], "tags": multi["tag_probabilities"],
             "infer_ms": round(sum(s["infer_ms"] for s in steps), 1), "pre_ms": round(sum(s["pre_ms"] for s in steps), 1)}
+
+
+def compare(q: dict) -> dict:
+    """Same photo through every model, each with its own labels: answer, confidence, time, size."""
+    set_threads(int(q.get("threads", 0))); path = (BASE / q["image"]).resolve(); rows = []
+    for m in catalog()["models"]:
+        pack = q["pack"] if q["pack"] in m["packs"] else m["packs"][0]
+        try:
+            mod = get_model(m["pte"], pack); run_one(mod, path, 1, q); r = run_one(mod, path, float(q.get("sharp", 1)), q)
+            i = int(np.argmax(r["probs"]))
+            rows.append({"model": m["pte"], "labels": pack, "answer": r["labels"][i], "confidence": r["probs"][i], "infer_ms": r["infer_ms"], "mb": m["mb"], "res": m["res"]})
+        except Exception as e:  # noqa: BLE001
+            rows.append({"model": m["pte"], "labels": pack, "answer": f"ERROR {type(e).__name__}", "confidence": 0, "infer_ms": 0, "mb": m["mb"], "res": m["res"]})
+    return {"rows": rows}
+
+
+def bench(q: dict) -> dict:
+    """Time the chosen model on one photo: N runs after 3 warm-ups."""
+    set_threads(int(q.get("threads", 0))); m = get_model(q["pte"], q["pack"]); x = prep(m, (BASE / q["image"]).resolve(), q)
+    for _ in range(3):
+        m.embed(x)
+    t = []
+    for _ in range(int(q.get("runs", 30))):
+        a = time.perf_counter(); m.embed(x); t.append((time.perf_counter() - a) * 1000)
+    t.sort()
+    return {"runs": len(t), "median": round(t[len(t) // 2], 2), "p90": round(t[int(len(t) * .9)], 2), "min": round(t[0], 2), "max": round(t[-1], 2),
+            "threads": THREADS["n"] or "default", "per_second": round(1000 / t[len(t) // 2], 1), "model": q["pte"]}
 
 
 def run_all(q: dict) -> dict:
@@ -162,7 +225,7 @@ def system() -> dict:
     except OSError:
         pass
     return {"online": online, "board": board, "host": socket.gethostname(), "temp": vc("measure_temp"), "clock": vc("measure_clock", "arm"),
-            "throttled": vc("get_throttled"), "memory_mb": memory_mb(), "can_edit_labels": can_text()}
+            "throttled": vc("get_throttled"), "memory_mb": memory_mb(), "can_edit_labels": can_text(), "cpus": __import__("os").cpu_count()}
 
 
 def can_text() -> bool:
@@ -241,6 +304,10 @@ class H(BaseHTTPRequestHandler):
             q = json.loads(body or b"{}")
             if u.path == "/api/classify":
                 return self.send(classify(q))
+            if u.path == "/api/compare":
+                return self.send(compare(q))
+            if u.path == "/api/bench":
+                return self.send(bench(q))
             if u.path == "/api/run_all":
                 return self.send(run_all(q))
             if u.path == "/api/build_pack":

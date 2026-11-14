@@ -58,7 +58,20 @@ mixed: a pile of mixed unsorted rubbish</textarea>
   <label>Fast model must be this sure to answer: <span class="val" id="v_threshold"></span></label><input type="range" id="threshold" min="50" max="99" value="90">
   <label>Below this, say “not sure”: <span class="val" id="v_review"></span></label><input type="range" id="review" min="0" max="95" value="50">
   <label>Also list any label above: <span class="val" id="v_label_min"></span></label><input type="range" id="label_min" min="5" max="50" value="25">
-  <label>Decisiveness (how sharply it commits): <span class="val" id="v_sharp"></span></label><input type="range" id="sharp" min="20" max="300" value="100"></div>
+  <label>Decisiveness (how sharply it commits): <span class="val" id="v_sharp"></span></label><input type="range" id="sharp" min="20" max="300" value="100">
+  <label>A yes/no tag applies above: <span class="val" id="v_tag_min"></span></label><input type="range" id="tag_min" min="10" max="90" value="50"></div>
+
+ <div class="card"><div class="step">Step 3b</div><h2>Stress the photo</h2>
+  <label>How the photo is fitted in</label><select id="crop"><option value="centre">Centre crop (default)</option><option value="whole">Whole photo, squashed</option><option value="zoom">Zoom into the middle</option></select>
+  <label>Brightness: <span class="val" id="v_brightness"></span></label><input type="range" id="brightness" min="30" max="200" value="100">
+  <label>Contrast: <span class="val" id="v_contrast"></span></label><input type="range" id="contrast" min="30" max="200" value="100">
+  <label>Blur: <span class="val" id="v_blur"></span></label><input type="range" id="blur" min="0" max="80" value="0">
+  <button class="ghost" id="reset" style="margin-top:10px">Reset photo settings</button></div>
+
+ <div class="card"><div class="step">Step 3c</div><h2>Hardware</h2>
+  <label>CPU cores to use: <span class="val" id="v_threads"></span></label><input type="range" id="threads" min="1" max="4" value="4">
+  <div class="row" style="margin-top:10px"><button class="ghost" id="bench">Time this model</button><button class="ghost" id="compare">Compare all models</button></div>
+  <div class="muted" style="margin-top:6px">Both use the photo you clicked.</div></div>
 </div>
 
 <div>
@@ -73,7 +86,7 @@ mixed: a pile of mixed unsorted rubbish</textarea>
 const $=id=>document.getElementById(id);let S=null,sel=null;
 const api=async(p,b)=>{const r=await fetch(p,b?{method:'POST',body:JSON.stringify(b)}:{});const j=await r.json();if(j.error)throw new Error(j.error);return j};
 const pct=v=>(v*100).toFixed(1)+'%';const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-function params(){const m=S.models.find(x=>x.pte===$('pte').value);const q={pte:$('pte').value,pack:$('pack').value,threshold:$('threshold').value/100,review:$('review').value/100,label_min:$('label_min').value/100,sharp:$('sharp').value/100,dataset:$('dataset').value};
+function params(){const m=S.models.find(x=>x.pte===$('pte').value);const q={pte:$('pte').value,pack:$('pack').value,threshold:$('threshold').value/100,review:$('review').value/100,label_min:$('label_min').value/100,sharp:$('sharp').value/100,tag_min:$('tag_min').value/100,crop:$('crop').value,brightness:$('brightness').value/100,contrast:$('contrast').value/100,blur:$('blur').value/10,threads:+$('threads').value,dataset:$('dataset').value};
  const g=gateFor();if(g&&$('gate').checked){q.gate_pte=g.pte;q.gate_pack=g.pack}return q}
 function gateFor(){const labels=JSON.stringify(S.packs[$('pack').value]?.labels);for(const m of S.models){if(!m.pte.startsWith('stu_')||m.pte.includes('int8'))continue;for(const p of m.packs)if(JSON.stringify(S.packs[p].labels)===labels&&m.pte!==$('pte').value)return{pte:m.pte,pack:p}}return null}
 function fillPacks(keep){const m=S.models.find(x=>x.pte===$('pte').value);const cur=keep||$('pack').value;$('pack').innerHTML=m.packs.map(p=>`<option>${p}</option>`).join('');if(m.packs.includes(cur))$('pack').value=cur;packInfo()}
@@ -85,7 +98,8 @@ async function load(keepPack){S=await api('/api/state');const dv=$('dataset').va
  $('dataset').innerHTML=Object.keys(S.datasets).map(d=>`<option value="${d}">${d} (${S.datasets[d].length})</option>`).join('');if(S.datasets[dv])$('dataset').value=dv;else if(S.datasets.organiser)$('dataset').value='organiser';
  $('pte').innerHTML=S.models.map(m=>`<option value="${m.pte}">${m.pte.replace('.pte','')}</option>`).join('');
  if(S.models.find(m=>m.pte===pv))$('pte').value=pv;else{const d=S.models.find(m=>m.pte.startsWith('mobileclip2-s0_256'));if(d)$('pte').value=d.pte}
- fillPacks(keepPack||(S.packs['organiser_256.npz']&&!keepPack?'organiser_256.npz':null));sysline(S.system);thumbs()}
+ fillPacks(keepPack||(S.packs['organiser_256.npz']&&!keepPack?'organiser_256.npz':null));sysline(S.system);thumbs();
+ if(!load.done){load.done=1;const c=S.system.cpus||4;$('threads').max=c;$('threads').value=Math.min(4,c);$('threads').oninput()}}
 function sysline(s){$('net').className='pill '+(s.online?'on':'off');$('net').textContent=s.online?'Internet reachable':'OFFLINE: no internet';
  $('sys').textContent=`${s.host} · ${s.board} · temp ${s.temp.replace('temp=','')} · memory ${s.memory_mb} MB`}
 function bars(labels,probs){const top=probs.indexOf(Math.max(...probs));return labels.map((l,i)=>[l,probs[i],i]).sort((a,b)=>b[1]-a[1]).map(([l,p,i])=>`<div class="bar ${i===top?'top':''}"><b>${esc(l)}</b><span><i style="width:${Math.max(.5,p*100)}%"></i></span><span>${pct(p)}</span></div>`).join('')}
@@ -115,8 +129,14 @@ async function runAll(){const a=$('all');a.hidden=false;a.innerHTML='<span class
  document.querySelectorAll('.truth').forEach(t=>t.onchange=async()=>{await api('/api/truth',{dataset:$('dataset').value,name:t.dataset.n,label:t.value});await load($('pack').value);runAll()})
  }catch(e){a.innerHTML='<span class="no">'+esc(e.message)+'</span>'}$('runall').disabled=false}
 async function upload(files){for(const f of files){await fetch('/api/upload?dataset=my_photos&name='+encodeURIComponent(f.name),{method:'POST',body:f})}await load($('pack').value);$('dataset').value='my_photos';thumbs()}
-for(const id of['threshold','review','label_min','sharp']){const u=()=>{$('v_'+id).textContent=id==='sharp'?($(id).value/100).toFixed(1)+'×':$(id).value+'%'};$(id).oninput=u;$(id).onchange=()=>{if(sel)one(sel)};u()}
+const fmt={sharp:v=>(v/100).toFixed(1)+'×',brightness:v=>(v/100).toFixed(2)+'×',contrast:v=>(v/100).toFixed(2)+'×',blur:v=>(v/10).toFixed(1)+' px',threads:v=>v};
+for(const id of['threshold','review','label_min','sharp','tag_min','brightness','contrast','blur','threads']){const u=()=>{$('v_'+id).textContent=fmt[id]?fmt[id]($(id).value):$(id).value+'%'};$(id).oninput=u;$(id).onchange=()=>{if(sel)one(sel)};u()}
 $('dataset').onchange=()=>{sel=null;$('one').hidden=$('all').hidden=true;thumbs()};$('pte').onchange=()=>{fillPacks();if(sel)one(sel)};$('pack').onchange=()=>{packInfo();if(sel)one(sel)};$('gate').onchange=()=>{if(sel)one(sel)};
+$('crop').onchange=()=>{if(sel)one(sel)};
+$('reset').onclick=()=>{$('crop').value='centre';for(const[i,v]of[['brightness',100],['contrast',100],['blur',0]]){$(i).value=v;$(i).oninput()}if(sel)one(sel)};
+const extra=async(path,render)=>{const a=$('all');a.hidden=false;if(!sel){a.innerHTML='<span class="muted">Click a photo first.</span>';return}a.innerHTML='<span class="muted">working…</span>';try{a.innerHTML=render(await api(path,{...params(),image:sel,runs:30}))}catch(e){a.innerHTML='<span class="no">'+esc(e.message)+'</span>'}};
+$('bench').onclick=()=>extra('/api/bench',r=>`<div class="step">Timing</div><div class="sum"><div><b>${r.median} ms</b><span>median of ${r.runs} runs</span></div><div><b>${r.p90} ms</b><span>90th percentile</span></div><div><b>${r.min} ms</b><span>fastest</span></div><div><b>${r.max} ms</b><span>slowest</span></div><div><b>${r.per_second}</b><span>photos per second</span></div><div><b>${r.threads}</b><span>CPU cores</span></div></div><div class="muted">${esc(r.model)} · model only, photo prep not included</div>`);
+$('compare').onclick=()=>extra('/api/compare',r=>`<div class="step">Every model on this photo</div><table><tr><th>Model</th><th>Labels used</th><th>Answer</th><th>Sure</th><th>Time</th><th>File</th><th>Input</th></tr>${r.rows.map(x=>`<tr><td>${esc(x.model.replace('.pte',''))}</td><td class="muted">${esc(x.labels.replace('.npz',''))}</td><td><b>${esc(x.answer)}</b></td><td>${pct(x.confidence)}</td><td>${x.infer_ms} ms</td><td>${x.mb} MB</td><td>${x.res} px</td></tr>`).join('')}</table>`);
 $('runall').onclick=runAll;$('drop').onclick=()=>$('file').click();$('file').onchange=e=>upload(e.target.files);
 $('drop').ondragover=e=>{e.preventDefault();$('drop').classList.add('over')};$('drop').ondragleave=()=>$('drop').classList.remove('over');
 $('drop').ondrop=e=>{e.preventDefault();$('drop').classList.remove('over');upload(e.dataTransfer.files)};
