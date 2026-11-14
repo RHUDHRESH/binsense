@@ -86,6 +86,8 @@ def datasets() -> dict:
 
 
 def get_model(pte: str, pack: str) -> BinSense:
+    if os.environ.get("BINSENSE_CAMERA_ONLY"):   # set on a device whose ExecuTorch runtime is not ready yet
+        raise ValueError("the model runtime is still being built on this device; only the camera is available")
     k = (pte, pack, (BASE / "packs" / pack).stat().st_mtime)
     if k not in MODELS:
         MODELS[k] = BinSense(BASE / "models" / pte, BASE / "packs" / pack)
