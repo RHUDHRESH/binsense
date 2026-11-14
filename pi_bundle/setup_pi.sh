@@ -7,8 +7,10 @@ cd "$(dirname "$0")"
 echo "== system =="; uname -m; cat /etc/os-release | grep PRETTY; python3 --version
 [ "$(uname -m)" = "aarch64" ] || { echo "Need 64-bit Pi OS (aarch64)."; exit 1; }
 
-sudo apt-get update -y
-sudo apt-get install -y python3-venv python3-pip libopenblas0 libjpeg62-turbo
+if [ -z "${BINSENSE_SKIP_APT:-}" ]; then
+  sudo apt-get update -y
+  sudo apt-get install -y python3-venv python3-pip libopenblas0 libjpeg62-turbo
+fi
 
 python3 -m venv ~/binsense-venv
 source ~/binsense-venv/bin/activate
