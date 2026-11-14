@@ -106,7 +106,7 @@ e-waste: circuit boards, old electronics
 mixed: a pile of mixed unsorted rubbish</textarea>
   <div class="row" style="margin-top:8px"><input type="text" id="labname" value="my_labels" style="flex:1;min-width:140px" aria-label="Name for this label set"><button id="build">Use these labels</button></div>
   <div id="buildmsg" class="muted"></div></details>
- <details id="tunebox"><summary>Fine-tune</summary><div class="tune">
+ <details id="tunebox" open><summary>Settings: change one and the answer updates</summary><div class="tune">
   <div><h4>How it decides</h4>
    <div id="gatebox"><label class="row" style="margin-top:0"><input type="checkbox" id="gate" checked> Ask a fast model first</label></div>
    <label>Fast model must be this sure to answer: <span class="val" id="v_threshold"></span></label><input type="range" id="threshold" min="50" max="99" value="90">

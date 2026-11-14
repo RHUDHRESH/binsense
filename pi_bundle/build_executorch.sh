@@ -15,6 +15,7 @@ git -C "$SRC" submodule update --init --recursive --depth 1
 pip install -q --extra-index-url https://download.pytorch.org/whl/cpu "executorch==1.3.1"      # brings the build-time Python deps
 pip install -q --force-reinstall --no-deps --index-url https://download.pytorch.org/whl/cpu "torch==2.12.1+cpu"
 pip install -q setuptools wheel pyyaml zstd certifi "cmake<4" 2>/dev/null
+mkdir -p ~/tmpbuild && export TMPDIR=~/tmpbuild   # /tmp is RAM-backed on this OS and fills up during the build
 export CMAKE_BUILD_PARALLEL_LEVEL=4
 export CFLAGS="-march=armv8-a" CXXFLAGS="-march=armv8-a"
 export CMAKE_ARGS="-DEXECUTORCH_BUILD_XNNPACK=ON -DEXECUTORCH_BUILD_DEVTOOLS=OFF -DEXECUTORCH_ENABLE_EVENT_TRACER=OFF -DEXECUTORCH_BUILD_OPENVINO=OFF -DEXECUTORCH_BUILD_COREML=OFF -DEXECUTORCH_BUILD_EXTENSION_TRAINING=OFF -DEXECUTORCH_BUILD_EXTENSION_LLM_RUNNER=OFF -DEXECUTORCH_BUILD_EXTENSION_LLM=OFF -DEXECUTORCH_BUILD_KERNELS_LLM=OFF -DEXECUTORCH_BUILD_KERNELS_LLM_AOT=OFF -DEXECUTORCH_XNNPACK_ENABLE_KLEIDI=OFF"
