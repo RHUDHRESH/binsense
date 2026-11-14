@@ -1,0 +1,241 @@
+image,label,predicted,confidence,correct,multi_select,inference_ms
+cardboard1.jpg,cardboard,cardboard,0.911,True,cardboard + recyclable + dry_waste + paper_stream,3.6
+cardboard108.jpg,cardboard,cardboard,0.917,True,cardboard + recyclable + dry_waste + paper_stream,4.1
+cardboard117.jpg,cardboard,cardboard,0.839,True,cardboard + recyclable + dry_waste + paper_stream,3.7
+cardboard126.jpg,cardboard,cardboard,0.915,True,cardboard + recyclable + dry_waste + paper_stream,3.4
+cardboard135.jpg,cardboard,cardboard,0.918,True,cardboard + recyclable + dry_waste + paper_stream,3.9
+cardboard144.jpg,cardboard,cardboard,0.765,True,cardboard + recyclable + dry_waste + paper_stream,3.3
+cardboard153.jpg,cardboard,cardboard,0.941,True,cardboard + recyclable + dry_waste + paper_stream,1.2
+cardboard162.jpg,cardboard,cardboard,0.677,True,cardboard + recyclable + dry_waste + paper_stream,2.1
+cardboard171.jpg,cardboard,cardboard,0.694,True,cardboard + recyclable + dry_waste + paper_stream,1.8
+cardboard180.jpg,cardboard,cardboard,0.934,True,cardboard + recyclable + dry_waste + paper_stream,1.9
+cardboard19.jpg,cardboard,cardboard,0.903,True,cardboard + recyclable + dry_waste + paper_stream,1.7
+cardboard199.jpg,cardboard,cardboard,0.91,True,cardboard + recyclable + dry_waste + paper_stream,1.7
+cardboard207.jpg,cardboard,cardboard,0.921,True,cardboard + recyclable + dry_waste + paper_stream,2.0
+cardboard216.jpg,cardboard,cardboard,0.903,True,cardboard + recyclable + dry_waste + paper_stream,1.6
+cardboard225.jpg,cardboard,cardboard,0.928,True,cardboard + recyclable + dry_waste + paper_stream,1.9
+cardboard234.jpg,cardboard,cardboard,0.907,True,cardboard + recyclable + dry_waste + paper_stream,1.5
+cardboard243.jpg,cardboard,cardboard,0.907,True,cardboard + recyclable + dry_waste + paper_stream,1.2
+cardboard252.jpg,cardboard,cardboard,0.904,True,cardboard + recyclable + dry_waste + paper_stream,1.9
+cardboard261.jpg,cardboard,cardboard,0.919,True,cardboard + recyclable + dry_waste + paper_stream,2.1
+cardboard270.jpg,cardboard,cardboard,0.928,True,cardboard + recyclable + dry_waste + paper_stream,1.5
+cardboard28.jpg,cardboard,cardboard,0.9,True,cardboard + recyclable + dry_waste + paper_stream,1.5
+cardboard289.jpg,cardboard,cardboard,0.92,True,cardboard + recyclable + dry_waste + paper_stream,1.8
+cardboard298.jpg,cardboard,cardboard,0.92,True,cardboard + recyclable + dry_waste + paper_stream,1.5
+cardboard306.jpg,cardboard,cardboard,0.924,True,cardboard + recyclable + dry_waste + paper_stream,1.3
+cardboard315.jpg,cardboard,cardboard,0.914,True,cardboard + recyclable + dry_waste + paper_stream,2.1
+cardboard324.jpg,cardboard,cardboard,0.916,True,cardboard + recyclable + dry_waste + paper_stream,1.2
+cardboard333.jpg,cardboard,cardboard,0.87,True,cardboard + recyclable + dry_waste + paper_stream,1.3
+cardboard342.jpg,cardboard,cardboard,0.923,True,cardboard + recyclable + dry_waste + paper_stream,2.0
+cardboard351.jpg,cardboard,cardboard,0.91,True,cardboard + recyclable + dry_waste + paper_stream,1.7
+cardboard360.jpg,cardboard,cardboard,0.925,True,cardboard + recyclable + dry_waste + paper_stream,1.6
+cardboard37.jpg,cardboard,cardboard,0.92,True,cardboard + recyclable + dry_waste + paper_stream,1.7
+cardboard379.jpg,cardboard,cardboard,0.924,True,cardboard + recyclable + dry_waste + paper_stream,1.6
+cardboard388.jpg,cardboard,cardboard,0.906,True,cardboard + recyclable + dry_waste + paper_stream,1.8
+cardboard397.jpg,cardboard,cardboard,0.918,True,cardboard + recyclable + dry_waste + paper_stream,1.1
+cardboard42.jpg,cardboard,cardboard,0.927,True,cardboard + recyclable + dry_waste + paper_stream,2.2
+cardboard51.jpg,cardboard,cardboard,0.933,True,cardboard + recyclable + dry_waste + paper_stream,1.1
+cardboard60.jpg,cardboard,cardboard,0.907,True,cardboard + recyclable + dry_waste + paper_stream,2.0
+cardboard7.jpg,cardboard,cardboard,0.93,True,cardboard + recyclable + dry_waste + paper_stream,1.3
+cardboard79.jpg,cardboard,cardboard,0.923,True,cardboard + recyclable + dry_waste + paper_stream,1.8
+cardboard88.jpg,cardboard,cardboard,0.925,True,cardboard + recyclable + dry_waste + paper_stream,1.3
+glass1.jpg,glass,glass,0.933,True,glass + recyclable + dry_waste,1.5
+glass11.jpg,glass,glass,0.919,True,glass + recyclable + dry_waste,1.7
+glass120.jpg,glass,glass,0.922,True,glass + recyclable + dry_waste,1.2
+glass131.jpg,glass,glass,0.901,True,glass + recyclable + dry_waste,1.2
+glass142.jpg,glass,glass,0.89,True,glass + recyclable + dry_waste,1.5
+glass153.jpg,glass,glass,0.913,True,glass + recyclable + dry_waste,1.5
+glass164.jpg,glass,glass,0.927,True,glass + recyclable + dry_waste,1.7
+glass175.jpg,glass,glass,0.886,True,glass + recyclable + dry_waste,1.3
+glass186.jpg,glass,metal,0.89,False,metal + recyclable + dry_waste,1.7
+glass197.jpg,glass,glass,0.935,True,glass + recyclable + dry_waste,1.1
+glass207.jpg,glass,paper,0.911,False,paper + recyclable + dry_waste + paper_stream,1.2
+glass218.jpg,glass,glass,0.909,True,glass + recyclable + dry_waste,1.1
+glass229.jpg,glass,glass,0.922,True,glass + recyclable + dry_waste,1.4
+glass24.jpg,glass,glass,0.736,True,glass + recyclable + dry_waste,1.6
+glass250.jpg,glass,glass,0.905,True,glass + recyclable + dry_waste,1.1
+glass261.jpg,glass,glass,0.92,True,glass + recyclable + dry_waste,1.2
+glass272.jpg,glass,glass,0.89,True,glass + recyclable + dry_waste,1.2
+glass283.jpg,glass,glass,0.563,True,glass + metal + recyclable + dry_waste,1.3
+glass294.jpg,glass,glass,0.938,True,glass + recyclable + dry_waste,1.2
+glass304.jpg,glass,glass,0.476,True,glass + paper + recyclable + dry_waste,1.4
+glass315.jpg,glass,glass,0.935,True,glass + recyclable + dry_waste,1.5
+glass326.jpg,glass,glass,0.921,True,glass + recyclable + dry_waste,1.7
+glass337.jpg,glass,plastic,0.667,False,plastic + recyclable + dry_waste,1.4
+glass348.jpg,glass,glass,0.71,True,glass + recyclable + dry_waste,1.4
+glass359.jpg,glass,glass,0.652,True,glass + recyclable + dry_waste,1.7
+glass37.jpg,glass,glass,0.915,True,glass + recyclable + dry_waste,1.2
+glass380.jpg,glass,glass,0.653,True,glass + recyclable + dry_waste,2.0
+glass391.jpg,glass,glass,0.902,True,glass + recyclable + dry_waste,1.4
+glass401.jpg,glass,plastic,0.391,False,plastic + glass + recyclable + dry_waste,1.1
+glass412.jpg,glass,glass,0.597,True,glass + plastic + recyclable + dry_waste,1.8
+glass423.jpg,glass,glass,0.919,True,glass + recyclable + dry_waste,1.5
+glass434.jpg,glass,glass,0.91,True,glass + recyclable + dry_waste,1.6
+glass445.jpg,glass,glass,0.902,True,glass + recyclable + dry_waste,1.5
+glass456.jpg,glass,glass,0.916,True,glass + recyclable + dry_waste,1.2
+glass467.jpg,glass,glass,0.908,True,glass + recyclable + dry_waste,1.2
+glass478.jpg,glass,glass,0.922,True,glass + recyclable + dry_waste,1.5
+glass489.jpg,glass,glass,0.924,True,glass + recyclable + dry_waste,1.8
+glass5.jpg,glass,glass,0.914,True,glass + recyclable + dry_waste,1.7
+glass59.jpg,glass,glass,0.929,True,glass + recyclable + dry_waste,1.3
+glass7.jpg,glass,glass,0.922,True,glass + recyclable + dry_waste,1.5
+metal1.jpg,metal,metal,0.9,True,metal + recyclable + dry_waste,1.2
+metal108.jpg,metal,metal,0.91,True,metal + recyclable + dry_waste,1.4
+metal117.jpg,metal,metal,0.835,True,metal + recyclable + dry_waste,1.2
+metal126.jpg,metal,metal,0.917,True,metal + recyclable + dry_waste,1.2
+metal135.jpg,metal,metal,0.913,True,metal + recyclable + dry_waste,1.8
+metal144.jpg,metal,metal,0.909,True,metal + recyclable + dry_waste,1.5
+metal153.jpg,metal,metal,0.921,True,metal + recyclable + dry_waste,1.2
+metal162.jpg,metal,metal,0.802,True,metal + recyclable + dry_waste,1.6
+metal171.jpg,metal,metal,0.948,True,metal + recyclable + dry_waste,1.3
+metal180.jpg,metal,metal,0.811,True,metal + recyclable + dry_waste,1.5
+metal19.jpg,metal,metal,0.921,True,metal + recyclable + dry_waste,1.4
+metal199.jpg,metal,metal,0.79,True,metal + recyclable + dry_waste,1.3
+metal207.jpg,metal,metal,0.913,True,metal + recyclable + dry_waste,1.7
+metal216.jpg,metal,metal,0.93,True,metal + recyclable + dry_waste,2.2
+metal225.jpg,metal,plastic,0.533,False,plastic + metal + recyclable + dry_waste,1.6
+metal234.jpg,metal,metal,0.845,True,metal + recyclable + dry_waste,1.3
+metal243.jpg,metal,metal,0.775,True,metal + recyclable + dry_waste,1.7
+metal252.jpg,metal,metal,0.899,True,metal + recyclable + dry_waste,1.3
+metal261.jpg,metal,metal,0.93,True,metal + recyclable + dry_waste,1.6
+metal270.jpg,metal,metal,0.917,True,metal + recyclable + dry_waste,1.5
+metal28.jpg,metal,metal,0.91,True,metal + recyclable + dry_waste,1.7
+metal289.jpg,metal,metal,0.93,True,metal + recyclable + dry_waste,1.1
+metal298.jpg,metal,trash,0.698,False,trash + dry_waste + landfill,1.3
+metal306.jpg,metal,metal,0.932,True,metal + recyclable + dry_waste,1.8
+metal315.jpg,metal,metal,0.939,True,metal + recyclable + dry_waste,2.1
+metal324.jpg,metal,metal,0.897,True,metal + recyclable + dry_waste,1.5
+metal333.jpg,metal,metal,0.935,True,metal + recyclable + dry_waste,1.2
+metal342.jpg,metal,metal,0.91,True,metal + recyclable + dry_waste,1.7
+metal351.jpg,metal,metal,0.944,True,metal + recyclable + dry_waste,1.4
+metal360.jpg,metal,metal,0.806,True,metal + recyclable + dry_waste,1.3
+metal37.jpg,metal,glass,0.795,False,glass + recyclable + dry_waste,1.6
+metal379.jpg,metal,glass,0.623,False,glass + recyclable + dry_waste,1.1
+metal388.jpg,metal,metal,0.897,True,metal + recyclable + dry_waste,1.5
+metal397.jpg,metal,metal,0.759,True,metal + recyclable + dry_waste,1.4
+metal405.jpg,metal,metal,0.908,True,metal + recyclable + dry_waste,1.2
+metal45.jpg,metal,metal,0.908,True,metal + recyclable + dry_waste,1.2
+metal54.jpg,metal,metal,0.911,True,metal + recyclable + dry_waste,1.3
+metal63.jpg,metal,paper,0.871,False,paper + recyclable + dry_waste + paper_stream,1.2
+metal72.jpg,metal,metal,0.876,True,metal + recyclable + dry_waste,1.2
+metal81.jpg,metal,metal,0.94,True,metal + recyclable + dry_waste,1.1
+paper1.jpg,paper,paper,0.922,True,paper + recyclable + dry_waste + paper_stream,1.5
+paper111.jpg,paper,paper,0.91,True,paper + recyclable + dry_waste + paper_stream,1.3
+paper124.jpg,paper,paper,0.633,True,paper + plastic + recyclable + dry_waste + paper_stream,1.7
+paper137.jpg,paper,paper,0.924,True,paper + recyclable + dry_waste + paper_stream,1.4
+paper15.jpg,paper,paper,0.891,True,paper + recyclable + dry_waste + paper_stream,1.4
+paper162.jpg,paper,paper,0.872,True,paper + recyclable + dry_waste + paper_stream,1.4
+paper175.jpg,paper,paper,0.907,True,paper + recyclable + dry_waste + paper_stream,1.4
+paper188.jpg,paper,paper,0.922,True,paper + recyclable + dry_waste + paper_stream,2.3
+paper20.jpg,paper,paper,0.931,True,paper + recyclable + dry_waste + paper_stream,1.6
+paper212.jpg,paper,paper,0.883,True,paper + recyclable + dry_waste + paper_stream,1.2
+paper225.jpg,paper,paper,0.826,True,paper + recyclable + dry_waste + paper_stream,1.1
+paper238.jpg,paper,paper,0.908,True,paper + recyclable + dry_waste + paper_stream,1.5
+paper250.jpg,paper,paper,0.912,True,paper + recyclable + dry_waste + paper_stream,1.4
+paper263.jpg,paper,paper,0.934,True,paper + recyclable + dry_waste + paper_stream,1.2
+paper276.jpg,paper,paper,0.93,True,paper + recyclable + dry_waste + paper_stream,1.3
+paper289.jpg,paper,paper,0.917,True,paper + recyclable + dry_waste + paper_stream,1.4
+paper300.jpg,paper,paper,0.897,True,paper + recyclable + dry_waste + paper_stream,1.3
+paper313.jpg,paper,paper,0.918,True,paper + recyclable + dry_waste + paper_stream,1.5
+paper326.jpg,paper,paper,0.938,True,paper + recyclable + dry_waste + paper_stream,1.5
+paper339.jpg,paper,paper,0.932,True,paper + recyclable + dry_waste + paper_stream,1.3
+paper351.jpg,paper,paper,0.934,True,paper + recyclable + dry_waste + paper_stream,1.1
+paper364.jpg,paper,paper,0.928,True,paper + recyclable + dry_waste + paper_stream,1.7
+paper377.jpg,paper,paper,0.924,True,paper + recyclable + dry_waste + paper_stream,1.3
+paper39.jpg,paper,cardboard,0.526,False,cardboard + paper + recyclable + dry_waste + paper_stream,1.2
+paper401.jpg,paper,paper,0.917,True,paper + recyclable + dry_waste + paper_stream,1.4
+paper414.jpg,paper,paper,0.912,True,paper + recyclable + dry_waste + paper_stream,1.6
+paper427.jpg,paper,paper,0.847,True,paper + recyclable + dry_waste + paper_stream,1.2
+paper44.jpg,paper,paper,0.919,True,paper + recyclable + dry_waste + paper_stream,1.2
+paper452.jpg,paper,paper,0.862,True,paper + recyclable + dry_waste + paper_stream,1.3
+paper465.jpg,paper,paper,0.914,True,paper + recyclable + dry_waste + paper_stream,1.3
+paper478.jpg,paper,paper,0.881,True,paper + recyclable + dry_waste + paper_stream,1.3
+paper490.jpg,paper,paper,0.91,True,paper + recyclable + dry_waste + paper_stream,1.4
+paper502.jpg,paper,paper,0.941,True,paper + recyclable + dry_waste + paper_stream,1.2
+paper515.jpg,paper,paper,0.916,True,paper + recyclable + dry_waste + paper_stream,1.5
+paper528.jpg,paper,paper,0.908,True,paper + recyclable + dry_waste + paper_stream,1.3
+paper540.jpg,paper,paper,0.847,True,paper + recyclable + dry_waste + paper_stream,1.1
+paper553.jpg,paper,paper,0.918,True,paper + recyclable + dry_waste + paper_stream,1.5
+paper566.jpg,paper,paper,0.905,True,paper + recyclable + dry_waste + paper_stream,2.0
+paper579.jpg,paper,paper,0.911,True,paper + recyclable + dry_waste + paper_stream,1.2
+paper591.jpg,paper,paper,0.826,True,paper + recyclable + dry_waste + paper_stream,1.3
+plastic1.jpg,plastic,glass,0.809,False,glass + recyclable + dry_waste,1.7
+plastic11.jpg,plastic,plastic,0.914,True,plastic + recyclable + dry_waste,1.3
+plastic120.jpg,plastic,plastic,0.958,True,plastic + recyclable + dry_waste,1.2
+plastic131.jpg,plastic,plastic,0.936,True,plastic + recyclable + dry_waste,1.4
+plastic142.jpg,plastic,plastic,0.877,True,plastic + recyclable + dry_waste,1.6
+plastic153.jpg,plastic,plastic,0.947,True,plastic + recyclable + dry_waste,1.8
+plastic164.jpg,plastic,glass,0.898,False,glass + recyclable + dry_waste,1.5
+plastic175.jpg,plastic,plastic,0.942,True,plastic + recyclable + dry_waste,1.3
+plastic186.jpg,plastic,plastic,0.923,True,plastic + recyclable + dry_waste,1.4
+plastic197.jpg,plastic,plastic,0.923,True,plastic + recyclable + dry_waste,1.2
+plastic207.jpg,plastic,paper,0.494,False,paper + plastic + recyclable + dry_waste + paper_stream,1.8
+plastic218.jpg,plastic,plastic,0.942,True,plastic + recyclable + dry_waste,1.4
+plastic229.jpg,plastic,glass,0.86,False,glass + recyclable + dry_waste,1.4
+plastic24.jpg,plastic,plastic,0.923,True,plastic + recyclable + dry_waste,1.2
+plastic250.jpg,plastic,plastic,0.882,True,plastic + recyclable + dry_waste,1.5
+plastic261.jpg,plastic,plastic,0.933,True,plastic + recyclable + dry_waste,2.2
+plastic272.jpg,plastic,plastic,0.933,True,plastic + recyclable + dry_waste,1.3
+plastic283.jpg,plastic,plastic,0.918,True,plastic + recyclable + dry_waste,2.1
+plastic294.jpg,plastic,plastic,0.937,True,plastic + recyclable + dry_waste,1.3
+plastic304.jpg,plastic,plastic,0.866,True,plastic + recyclable + dry_waste,1.6
+plastic315.jpg,plastic,plastic,0.924,True,plastic + recyclable + dry_waste,1.6
+plastic326.jpg,plastic,plastic,0.916,True,plastic + recyclable + dry_waste,2.1
+plastic337.jpg,plastic,plastic,0.897,True,plastic + recyclable + dry_waste,1.1
+plastic348.jpg,plastic,plastic,0.817,True,plastic + recyclable + dry_waste,1.3
+plastic359.jpg,plastic,plastic,0.941,True,plastic + recyclable + dry_waste,1.3
+plastic37.jpg,plastic,plastic,0.936,True,plastic + recyclable + dry_waste,1.8
+plastic380.jpg,plastic,plastic,0.926,True,plastic + recyclable + dry_waste,1.2
+plastic391.jpg,plastic,plastic,0.89,True,plastic + recyclable + dry_waste,2.2
+plastic401.jpg,plastic,plastic,0.94,True,plastic + recyclable + dry_waste,1.2
+plastic412.jpg,plastic,glass,0.653,False,glass + recyclable + dry_waste,1.8
+plastic423.jpg,plastic,plastic,0.91,True,plastic + recyclable + dry_waste,1.2
+plastic434.jpg,plastic,plastic,0.913,True,plastic + recyclable + dry_waste,1.2
+plastic445.jpg,plastic,plastic,0.914,True,plastic + recyclable + dry_waste,1.5
+plastic456.jpg,plastic,plastic,0.6,True,plastic + paper + recyclable + dry_waste,1.7
+plastic467.jpg,plastic,plastic,0.758,True,plastic + recyclable + dry_waste,1.6
+plastic478.jpg,plastic,trash,0.841,False,trash + dry_waste + landfill,1.9
+plastic54.jpg,plastic,plastic,0.904,True,plastic + recyclable + dry_waste,1.1
+plastic65.jpg,plastic,plastic,0.917,True,plastic + recyclable + dry_waste,1.6
+plastic76.jpg,plastic,plastic,0.93,True,plastic + recyclable + dry_waste,1.2
+plastic87.jpg,plastic,plastic,0.937,True,plastic + recyclable + dry_waste,1.7
+trash1.jpg,trash,trash,0.735,True,trash + dry_waste + landfill,1.2
+trash101.jpg,trash,trash,0.923,True,trash + dry_waste + landfill,1.2
+trash104.jpg,trash,trash,0.9,True,trash + dry_waste + landfill,1.4
+trash107.jpg,trash,trash,0.901,True,trash + dry_waste + landfill,1.6
+trash11.jpg,trash,trash,0.909,True,trash + dry_waste + landfill,1.5
+trash112.jpg,trash,paper,0.506,False,paper + recyclable + dry_waste + paper_stream,1.3
+trash115.jpg,trash,trash,0.887,True,trash + dry_waste + landfill,1.4
+trash118.jpg,trash,trash,0.93,True,trash + dry_waste + landfill,1.5
+trash120.jpg,trash,trash,0.686,True,trash + dry_waste + landfill,1.1
+trash123.jpg,trash,trash,0.817,True,trash + dry_waste + landfill,1.3
+trash126.jpg,trash,trash,0.415,True,trash + glass + recyclable + dry_waste,1.1
+trash129.jpg,trash,trash,0.917,True,trash + dry_waste + landfill,1.2
+trash131.jpg,trash,trash,0.941,True,trash + dry_waste + landfill,1.4
+trash134.jpg,trash,trash,0.63,True,trash + dry_waste + landfill,1.3
+trash137.jpg,trash,trash,0.91,True,trash + dry_waste + landfill,1.5
+trash16.jpg,trash,trash,0.923,True,trash + dry_waste + landfill,1.7
+trash19.jpg,trash,trash,0.923,True,trash + dry_waste + landfill,1.3
+trash21.jpg,trash,trash,0.941,True,trash + dry_waste + landfill,1.2
+trash24.jpg,trash,trash,0.91,True,trash + dry_waste + landfill,1.7
+trash27.jpg,trash,metal,0.278,False,metal + recyclable + dry_waste,1.6
+trash3.jpg,trash,trash,0.679,True,trash + dry_waste + landfill,2.5
+trash32.jpg,trash,metal,0.849,False,metal + recyclable + dry_waste,1.6
+trash35.jpg,trash,trash,0.688,True,trash + dry_waste + landfill,2.4
+trash38.jpg,trash,trash,0.937,True,trash + dry_waste + landfill,1.2
+trash40.jpg,trash,trash,0.921,True,trash + dry_waste + landfill,1.5
+trash43.jpg,trash,trash,0.563,True,trash + dry_waste + landfill,1.8
+trash46.jpg,trash,trash,0.894,True,trash + dry_waste + landfill,2.1
+trash49.jpg,trash,trash,0.91,True,trash + dry_waste + landfill,1.6
+trash51.jpg,trash,plastic,0.521,False,plastic + recyclable + dry_waste,1.6
+trash54.jpg,trash,trash,0.882,True,trash + dry_waste + landfill,1.4
+trash57.jpg,trash,trash,0.868,True,trash + dry_waste + landfill,1.2
+trash6.jpg,trash,trash,0.897,True,trash + dry_waste + landfill,1.5
+trash62.jpg,trash,paper,0.623,False,paper + trash + recyclable + dry_waste + paper_stream,1.4
+trash65.jpg,trash,trash,0.915,True,trash + dry_waste + landfill,1.2
+trash68.jpg,trash,trash,0.926,True,trash + dry_waste + landfill,1.4
+trash70.jpg,trash,trash,0.867,True,trash + dry_waste + landfill,1.5
+trash73.jpg,trash,trash,0.813,True,trash + dry_waste + landfill,1.6
+trash76.jpg,trash,trash,0.905,True,trash + dry_waste + landfill,2.0
+trash79.jpg,trash,trash,0.781,True,trash + dry_waste + landfill,1.4
+trash81.jpg,trash,trash,0.92,True,trash + dry_waste + landfill,1.6

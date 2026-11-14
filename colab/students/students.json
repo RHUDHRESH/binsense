@@ -1,0 +1,172 @@
+[
+ {
+  "arch": "mobilenetv2_100.ra_in1k",
+  "res": 160,
+  "mean": [
+   0.485,
+   0.456,
+   0.406
+  ],
+  "std": [
+   0.229,
+   0.224,
+   0.225
+  ],
+  "val_acc": 0.9358600378036499,
+  "test_correct": 225,
+  "test_acc": 0.9375,
+  "params_m": 2.22,
+  "train_seconds": 396,
+  "fp32_mb": 8.87,
+  "fp32_pte_correct": 225,
+  "colab_cpu_fp32_ms": 4.21,
+  "int8_converted_correct": 219,
+  "int8_mb": 2.47,
+  "colab_cpu_int8_ms": 5.76
+ },
+ {
+  "arch": "mobilenetv2_100.ra_in1k",
+  "res": 128,
+  "mean": [
+   0.485,
+   0.456,
+   0.406
+  ],
+  "std": [
+   0.229,
+   0.224,
+   0.225
+  ],
+  "val_acc": 0.9329445958137512,
+  "test_correct": 219,
+  "test_acc": 0.9125,
+  "params_m": 2.22,
+  "train_seconds": 388,
+  "fp32_mb": 8.87,
+  "fp32_pte_correct": 219,
+  "colab_cpu_fp32_ms": 3.02,
+  "int8_converted_correct": 214,
+  "int8_mb": 2.47,
+  "colab_cpu_int8_ms": 7.62
+ },
+ {
+  "arch": "mobilenetv2_100.ra_in1k",
+  "res": 96,
+  "mean": [
+   0.485,
+   0.456,
+   0.406
+  ],
+  "std": [
+   0.229,
+   0.224,
+   0.225
+  ],
+  "val_acc": 0.9271137118339539,
+  "test_correct": 216,
+  "test_acc": 0.9,
+  "params_m": 2.22,
+  "train_seconds": 385,
+  "fp32_mb": 8.87,
+  "fp32_pte_correct": 216,
+  "colab_cpu_fp32_ms": 1.76,
+  "int8_converted_correct": 213,
+  "int8_mb": 2.47,
+  "colab_cpu_int8_ms": 2.39
+ },
+ {
+  "arch": "mobilenetv2_050.lamb_in1k",
+  "res": 160,
+  "mean": [
+   0.485,
+   0.456,
+   0.406
+  ],
+  "std": [
+   0.229,
+   0.224,
+   0.225
+  ],
+  "val_acc": 0.909621000289917,
+  "test_correct": 218,
+  "test_acc": 0.9083333333333333,
+  "params_m": 0.69,
+  "train_seconds": 393,
+  "fp32_mb": 2.76,
+  "fp32_pte_correct": 218,
+  "colab_cpu_fp32_ms": 1.87,
+  "int8_converted_correct": 210,
+  "int8_mb": 0.86,
+  "colab_cpu_int8_ms": 2.92
+ },
+ {
+  "arch": "mobilenetv2_050.lamb_in1k",
+  "res": 128,
+  "mean": [
+   0.485,
+   0.456,
+   0.406
+  ],
+  "std": [
+   0.229,
+   0.224,
+   0.225
+  ],
+  "val_acc": 0.8775510191917419,
+  "test_correct": 212,
+  "test_acc": 0.8833333333333333,
+  "params_m": 0.69,
+  "train_seconds": 391,
+  "fp32_mb": 2.76,
+  "fp32_pte_correct": 212,
+  "colab_cpu_fp32_ms": 1.24,
+  "int8_converted_correct": 208,
+  "int8_mb": 0.86,
+  "colab_cpu_int8_ms": 1.7
+ },
+ {
+  "arch": "mobilenetv2_050.lamb_in1k",
+  "res": 96,
+  "mean": [
+   0.485,
+   0.456,
+   0.406
+  ],
+  "std": [
+   0.229,
+   0.224,
+   0.225
+  ],
+  "val_acc": 0.851311981678009,
+  "test_correct": 203,
+  "test_acc": 0.8458333333333333,
+  "params_m": 0.69,
+  "train_seconds": 375,
+  "fp32_mb": 2.76,
+  "fp32_pte_correct": 203,
+  "colab_cpu_fp32_ms": 0.77,
+  "int8_converted_correct": 196,
+  "int8_mb": 0.86,
+  "colab_cpu_int8_ms": 1.12
+ },
+ {
+  "arch": "mobilenetv4_conv_small.e2400_r224_in1k",
+  "res": 160,
+  "error": "RuntimeError('mat1 and mat2 shapes cannot be multiplied (64x1280 and 960x6)')"
+ },
+ {
+  "arch": "mobilenetv4_conv_small.e2400_r224_in1k",
+  "res": 128,
+  "error": "RuntimeError('mat1 and mat2 shapes cannot be multiplied (64x1280 and 960x6)')"
+ },
+ {
+  "arch": "mobilenetv3_small_100.lamb_in1k",
+  "res": 160,
+  "error": "RuntimeError('mat1 and mat2 shapes cannot be multiplied (64x1024 and 576x6)')"
+ },
+ {
+  "arch": "mobilenetv3_small_100.lamb_in1k",
+  "res": 128,
+  "error": "RuntimeError('mat1 and mat2 shapes cannot be multiplied (64x1024 and 576x6)')"
+ }
+]

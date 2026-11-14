@@ -1,0 +1,39 @@
+{
+ "tag": "laptop_cascade_stu_mobilenetv2_100_96_0.9",
+ "model": "open_clip MobileCLIP2-S0 dfndr2b (image tower), fine-tuned on TrashNet",
+ "pretrained": "fine-tuned",
+ "pte": "own_mobileclip2_s0_256_fp32.pte",
+ "pte_size_mb": 45.52,
+ "resolution": 256,
+ "threads": 4,
+ "images": 240,
+ "scored": 240,
+ "correct": 230,
+ "accuracy": 0.9583,
+ "load_ms": 0.4,
+ "inference_ms": {
+  "p50": 2.1,
+  "p90": 57.6,
+  "min": 1.0,
+  "max": 78.8
+ },
+ "preprocess_ms": {
+  "p50": 1.6,
+  "p90": 4.9
+ },
+ "images_per_second": 43.31,
+ "peak_rss_mb": 438.2,
+ "machine": "AMD64",
+ "cpu_count": 12,
+ "temp_start": null,
+ "temp_end": null,
+ "clock_arm": null,
+ "throttled": null,
+ "two_stage": {
+  "gate": "stu_mobilenetv2_100_96_fp32.pte",
+  "threshold": 0.9,
+  "fast_path_share": 0.654,
+  "gate_size_mb": 8.87,
+  "fast_path_accuracy": 0.9936
+ }
+}

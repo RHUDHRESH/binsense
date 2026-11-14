@@ -1,0 +1,32 @@
+{
+ "tag": "laptop_stu_mobilenetv2_100_96",
+ "model": "timm mobilenetv2_100.ra_in1k distilled from fine-tuned MobileCLIP2-S0 (TrashNet)",
+ "pretrained": "distilled",
+ "pte": "stu_mobilenetv2_100_96_fp32.pte",
+ "pte_size_mb": 8.87,
+ "resolution": 96,
+ "threads": 4,
+ "images": 240,
+ "scored": 240,
+ "correct": 219,
+ "accuracy": 0.9125,
+ "load_ms": 0.2,
+ "inference_ms": {
+  "p50": 1.5,
+  "p90": 2.0,
+  "min": 1.0,
+  "max": 5.6
+ },
+ "preprocess_ms": {
+  "p50": 1.2,
+  "p90": 1.5
+ },
+ "images_per_second": 348.41,
+ "peak_rss_mb": 367.4,
+ "machine": "AMD64",
+ "cpu_count": 12,
+ "temp_start": null,
+ "temp_end": null,
+ "clock_arm": null,
+ "throttled": null
+}
