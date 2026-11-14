@@ -24,3 +24,8 @@ Baselines for the comparison table:
 Fastest two-stage pairing found on the laptop (96 px MobileNetV2 student as the gate):
   python run_eval.py --pte models/own_mobileclip2_s0_256_fp32.pte --pack packs/own_mobileclip2_s0_256.npz \
       --gate-pte models/stu_mobilenetv2_100_96_fp32.pte --gate-pack packs/stu_mobilenetv2_100_96.npz --threshold 0.9 --images images
+
+Terminal proof of concept (offline check, model list, classification loop, hardware line, summary):
+  python demo.py                      # all sample images once
+  python demo.py --loop 5             # five passes
+  python demo.py --watch inbox        # classify photos as they are dropped into inbox/
