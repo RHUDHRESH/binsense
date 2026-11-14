@@ -1,0 +1,238 @@
+[17:15:34] copying bundle ...
+files: 26  size: 256M
+[17:17:25] installing (no sudo) ...
+== system ==
+aarch64
+PRETTY_NAME="Debian GNU/Linux 13 (trixie)"
+Python 3.13.5
+Looking in indexes: https://pypi.org/simple, https://www.piwheels.org/simple
+Requirement already satisfied: pip in /home/pi/binsense-venv/lib/python3.13/site-packages (25.1.1)
+Collecting pip
+  Downloading https://www.piwheels.org/simple/pip/pip-26.3-py3-none-any.whl.metadata (4.6 kB)
+Downloading https://www.piwheels.org/simple/pip/pip-26.3-py3-none-any.whl (2.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 2.8 MB/s eta 0:00:00
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 25.1.1
+    Uninstalling pip-25.1.1:
+      Successfully uninstalled pip-25.1.1
+Successfully installed pip-26.3
+Looking in indexes: https://pypi.org/simple, https://www.piwheels.org/simple, https://download.pytorch.org/whl/cpu
+Collecting torch==2.12.1
+  Downloading torch-2.12.1%2Bcpu-cp313-cp313-manylinux_2_28_aarch64.whl.metadata (31 kB)
+Collecting executorch==1.3.1
+  Downloading executorch-1.3.1%2Bcpu-cp313-cp313-manylinux_2_28_aarch64.whl.metadata (5.1 kB)
+Collecting numpy
+  Downloading numpy-2.5.4-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl.metadata (6.6 kB)
+Collecting pillow
+  Downloading pillow-13.0.0-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl.metadata (9.1 kB)
+Collecting psutil
+  Downloading psutil-7.2.2-cp36-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (22 kB)
+Collecting opencv-python-headless
+  Downloading opencv_python_headless-5.0.0.93-cp37-abi3-manylinux_2_28_aarch64.whl.metadata (19 kB)
+Collecting filelock (from torch==2.12.1)
+  Downloading filelock-4.2.10-py3-none-any.whl.metadata (2.3 kB)
+Collecting typing-extensions>=4.10.0 (from torch==2.12.1)
+  Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting setuptools<82 (from torch==2.12.1)
+  Downloading setuptools-81.0.0-py3-none-any.whl.metadata (6.6 kB)
+Collecting sympy>=1.13.3 (from torch==2.12.1)
+  Downloading sympy-1.14.0-py3-none-any.whl.metadata (12 kB)
+Collecting networkx>=2.5.1 (from torch==2.12.1)
+  Downloading networkx-3.7-py3-none-any.whl.metadata (6.7 kB)
+Collecting jinja2 (from torch==2.12.1)
+  Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting fsspec>=0.8.5 (from torch==2.12.1)
+  Downloading fsspec-2026.9.0-py3-none-any.whl.metadata (10 kB)
+Collecting expecttest (from executorch==1.3.1)
+  Downloading expecttest-0.3.0-py3-none-any.whl.metadata (3.9 kB)
+Collecting flatbuffers (from executorch==1.3.1)
+  Downloading flatbuffers-25.12.19-py2.py3-none-any.whl.metadata (1.0 kB)
+Collecting hypothesis (from executorch==1.3.1)
+  Downloading hypothesis-6.170.15-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.whl.metadata (5.6 kB)
+Collecting kgb (from executorch==1.3.1)
+  Downloading kgb-7.3-py2.py3-none-any.whl.metadata (21 kB)
+Collecting mpmath==1.3.0 (from executorch==1.3.1)
+  Downloading mpmath-1.3.0-py3-none-any.whl.metadata (8.6 kB)
+Collecting packaging (from executorch==1.3.1)
+  Downloading packaging-26.3-py3-none-any.whl.metadata (3.6 kB)
+Collecting pandas>=2.2.2 (from executorch==1.3.1)
+  Downloading pandas-3.1.1-cp313-cp313-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl.metadata (16 kB)
+Collecting parameterized (from executorch==1.3.1)
+  Downloading parameterized-0.9.0-py2.py3-none-any.whl.metadata (18 kB)
+Collecting pytorch-tokenizers>=1.3.0 (from executorch==1.3.1)
+  Downloading pytorch_tokenizers-1.6.0-cp313-cp313-manylinux_2_28_aarch64.whl.metadata (5.0 kB)
+Collecting pyyaml (from executorch==1.3.1)
+  Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (2.4 kB)
+Collecting ruamel.yaml (from executorch==1.3.1)
+  Downloading ruamel_yaml-0.19.1-py3-none-any.whl.metadata (16 kB)
+Collecting tabulate (from executorch==1.3.1)
+  Downloading tabulate-0.10.0-py3-none-any.whl.metadata (39 kB)
+Collecting coremltools==9.0 (from executorch==1.3.1)
+  Downloading coremltools-9.0-py3-none-any.whl.metadata (2.7 kB)
+Collecting scikit-learn==1.7.1 (from executorch==1.3.1)
+  Downloading scikit_learn-1.7.1-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl.metadata (11 kB)
+Collecting hydra-core>=1.3.0 (from executorch==1.3.1)
+  Downloading hydra_core-1.3.8-py3-none-any.whl.metadata (5.7 kB)
+Collecting omegaconf>=2.3.0 (from executorch==1.3.1)
+  Downloading omegaconf-2.4.0-py3-none-any.whl.metadata (4.9 kB)
+Collecting torchao>=0.17.0 (from executorch==1.3.1)
+  Downloading torchao-0.18.0%2Bcpu-cp310-abi3-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl.metadata (21 kB)
+Collecting protobuf>=3.1.0 (from coremltools==9.0->executorch==1.3.1)
+  Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_aarch64.whl.metadata (595 bytes)
+Collecting tqdm (from coremltools==9.0->executorch==1.3.1)
+  Downloading tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)
+Collecting attrs>=21.3.0 (from coremltools==9.0->executorch==1.3.1)
+  Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+Collecting cattrs (from coremltools==9.0->executorch==1.3.1)
+  Downloading cattrs-26.2.1-py3-none-any.whl.metadata (8.5 kB)
+Collecting pyaml (from coremltools==9.0->executorch==1.3.1)
+  Downloading pyaml-26.7.0-py3-none-any.whl.metadata (12 kB)
+Collecting scipy>=1.8.0 (from scikit-learn==1.7.1->executorch==1.3.1)
+  Downloading scipy-1.18.1-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl.metadata (62 kB)
+Collecting joblib>=1.2.0 (from scikit-learn==1.7.1->executorch==1.3.1)
+  Downloading joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting threadpoolctl>=3.1.0 (from scikit-learn==1.7.1->executorch==1.3.1)
+  Downloading threadpoolctl-3.8.0-py3-none-any.whl.metadata (29 kB)
+Collecting omegaconf>=2.3.0 (from executorch==1.3.1)
+  Downloading omegaconf-2.3.1-py3-none-any.whl.metadata (4.5 kB)
+Collecting antlr4-python3-runtime==4.9.* (from hydra-core>=1.3.0->executorch==1.3.1)
+  Downloading antlr4_python3_runtime-4.9.3-py3-none-any.whl.metadata (318 bytes)
+Collecting cloudpickle>=3.0 (from joblib>=1.2.0->scikit-learn==1.7.1->executorch==1.3.1)
+  Downloading cloudpickle-3.1.2-py3-none-any.whl.metadata (7.1 kB)
+Collecting python-dateutil>=2.9.0 (from pandas>=2.2.2->executorch==1.3.1)
+  Downloading python_dateutil-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+Collecting tzdata (from python-dateutil>=2.9.0->pandas>=2.2.2->executorch==1.3.1)
+  Downloading tzdata-2026.6-py2.py3-none-any.whl.metadata (1.4 kB)
+Collecting tiktoken (from pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading tiktoken-0.14.0-cp313-cp313-manylinux_2_28_aarch64.whl.metadata (6.7 kB)
+Collecting tokenizers (from pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading tokenizers-0.23.3-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl.metadata (9.8 kB)
+Collecting sentencepiece (from pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading sentencepiece-0.2.3-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl.metadata (34 kB)
+Collecting sortedcontainers<3.0.0,>=2.1.0 (from hypothesis->executorch==1.3.1)
+  Downloading sortedcontainers-2.4.0-py2.py3-none-any.whl.metadata (10 kB)
+Collecting MarkupSafe>=2.0 (from jinja2->torch==2.12.1)
+  Downloading markupsafe-3.0.4-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (2.7 kB)
+Collecting regex (from tiktoken->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading regex-2026.11.9-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (40 kB)
+Collecting requests (from tiktoken->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting charset_normalizer<4,>=2 (from requests->tiktoken->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading charset_normalizer-3.5.2-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl.metadata (46 kB)
+Collecting idna<4,>=2.5 (from requests->tiktoken->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+Collecting urllib3<3,>=1.26 (from requests->tiktoken->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+Collecting certifi>=2023.5.7 (from requests->tiktoken->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+Collecting huggingface-hub<3.0,>=0.16.4 (from tokenizers->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading huggingface_hub-2.4.0-py3-none-any.whl.metadata (16 kB)
+Collecting click<9.0.0,>=8.4.2 (from huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading click-8.5.1-py3-none-any.whl.metadata (2.6 kB)
+Collecting hf-xet<2.0.0,>=1.6.0 (from huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading hf_xet-1.8.0-cp38-abi3-manylinux_2_28_aarch64.whl.metadata (4.9 kB)
+Collecting httpx2<3,>=2.0.0 (from huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading httpx2-2.16.0-py3-none-any.whl.metadata (10 kB)
+Collecting anyio>=4.10 (from httpx2<3,>=2.0.0->huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading anyio-4.16.0-py3-none-any.whl.metadata (4.7 kB)
+Collecting httpcore2==2.16.0 (from httpx2<3,>=2.0.0->huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading httpcore2-2.16.0-py3-none-any.whl.metadata (27 kB)
+Collecting truststore>=0.10 (from httpx2<3,>=2.0.0->huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading truststore-0.10.5-py3-none-any.whl.metadata (4.5 kB)
+Collecting h11>=0.16 (from httpcore2==2.16.0->httpx2<3,>=2.0.0->huggingface-hub<3.0,>=0.16.4->tokenizers->pytorch-tokenizers>=1.3.0->executorch==1.3.1)
+  Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Downloading torch-2.12.1%2Bcpu-cp313-cp313-manylinux_2_28_aarch64.whl (150.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 150.0/150.0 MB 1.8 MB/s  0:01:08
+Downloading executorch-1.3.1%2Bcpu-cp313-cp313-manylinux_2_28_aarch64.whl (14.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 14.8/14.8 MB 1.2 MB/s  0:00:13
+Downloading coremltools-9.0-py3-none-any.whl (2.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 134.2 kB/s  0:00:14
+Downloading mpmath-1.3.0-py3-none-any.whl (536 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 536.2/536.2 kB 2.0 MB/s  0:00:00
+Downloading scikit_learn-1.7.1-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl (9.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 9.3/9.3 MB 467.5 kB/s  0:00:28
+Downloading setuptools-81.0.0-py3-none-any.whl (1.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 885.8 kB/s  0:00:05
+Downloading numpy-2.5.4-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl (15.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 15.7/15.7 MB 2.5 MB/s  0:00:06
+Downloading pillow-13.0.0-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl (6.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.5/6.5 MB 2.8 MB/s  0:00:02
+Downloading psutil-7.2.2-cp36-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (156 kB)
+Downloading opencv_python_headless-5.0.0.93-cp37-abi3-manylinux_2_28_aarch64.whl (39.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 39.6/39.6 MB 1.8 MB/s  0:00:22
+Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+Downloading fsspec-2026.9.0-py3-none-any.whl (221 kB)
+Downloading hydra_core-1.3.8-py3-none-any.whl (168 kB)
+Downloading antlr4_python3_runtime-4.9.3-py3-none-any.whl (145 kB)
+Downloading omegaconf-2.3.1-py3-none-any.whl (79 kB)
+Downloading joblib-1.6.0-py3-none-any.whl (306 kB)
+Downloading cloudpickle-3.1.2-py3-none-any.whl (22 kB)
+Downloading networkx-3.7-py3-none-any.whl (2.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.1/2.1 MB 7.1 MB/s  0:00:00
+Downloading pandas-3.1.1-cp313-cp313-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl (11.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.4/11.4 MB 2.6 MB/s  0:00:04
+Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_aarch64.whl (344 kB)
+Downloading python_dateutil-4.0.0-py3-none-any.whl (92 kB)
+Downloading pytorch_tokenizers-1.6.0-cp313-cp313-manylinux_2_28_aarch64.whl (1.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.5/1.5 MB 5.7 MB/s  0:00:00
+Downloading pyyaml-6.0.3-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (767 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 767.1/767.1 kB 5.3 MB/s  0:00:00
+Downloading scipy-1.18.1-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl (34.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 34.0/34.0 MB 2.4 MB/s  0:00:14
+Downloading sympy-1.14.0-py3-none-any.whl (6.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.3/6.3 MB 3.7 MB/s  0:00:01
+Downloading threadpoolctl-3.8.0-py3-none-any.whl (32 kB)
+Downloading torchao-0.18.0%2Bcpu-cp310-abi3-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl (2.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.4/2.4 MB 3.5 MB/s  0:00:00
+Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Downloading cattrs-26.2.1-py3-none-any.whl (74 kB)
+Downloading expecttest-0.3.0-py3-none-any.whl (8.2 kB)
+Downloading filelock-4.2.10-py3-none-any.whl (218 kB)
+Downloading flatbuffers-25.12.19-py2.py3-none-any.whl (26 kB)
+Downloading hypothesis-6.170.15-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (1.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 6.8 MB/s  0:00:00
+Downloading sortedcontainers-2.4.0-py2.py3-none-any.whl (29 kB)
+Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+Downloading markupsafe-3.0.4-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (24 kB)
+Downloading kgb-7.3-py2.py3-none-any.whl (59 kB)
+Downloading packaging-26.3-py3-none-any.whl (129 kB)
+Downloading parameterized-0.9.0-py2.py3-none-any.whl (20 kB)
+Downloading pyaml-26.7.0-py3-none-any.whl (27 kB)
+Downloading ruamel_yaml-0.19.1-py3-none-any.whl (118 kB)
+Downloading sentencepiece-0.2.3-cp313-cp313-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl (1.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.6/1.6 MB 7.3 MB/s  0:00:00
+Downloading tabulate-0.10.0-py3-none-any.whl (39 kB)
+Downloading tiktoken-0.14.0-cp313-cp313-manylinux_2_28_aarch64.whl (1.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 6.4 MB/s  0:00:00
+Downloading regex-2026.11.9-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (804 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 804.9/804.9 kB 6.4 MB/s  0:00:00
+Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+Downloading charset_normalizer-3.5.2-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl (244 kB)
+Downloading idna-3.20-py3-none-any.whl (69 kB)
+Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+Downloading tokenizers-0.23.3-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl (3.5 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.5/3.5 MB 7.4 MB/s  0:00:00
+Downloading huggingface_hub-2.4.0-py3-none-any.whl (857 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 857.0/857.0 kB 2.4 MB/s  0:00:00
+Downloading click-8.5.1-py3-none-any.whl (126 kB)
+Downloading hf_xet-1.8.0-cp38-abi3-manylinux_2_28_aarch64.whl (4.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.1/4.1 MB 4.0 MB/s  0:00:00
+Downloading httpx2-2.16.0-py3-none-any.whl (97 kB)
+Downloading httpcore2-2.16.0-py3-none-any.whl (85 kB)
+Downloading anyio-4.16.0-py3-none-any.whl (134 kB)
+Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading tqdm-4.70.1-py3-none-any.whl (80 kB)
+Downloading truststore-0.10.5-py3-none-any.whl (19 kB)
+Downloading tzdata-2026.6-py2.py3-none-any.whl (348 kB)
+Installing collected packages: torchao, sortedcontainers, mpmath, flatbuffers, antlr4-python3-runtime, urllib3, tzdata, typing-extensions, truststore, tqdm, threadpoolctl, tabulate, sympy, setuptools, sentencepiece, ruamel.yaml, regex, pyyaml, psutil, protobuf, pillow, parameterized, packaging, numpy, networkx, MarkupSafe, kgb, idna, hypothesis, hf-xet, h11, fsspec, filelock, expecttest, cloudpickle, click, charset_normalizer, certifi, attrs, scipy, requests, python-dateutil, pyaml, opencv-python-headless, omegaconf, joblib, jinja2, httpcore2, cattrs, anyio, torch, tiktoken, scikit-learn, pandas, hydra-core, httpx2, coremltools, huggingface-hub, tokenizers, pytorch-tokenizers, executorch
+
+Successfully installed MarkupSafe-3.0.4 antlr4-python3-runtime-4.9.3 anyio-4.16.0 attrs-26.1.0 cattrs-26.2.1 certifi-2026.10.23 charset_normalizer-3.5.2 click-8.5.1 cloudpickle-3.1.2 coremltools-9.0 executorch-1.3.1+cpu expecttest-0.3.0 filelock-4.2.10 flatbuffers-25.12.19 fsspec-2026.9.0 h11-0.16.0 hf-xet-1.8.0 httpcore2-2.16.0 httpx2-2.16.0 huggingface-hub-2.4.0 hydra-core-1.3.8 hypothesis-6.170.15 idna-3.20 jinja2-3.1.6 joblib-1.6.0 kgb-7.3 mpmath-1.3.0 networkx-3.7 numpy-2.5.4 omegaconf-2.3.1 opencv-python-headless-5.0.0.93 packaging-26.3 pandas-3.1.1 parameterized-0.9.0 pillow-13.0.0 protobuf-7.36.2 psutil-7.2.2 pyaml-26.7.0 python-dateutil-4.0.0 pytorch-tokenizers-1.6.0 pyyaml-6.0.3 regex-2026.11.9 requests-2.34.2 ruamel.yaml-0.19.1 scikit-learn-1.7.1 scipy-1.18.1 sentencepiece-0.2.3 setuptools-81.0.0 sortedcontainers-2.4.0 sympy-1.14.0 tabulate-0.10.0 threadpoolctl-3.8.0 tiktoken-0.14.0 tokenizers-0.23.3 torch-2.12.1+cpu torchao-0.18.0+cpu tqdm-4.70.1 truststore-0.10.5 typing-extensions-4.16.0 tzdata-2026.6 urllib3-2.8.0
+setup_pi.sh: line 36:  1555 Illegal instruction     python - <<'EOF'
+import torch, executorch, platform
+from executorch.extension.pybindings import portable_lib as pl
+print("torch", torch.__version__, "| python", platform.python_version(), "| threads", pl._threadpool_get_thread_count())
+EOF
+
+[17:24:57] INSTALL FAILED

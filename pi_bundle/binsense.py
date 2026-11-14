@@ -26,15 +26,24 @@ def softmax(z: np.ndarray) -> np.ndarray:
 
 class BinSense:
     def __init__(self, pte: str | Path, pack: str | Path, threads: int | None = None):
-        from executorch.extension.pybindings import portable_lib as pl
-
-        if threads:
-            pl._unsafe_reset_threadpool(int(threads))
-        self.threads = pl._threadpool_get_thread_count()
-        t0 = time.perf_counter()
-        self.module = pl._load_for_executorch(str(pte))
-        self.load_ms = (time.perf_counter() - t0) * 1000
+        import os
         self.pte = Path(pte)
+        # BINSENSE_BACKEND=torch runs the same pretrained model in plain PyTorch (no ExecuTorch).
+        # It is a fallback and a baseline only: it works for the pretrained MobileCLIP packs, not the .pte-only models.
+        self.backend = os.environ.get("BINSENSE_BACKEND", "executorch")
+        t0 = time.perf_counter()
+        if self.backend == "torch":
+            import torch
+            if threads:
+                torch.set_num_threads(int(threads))
+            self.threads = torch.get_num_threads(); self.module = None; self._pack_for_torch = pack
+        else:
+            from executorch.extension.pybindings import portable_lib as pl
+            if threads:
+                pl._unsafe_reset_threadpool(int(threads))
+            self.threads = pl._threadpool_get_thread_count()
+            self.module = pl._load_for_executorch(str(pte))
+        self.load_ms = (time.perf_counter() - t0) * 1000
 
         z = np.load(pack, allow_pickle=False)
         self.meta = json.loads(str(z["meta"]))
@@ -52,6 +61,17 @@ class BinSense:
         # optional linear head fitted on frozen features (public data mapped to the labels)
         self.head = (z["head_w"].astype(np.float32), z["head_b"].astype(np.float32)) if "head_w" in z.files else None
         self.head_weight = float(self.meta.get("head_weight", 0.7))
+        if self.backend == "torch":
+            import open_clip, torch
+            if "label_emb" not in z.files:
+                raise ValueError("the PyTorch fallback only supports the pretrained text-label model")
+            clip, _, _ = open_clip.create_model_and_transforms(self.meta["model"], pretrained=self.meta["pretrained"])
+            try:
+                from timm.utils import reparameterize_model
+                clip = reparameterize_model(clip.eval())
+            except Exception:  # noqa: BLE001
+                pass
+            self.tower = clip.visual.eval(); self.load_ms = (time.perf_counter() - t0) * 1000
         # label groups for multi-select output, e.g. {"recyclable": ["paper", "glass"], "dry_waste": [...]}
         self.groups = dict(self.meta.get("groups", {}))
 
@@ -74,6 +94,10 @@ class BinSense:
     def embed(self, x: np.ndarray) -> np.ndarray:
         import torch
 
+        if self.backend == "torch":
+            with torch.inference_mode():
+                e = self.tower(torch.from_numpy(np.ascontiguousarray(x))).numpy()[0]
+            return e / (np.linalg.norm(e) + 1e-12)
         e = self.module.forward((torch.from_numpy(np.ascontiguousarray(x)),))[0].numpy()[0]
         return e / (np.linalg.norm(e) + 1e-12)
 

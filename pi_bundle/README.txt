@@ -18,7 +18,7 @@ Full sweep (every model x 1-4 threads + thermal log -> results/SUMMARY.md):
   bash bench_pi.sh
 
 Baselines for the comparison table:
-  python eager_baseline.py MobileCLIP2-S0 dfndr2b 192      # needs: pip install open_clip_torch timm
+  python tools/eager_baseline.py MobileCLIP2-S0 dfndr2b 192      # needs: pip install open_clip_torch timm
   models/mobileclip2-s0_192_portable.pte is the no-XNNPACK row (very slow; run with --repeat 1 on 3 images)
 
 Fastest two-stage pairing found on the laptop (96 px MobileNetV2 student as the gate):

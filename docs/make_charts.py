@@ -35,8 +35,8 @@ def finish(fig, ax, title, subtitle, name):
 
 
 # ---------- 1. the accuracy journey ----------
-proba = np.load(ROOT / "bets/accuracy/cache/best_test_proba.npy")
-y = np.load(ROOT / "bets/accuracy/cache/trashnet_full.npz")["y"]
+proba = np.load(ROOT / "experiments/accuracy/cache/best_test_proba.npy")
+y = np.load(ROOT / "experiments/accuracy/cache/trashnet_full.npz")["y"]
 svm_acc = float((proba.argmax(1) == y).mean())
 steps = [("1  Labels as text only (zero-shot)", R("fp32")["accuracy"]),
          ("2  + 5 example photos per label", R("fp32_shot5")["accuracy"]),
@@ -134,7 +134,7 @@ ax.grid(True, color=GRID, lw=0.8); ax.set_axisbelow(True)
 finish(fig, ax, "Saying \"not sure\" buys accuracy", "Label = how sure the model must be before it answers. Skipped photos go to a person.", "06_abstain.png")
 
 # ---------- 7. why the delegate matters ----------
-# 8862 ms: portable-kernel export of the same 192 px tower, timed once on this laptop by src/export_portable.py (printed, not stored in a json).
+# 8862 ms: portable-kernel export of the same 192 px tower, timed once on this laptop by laptop/export_portable.py (printed, not stored in a json).
 port, xnn = 8862.0, R("fp32_192_head")["inference_ms"]["p50"]
 DATA["delegate"] = {"portable_ms": port, "xnnpack_ms": xnn, "speedup_x": round(port / xnn)}
 fig, ax = plt.subplots(figsize=(9.2, 3.1)); fig.subplots_adjust(left=0.30, right=0.93, top=0.70, bottom=0.21)

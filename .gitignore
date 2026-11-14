@@ -2,9 +2,9 @@
 data/
 artifacts/emb_cache/
 artifacts/*.pte
-bets/*/cache/
-bets/*/artifacts/
-bets/*/pte/
+experiments/*/cache/
+experiments/*/artifacts/
+experiments/*/pte/
 pi_bundle/models/*
 !pi_bundle/models/mobileclip2-s0_256_fp32.pte
 !pi_bundle/models/mobileclip2-s0_192_fp32.pte
@@ -21,3 +21,9 @@ pi_bundle/organiser/*.png
 data/
 pi_bundle/my_photos/
 pi_bundle/results/
+results/logs/
+results/_live.jpg
+pi_bundle/results/
+pi_bundle/demo_results.csv
+pi_bundle/demo_summary.json
+pi_bundle/live_last.jpg

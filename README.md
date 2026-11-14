@@ -234,24 +234,28 @@ bash bench_pi.sh                 # every model x 1-4 threads + temperature log -
 total correct, accuracy, the model used, time per image, file size and peak memory.
 More commands (two-stage, baselines, hardware tools) are in `pi_bundle/README.txt`.
 
+**Raspberry Pi 4 note:** the ready-made ExecuTorch package crashes on the Pi 4 ("Illegal instruction"; its processor is older than the package was built for). Run `bash build_executorch.sh` once to compile it on the Pi. It needs `git cmake ninja-build python3-dev` from apt.
+
 ## Where things are
 
-| Path | What |
-|---|---|
-| `edge/` | Code that runs on the Pi |
-| `src/` | Laptop scripts: export to `.pte`, build label files, fit layers |
-| `colab/` | Cloud GPU notebooks and the trained models |
-| `pi_bundle/` | Ready-to-copy folder for the Pi |
-| `bets/` | Side experiments, each with its own log |
-| `results/` | Every result table (Markdown, CSV, JSON) |
-| `docs/img/` | The charts on this page, and [`data_points.json`](docs/img/data_points.json) with every number behind them |
-| `docs/` | [Two-minute pitch](docs/PITCH.md), [plain-language explainer](docs/LEARN.md), and `make_charts.py` to redraw the charts |
+Full walkthrough: [docs/CODEBASE.md](docs/CODEBASE.md).
+
+| Kind | Path | What |
+|---|---|---|
+| **Core** | `pi_bundle/` | Everything that runs on the Pi: the engine, web UI, terminal demos, models, label packs |
+| Core helpers | `pi_bundle/tools/` | One-off install and diagnostic scripts, not part of the demo |
+| **Model preparation** | `laptop/` | Export to `.pte`, build label packs, fit layers; `laptop/deploy/` copies the bundle to the Pi |
+| | `colab/` | Cloud GPU notebooks and the models they trained |
+| | `labels/`, `artifacts/` | Label definitions; export outputs |
+| **Evidence** | `experiments/` | Side experiments, each with its own log |
+| | `results/` | Every result table (Markdown, CSV, JSON) |
+| | `docs/` | [Codebase guide](docs/CODEBASE.md), [two-minute pitch](docs/PITCH.md), [plain-language explainer](docs/LEARN.md), charts and [the numbers behind them](docs/img/data_points.json) |
 
 ## Credits and licences
 
 - **MobileCLIP2-S0** (via open_clip): Apple's model terms apply.
 - **MobileNetV2**: public ImageNet weights (BSD-3 for torchvision; timm weights for the students).
-- **TrashNet**: MIT. Other datasets are listed in `bets/data/DATASETS.md`.
+- **TrashNet**: MIT. Other datasets are listed in `experiments/data/DATASETS.md`.
 - **ExecuTorch 1.3.1, PyTorch 2.12.1.** Export flow adapted from Arm's course code.
 - BinSense is an independent project. The typed-answer idea was inspired by TypeSafe's Jev decision model;
   BinSense does not use Jev, its weights or its API, and is not affiliated with TypeSafe.

@@ -24,7 +24,7 @@ import torch, torchvision; print(torch.__version__, torch.cuda.is_available())
 ''')
 
 code(r'''
-# Data: TrashNet (MIT). The split rule is the same as src/fetch_trashnet.py on the laptop,
+# Data: TrashNet (MIT). The split rule is the same as laptop/fetch_trashnet.py on the laptop,
 # so the 240 test photos here are the same 240 used for every other number in the project.
 import zipfile, io, random, json, time, os
 from collections import defaultdict

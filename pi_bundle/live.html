@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BinSense live</title>
+<style>
+:root{--bg:#f6f6f3;--card:#fff;--ink:#16181c;--ink2:#5a5f68;--line:#dcdcd5;--blue:#2a78d6;--ok:#0c7a0c;--warn:#a86400;--okbg:#e3f4e3;--warnbg:#fdf0d8}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 "Segoe UI",system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{display:flex;gap:14px;align-items:center;padding:12px 20px;background:var(--card);border-bottom:1px solid var(--line);flex-wrap:wrap}
+h1{font-size:19px;margin:0}.pill{padding:3px 10px;border-radius:99px;font-size:13px;font-weight:600}.off{background:var(--okbg);color:var(--ok)}.on{background:var(--warnbg);color:var(--warn)}
+.muted{color:var(--ink2);font-size:13px}a.btn,button{padding:7px 14px;border-radius:7px;border:1px solid var(--line);background:#fff;color:var(--ink);font:inherit;font-weight:600;cursor:pointer;text-decoration:none}
+main{display:grid;grid-template-columns:minmax(320px,1.25fr) minmax(300px,1fr);gap:18px;padding:18px 20px;align-items:start}@media(max-width:900px){main{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.cam{position:relative;border-radius:10px;overflow:hidden;background:#111;aspect-ratio:4/3;outline:5px solid transparent;transition:outline-color .3s}
+.cam img{width:100%;height:100%;object-fit:cover;display:block}.cam.sure{outline-color:var(--ok)}.cam.unsure{outline-color:#e0a030}
+.scan{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,#7fb8ff,transparent);animation:scan 1.6s linear infinite;opacity:.8}@keyframes scan{from{top:0}to{top:100%}}
+@media(prefers-reduced-motion:reduce){.scan{display:none}}
+.answer{font-size:44px;font-weight:800;line-height:1.1;margin:4px 0 2px;transition:color .2s}.conf{font-size:18px;color:var(--ink2)}
+.tag{display:inline-block;background:#e6f0fd;color:#184f95;border-radius:99px;padding:3px 11px;margin:3px 5px 3px 0;font-size:13.5px}
+.bar{display:grid;grid-template-columns:120px 1fr 58px;gap:8px;align-items:center;margin:5px 0;font-size:14px}.bar i{display:block;height:14px;background:#9ec5f4;border-radius:0 5px 5px 0;min-width:2px;transition:width .35s}.bar.top i{background:var(--blue)}.bar.top b{font-weight:800}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.stepc{flex:1;min-width:120px;border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:13px;opacity:.45;transition:opacity .3s,border-color .3s}
+.stepc.lit{opacity:1;border-color:var(--blue)}.stepc b{display:block;font-size:13.5px}
+select{padding:7px 9px;border:1px solid var(--line);border-radius:7px;font:inherit;background:#fff;width:100%}label{display:block;font-size:13px;color:var(--ink2);margin:10px 0 3px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.k{font-size:22px;font-weight:700}.kk{display:flex;gap:22px;flex-wrap:wrap;margin-top:8px}.kk span{display:block;font-size:12.5px;color:var(--ink2);font-weight:400}
+</style></head><body>
+<header><h1>BinSense live</h1><span id="net" class="pill">checking…</span><span id="sys" class="muted"></span>
+ <span style="margin-left:auto" class="row"><button id="pause">Pause</button><a class="btn" href="/">Photos view</a></span></header>
+<main>
+ <div class="card"><div class="cam" id="cam"><img id="img" alt="live camera"><div class="scan"></div></div>
+  <div class="muted" id="caminfo" style="margin-top:8px">Hold one item in front of the camera, on a plain background if you can.</div>
+  <div class="row" style="margin-top:6px"><div style="flex:1"><label>Labels</label><select id="pack"></select></div><div style="flex:1"><label>Model</label><select id="pte"></select></div></div></div>
+ <div class="card"><div class="muted">It sees</div><div class="answer" id="ans">…</div><div class="conf" id="conf"></div><div id="tags" style="margin-top:8px"></div>
+  <div class="steps"><div class="stepc" id="s1"><b>1 Camera frame</b><span id="s1t"></span></div><div class="stepc" id="s2"><b>2 Shrink</b><span id="s2t"></span></div><div class="stepc" id="s3"><b>3 Model</b><span id="s3t"></span></div><div class="stepc" id="s4"><b>4 Decide</b><span id="s4t"></span></div></div>
+  <div id="bars"></div>
+  <div class="kk"><div class="k" id="ms">–<span>model time per frame</span></div><div class="k" id="fps">–<span>decisions per second</span></div><div class="k" id="n">0<span>frames decided</span></div></div>
+  <div class="muted" id="err" style="margin-top:8px;color:#c23030"></div></div>
+</main>
+<script>
+const $=i=>document.getElementById(i),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));let S,run=true,n=0,times=[];
+const api=async(p,b)=>{const r=await fetch(p,b?{method:'POST',body:JSON.stringify(b)}:{});const j=await r.json();if(j.error)throw new Error(j.error);return j};
+function sysline(s){$('net').className='pill '+(s.online?'on':'off');$('net').textContent=s.online?'Internet reachable':'OFFLINE: no internet';$('sys').textContent=`${s.host} · ${s.board} · ${String(s.temp).replace('temp=','')} · ${s.memory_mb} MB`}
+function fillPacks(){const m=S.models.find(x=>x.pte===$('pte').value),c=$('pack').value;$('pack').innerHTML=m.packs.map(p=>`<option value="${esc(p)}">${esc(p.replace('.npz',''))} : ${esc(S.packs[p].labels.join(', '))}</option>`).join('');if(m.packs.includes(c))$('pack').value=c}
+async function init(){S=await api('/api/state');sysline(S.system);$('pte').innerHTML=S.models.map(m=>`<option value="${esc(m.pte)}">${esc(m.pte.replace('.pte',''))} (${m.mb} MB)</option>`).join('');
+ const d=S.models.find(m=>m.pte.startsWith('mobileclip2-s0_192'))||S.models.find(m=>m.pte.startsWith('mobileclip2-s0'))||S.models[0];$('pte').value=d.pte;fillPacks();const o=[...$('pack').options].find(x=>x.value.startsWith('organiser'));if(o)$('pack').value=o.value;
+ $('pte').onchange=fillPacks;frames();loop();setInterval(async()=>{try{sysline(await api('/api/system'))}catch(e){}},10000)}
+function frames(){const im=new Image();im.onload=()=>{$('img').src=im.src;if(run)setTimeout(frames,120)};im.onerror=()=>setTimeout(frames,800);im.src='/cam.jpg?t='+Date.now()}
+async function loop(){while(true){if(!run){await new Promise(r=>setTimeout(r,300));continue}
+ try{const t0=performance.now(),r=await api('/api/cam/classify',{pte:$('pte').value,pack:$('pack').value,review:.5}),s=r.steps[r.steps.length-1];$('err').textContent='';
+  n++;times.push(performance.now()-t0);if(times.length>10)times.shift();
+  $('ans').textContent=r.review?'Not sure':r.answer;$('ans').style.color=r.review?'var(--warn)':'var(--ink)';$('conf').textContent=(r.confidence*100).toFixed(0)+'% sure'+(r.review?' · best guess '+r.answer:'');
+  $('cam').className='cam '+(r.review?'unsure':'sure');$('tags').innerHTML=r.multi.map(t=>`<span class="tag">${esc(t)}</span>`).join('');
+  const top=s.probs.indexOf(Math.max(...s.probs));$('bars').innerHTML=s.labels.map((l,i)=>[l,s.probs[i],i]).sort((a,b)=>b[1]-a[1]).map(([l,p,i])=>`<div class="bar ${i===top?'top':''}"><b>${esc(l)}</b><span><i style="width:${Math.max(.5,p*100)}%"></i></span><span>${(p*100).toFixed(1)}%</span></div>`).join('');
+  $('s1t').textContent=r.frame_size+' from the webcam';$('s2t').textContent='to '+s.input[2]+' × '+s.input[3]+', '+r.pre_ms+' ms';$('s3t').textContent=s.file.replace('.pte','')+', '+r.infer_ms+' ms';$('s4t').textContent=s.labels.length+' labels compared';
+  for(const i of[1,2,3,4])$('s'+i).classList.add('lit');
+  $('ms').firstChild.textContent=r.infer_ms+' ms';$('fps').firstChild.textContent=(1000/(times.reduce((a,b)=>a+b,0)/times.length)).toFixed(1);$('n').firstChild.textContent=n;
+ }catch(e){$('err').textContent=e.message;await new Promise(r=>setTimeout(r,1200))}
+ await new Promise(r=>setTimeout(r,150))}}
+$('pause').onclick=()=>{run=!run;$('pause').textContent=run?'Pause':'Resume';if(run)frames()};init();
+</script></body></html>

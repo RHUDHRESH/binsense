@@ -9,8 +9,10 @@ from __future__ import annotations
 import csv
 import json
 import socket
+import os
 import subprocess
 import sys
+import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -96,6 +98,9 @@ THREADS = {"n": 0}
 def set_threads(n: int):
     """Change how many CPU cores ExecuTorch uses. Models are reloaded so the change takes effect."""
     if n and n != THREADS["n"]:
+        if os.environ.get("BINSENSE_BACKEND") == "torch":
+            import torch
+            torch.set_num_threads(int(n)); THREADS["n"] = int(n); return
         from executorch.extension.pybindings import portable_lib as pl
         pl._unsafe_reset_threadpool(int(n)); THREADS["n"] = int(n); MODELS.clear()
 
@@ -241,7 +246,8 @@ def system() -> dict:
     except OSError:
         pass
     return {"online": online, "board": board, "host": socket.gethostname(), "temp": vc("measure_temp"), "clock": vc("measure_clock", "arm"),
-            "throttled": vc("get_throttled"), "memory_mb": memory_mb(), "can_edit_labels": can_text(), "cpus": __import__("os").cpu_count()}
+            "throttled": vc("get_throttled"), "memory_mb": memory_mb(), "can_edit_labels": can_text(), "cpus": __import__("os").cpu_count(),
+            "backend": os.environ.get("BINSENSE_BACKEND", "executorch")}
 
 
 def can_text() -> bool:
@@ -283,6 +289,50 @@ def build_pack(q: dict) -> dict:
     return {"made": made, "labels": list(labels)}
 
 
+CAM = {"frame": None, "t": 0.0, "err": "", "started": False, "lock": threading.Lock(), "size": ""}
+
+
+def cam_loop(index: int):
+    try:
+        import cv2
+    except Exception as e:  # noqa: BLE001
+        CAM["err"] = f"opencv not installed ({type(e).__name__})"; return
+    cap = cv2.VideoCapture(index)
+    if not cap.isOpened():
+        CAM["err"] = f"camera {index} did not open"; CAM["started"] = False; return
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640); cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+    while True:
+        ok, f = cap.read()
+        if not ok:
+            time.sleep(0.2); continue
+        ok2, buf = cv2.imencode(".jpg", f, [cv2.IMWRITE_JPEG_QUALITY, 82])
+        if ok2:
+            with CAM["lock"]:
+                CAM["frame"] = buf.tobytes(); CAM["t"] = time.time(); CAM["size"] = f"{f.shape[1]}x{f.shape[0]}"
+        time.sleep(0.03)
+
+
+def cam_frame() -> bytes | None:
+    if not CAM["started"]:
+        CAM["started"] = True; CAM["err"] = ""
+        threading.Thread(target=cam_loop, args=(int(os.environ.get("BINSENSE_CAMERA", "0")),), daemon=True).start()
+        for _ in range(40):
+            if CAM["frame"] or CAM["err"]:
+                break
+            time.sleep(0.1)
+    with CAM["lock"]:
+        return CAM["frame"]
+
+
+def cam_classify(q: dict) -> dict:
+    f = cam_frame()
+    if f is None:
+        raise ValueError(CAM["err"] or "no camera frame yet")
+    out = BASE / "results"; out.mkdir(exist_ok=True); (out / "_live.jpg").write_bytes(f)
+    r = classify({**q, "image": "results/_live.jpg"}); r["frame_age_ms"] = round((time.time() - CAM["t"]) * 1000); r["frame_size"] = CAM["size"]
+    return r
+
+
 class H(BaseHTTPRequestHandler):
     def log_message(self, *a):
         pass
@@ -296,6 +346,11 @@ class H(BaseHTTPRequestHandler):
         try:
             if u.path == "/":
                 return self.send((BASE / "ui.html").read_bytes(), "text/html; charset=utf-8")
+            if u.path == "/live":
+                return self.send((BASE / "live.html").read_bytes(), "text/html; charset=utf-8")
+            if u.path == "/cam.jpg":
+                f = cam_frame()
+                return self.send(f, "image/jpeg") if f else self.send({"error": CAM["err"] or "no frame"}, code=503)
             if u.path == "/api/state":
                 return self.send({**catalog(), "datasets": datasets(), "system": system()})
             if u.path == "/api/system":
@@ -318,6 +373,8 @@ class H(BaseHTTPRequestHandler):
                     raise ValueError("not an image file")
                 (BASE / ds).mkdir(exist_ok=True); (BASE / ds / name).write_bytes(body); return self.send({"saved": f"{ds}/{name}", "dataset": ds})
             q = json.loads(body or b"{}")
+            if u.path == "/api/cam/classify":
+                return self.send(cam_classify(q))
             if u.path == "/api/classify":
                 return self.send(classify(q))
             if u.path == "/api/compare":
