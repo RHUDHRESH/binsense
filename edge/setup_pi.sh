@@ -15,10 +15,10 @@ source ~/binsense-venv/bin/activate
 pip install --upgrade pip
 # Same versions as the export machine (ExecuTorch 1.3.1 ships aarch64 wheels for Python 3.10-3.13).
 pip install --extra-index-url https://download.pytorch.org/whl/cpu \
-    "torch==2.12.1" "executorch==1.3.1" numpy pillow psutil
+    "torch==2.12.1" "executorch==1.3.1" numpy pillow psutil opencv-python-headless
 # Keep a local wheel cache so the install can be repeated with the network unplugged.
 mkdir -p ~/binsense-wheels && pip download -d ~/binsense-wheels --extra-index-url https://download.pytorch.org/whl/cpu \
-    "torch==2.12.1" "executorch==1.3.1" numpy pillow psutil >/dev/null 2>&1 || true
+    "torch==2.12.1" "executorch==1.3.1" numpy pillow psutil opencv-python-headless >/dev/null 2>&1 || true
 
 python - <<'EOF'
 import torch, executorch, platform

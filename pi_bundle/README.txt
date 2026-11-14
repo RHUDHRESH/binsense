@@ -33,3 +33,8 @@ Terminal proof of concept (offline check, model list, classification loop, hardw
 Trace ONE photo step by step (input, preprocessing, each model, raw scores, probabilities, decision):
   python trace.py images/plastic/plastic11.jpg
   python trace.py images/trash/trash1.jpg --both      # also run the careful model when the fast one is sure
+
+Live webcam (USB camera plugged into the Pi; prints in the terminal, no window):
+  python live.py                 # classify continuously, announces a decision after 3 matching frames
+  python live.py --snap          # press Enter to capture one frame
+  python live.py --camera 1      # if camera 0 is not the webcam
