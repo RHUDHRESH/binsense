@@ -29,3 +29,7 @@ Terminal proof of concept (offline check, model list, classification loop, hardw
   python demo.py                      # all sample images once
   python demo.py --loop 5             # five passes
   python demo.py --watch inbox        # classify photos as they are dropped into inbox/
+
+Trace ONE photo step by step (input, preprocessing, each model, raw scores, probabilities, decision):
+  python trace.py images/plastic/plastic11.jpg
+  python trace.py images/trash/trash1.jpg --both      # also run the careful model when the fast one is sure
