@@ -1,0 +1,15 @@
+# sudo cp binsense.service /etc/systemd/system/ && sudo systemctl enable --now binsense
+[Unit]
+Description=BinSense offline waste sorting service
+After=local-fs.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/binsense
+ExecStart=/home/pi/binsense-venv/bin/python /home/pi/binsense/service.py
+Restart=always
+RestartSec=2
+Nice=-5
+
+[Install]
+WantedBy=multi-user.target

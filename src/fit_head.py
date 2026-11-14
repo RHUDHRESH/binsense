@@ -17,17 +17,17 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "edge"))
-from jev_edge import EdgeJev  # noqa: E402
+from binsense import BinSense  # noqa: E402
 
 EXT = {".jpg", ".jpeg", ".png", ".webp"}
 
 
-def embed_folder(jev: EdgeJev, folder: Path, cache: Path, limit: int) -> np.ndarray:
-    key = cache / (str(folder).replace("\\", "_").replace("/", "_") + f"__{jev.pte.stem}.npy")
+def embed_folder(engine: BinSense, folder: Path, cache: Path, limit: int) -> np.ndarray:
+    key = cache / (str(folder).replace("\\", "_").replace("/", "_") + f"__{engine.pte.stem}.npy")
     if key.exists():
         return np.load(key)
     files = sorted(p for p in folder.rglob("*") if p.suffix.lower() in EXT)[:limit]
-    e = np.stack([jev.embed(jev.preprocess(p)) for p in files])
+    e = np.stack([engine.embed(engine.preprocess(p)) for p in files])
     cache.mkdir(parents=True, exist_ok=True)
     np.save(key, e)
     print(f"embedded {len(files)} from {folder}")
@@ -59,12 +59,12 @@ def main():
         args.out.parent.mkdir(parents=True, exist_ok=True)
         np.savez(args.out, meta=np.array(json.dumps(gm)), head_w=np.zeros((len(gm["labels"]), 1), np.float32),
                  head_b=np.zeros(len(gm["labels"]), np.float32))
-    jev = EdgeJev(args.pte, args.pack)
+    engine = BinSense(args.pte, args.pack)
     mapping = json.loads(args.map.read_text())
     X, y = [], []
-    for i, lab in enumerate(jev.labels):
+    for i, lab in enumerate(engine.labels):
         for src in mapping[lab]:
-            e = embed_folder(jev, args.data / src, Path("artifacts/emb_cache"), args.limit)
+            e = embed_folder(engine, args.data / src, Path("artifacts/emb_cache"), args.limit)
             X.append(e)
             y += [i] * len(e)
     X, y = np.concatenate(X), np.asarray(y)

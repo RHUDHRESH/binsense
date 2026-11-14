@@ -16,7 +16,7 @@
 - **Data / split:** fit on data/trashnet_pool (2287), test data/trashnet (240), fixed every-Nth split by
   src/fetch_trashnet.py. Not group-aware: TrashNet has repeated objects -> near-duplicate check (max cosine test->pool)
   and exact md5 check are part of the eval.
-- **Preprocess:** identical to edge/jev_edge.py (shortest-side bilinear resize + centre crop, per-model mean/std/res).
+- **Preprocess:** identical to edge/binsense.py (shortest-side bilinear resize + centre crop, per-model mean/std/res).
 - **Seed:** 0 (prototype draws seeds 0..49). **Config/script:** bets/foundation/bet.py.
   **Interpreter:** <project>/.venv/Scripts/python.exe (torch 2.12.1+cpu, executorch 1.3.1).
 - **Caveat registered up-front:** laptop latency is measured while 3 other agents share the CPU; ratios vs s0_ref

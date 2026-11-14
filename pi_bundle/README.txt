@@ -1,7 +1,7 @@
-Copy this whole folder to the Pi (e.g. scp -r pi_bundle pi@<ip>:~/jev), then on the Pi:
-  cd ~/jev
+Copy this whole folder to the Pi (e.g. scp -r pi_bundle pi@<ip>:~/binsense), then on the Pi:
+  cd ~/binsense
   bash setup_pi.sh                      # needs internet once (about 10 min)
-  source ~/jev-venv/bin/activate
+  source ~/binsense-venv/bin/activate
   bash tune_pi.sh                       # performance governor, quiet services
 
 Single model (zero-shot + head, any label set):

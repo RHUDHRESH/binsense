@@ -4,7 +4,7 @@
 into the nearest bin. One food-soiled bag in the dry-waste bin can send the whole load to landfill. The person
 standing at the bin has two seconds to decide and no one to ask.
 
-**What we built (30 s).** Edge-Jev is a decision box. Show it an item and it answers typed questions, offline, on a
+**What we built (30 s).** BinSense is a decision box. Show it an item and it answers typed questions, offline, on a
 Raspberry Pi 4: which category, which bin, is it recyclable, and how sure it is. It runs a pretrained image model
 through ExecuTorch with the XNNPACK delegate. No cloud, no internet, no data leaves the building.
 

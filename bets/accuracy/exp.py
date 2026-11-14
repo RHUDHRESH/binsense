@@ -3,14 +3,14 @@ import sys, json
 from pathlib import Path
 import numpy as np
 sys.path.insert(0, "edge")
-from jev_edge import EdgeJev, softmax
+from binsense import BinSense, softmax
 from PIL import Image
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
 from sklearn.model_selection import cross_val_score, StratifiedKFold
 
 L = ["cardboard", "glass", "metal", "paper", "plastic", "trash"]
-jev = EdgeJev("artifacts/mobileclip2-s0_256_fp32.pte", "artifacts/trashnet_pack.npz")
+engine = BinSense("artifacts/mobileclip2-s0_256_fp32.pte", "artifacts/trashnet_pack.npz")
 C = Path("bets/accuracy/cache"); C.mkdir(exist_ok=True)
 
 def object_crop(path, res, pad=0.12):
@@ -33,11 +33,11 @@ def emb(split, mode):
     X, y, names = [], [], []
     for i, lab in enumerate(L):
         for p in sorted((Path("data") / split / lab).glob("*.jpg")):
-            if mode == "full": x = jev.preprocess(p)
+            if mode == "full": x = engine.preprocess(p)
             else:
-                im = object_crop(p, jev.res)
-                x = jev.preprocess(p) if im is None else ((np.asarray(im, np.float32).transpose(2, 0, 1) / 255 - jev.mean) / jev.std)[None]
-            X.append(jev.embed(x)); y.append(i); names.append(p.name)
+                im = object_crop(p, engine.res)
+                x = engine.preprocess(p) if im is None else ((np.asarray(im, np.float32).transpose(2, 0, 1) / 255 - engine.mean) / engine.std)[None]
+            X.append(engine.embed(x)); y.append(i); names.append(p.name)
     X, y = np.stack(X), np.array(y); np.savez(f, X=X, y=y, names=np.array(names)); return X, y, names
 
 Xp, yp, _ = emb("trashnet_pool", "full"); Xt, yt, names = emb("trashnet", "full")

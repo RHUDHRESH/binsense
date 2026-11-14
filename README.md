@@ -1,8 +1,8 @@
-# Edge-Jev: offline waste decisions on a Raspberry Pi with ExecuTorch
+# BinSense: offline waste decisions on a Raspberry Pi with ExecuTorch
 
 Namma AI Hackathon 2026, Problem Statement 3 (AI for Sustainability: edge-based waste sorting and food categorisation).
 
-Edge-Jev is a small decision engine that looks at a photo of a discarded item and answers typed questions about it,
+BinSense is a small decision engine that looks at a photo of a discarded item and answers typed questions about it,
 fully offline, through ExecuTorch with the XNNPACK delegate:
 
 - **which label?** one category with a probability per label
@@ -12,6 +12,9 @@ fully offline, through ExecuTorch with the XNNPACK delegate:
 
 The idea is borrowed from cloud "System One" decision models (typed answers with probabilities instead of prose),
 rebuilt so it runs with no network on a Pi.
+
+BinSense is an independent project. The typed-answer idea was inspired by TypeSafe's Jev decision model;
+BinSense does not use Jev, its weights or its API, and is not affiliated with TypeSafe.
 
 ## Status, stated plainly
 
@@ -64,7 +67,7 @@ Copy `pi_bundle/` to the Pi, then:
 
 ```bash
 bash setup_pi.sh                 # one-time, needs internet
-source ~/jev-venv/bin/activate
+source ~/binsense-venv/bin/activate
 bash tune_pi.sh                  # performance governor, quiet services
 python run_eval.py --pte models/own_mobileclip2_s0_256_fp32.pte --pack packs/own_mobileclip2_s0_256.npz --images images
 bash bench_pi.sh                 # every model x 1-4 threads + thermal log -> results/SUMMARY.md

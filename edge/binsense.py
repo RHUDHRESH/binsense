@@ -1,4 +1,4 @@
-"""Edge-Jev: an offline "System One" decision engine for images.
+"""BinSense: an offline "System One" decision engine for images.
 
 One ExecuTorch image tower (.pte) turns a photo into an embedding. Typed questions
 are answered by comparing that embedding with pre-computed text embeddings:
@@ -24,7 +24,7 @@ def softmax(z: np.ndarray) -> np.ndarray:
     return e / e.sum()
 
 
-class EdgeJev:
+class BinSense:
     def __init__(self, pte: str | Path, pack: str | Path, threads: int | None = None):
         from executorch.extension.pybindings import portable_lib as pl
 
@@ -135,7 +135,7 @@ class Cascade:
     Mirrors fast/slow thinking: cheap reflex for obvious items, careful look for ambiguous ones.
     """
 
-    def __init__(self, gate: EdgeJev, full: EdgeJev, threshold: float = 0.9):
+    def __init__(self, gate: BinSense, full: BinSense, threshold: float = 0.9):
         self.gate, self.full, self.threshold = gate, full, threshold
         self.labels, self.meta, self.pte, self.res = full.labels, full.meta, full.pte, full.res
         self.threads, self.load_ms = full.threads, gate.load_ms + full.load_ms

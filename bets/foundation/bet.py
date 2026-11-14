@@ -61,7 +61,7 @@ def s0_cached_pool():
 
 
 def preprocess(path: Path, res: int, mean, std) -> np.ndarray:
-    """Identical to edge/jev_edge.py EdgeJev.preprocess (what the Pi runs): shortest-side bilinear + centre crop."""
+    """Identical to edge/binsense.py BinSense.preprocess (what the Pi runs): shortest-side bilinear + centre crop."""
     from PIL import Image
 
     im = Image.open(path)
@@ -77,7 +77,7 @@ def preprocess(path: Path, res: int, mean, std) -> np.ndarray:
     m = np.asarray(mean, np.float32).reshape(3, 1, 1)
     sd = np.asarray(std, np.float32).reshape(3, 1, 1)
     # MUST be C-contiguous: the ExecuTorch pybinding ignores numpy strides (non-contiguous input -> scrambled pixels,
-    # caught by cosine-vs-eager 0.12-0.36 on real images while torch.rand gave 1.0). jev_edge does the same in embed().
+    # caught by cosine-vs-eager 0.12-0.36 on real images while torch.rand gave 1.0). binsense does the same in embed().
     return np.ascontiguousarray(((x - m) / sd)[None])
 
 

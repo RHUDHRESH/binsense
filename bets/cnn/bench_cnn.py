@@ -9,7 +9,7 @@ For one timm model:
   4. features for pool (fit) + held-out test, extracted THROUGH each .pte at batch 1, cached to .npy
   5. LogisticRegression(C=10, max_iter=2000) on L2-normalised pool features -> test accuracy
 
-Preprocessing matches edge/jev_edge.py: shortest side -> res (bilinear), centre crop, timm mean/std.
+Preprocessing matches edge/binsense.py: shortest side -> res (bilinear), centre crop, timm mean/std.
 Usage:  python -X utf8 bets/cnn/bench_cnn.py --model mobilenetv3_small_100.lamb_in1k
 """
 from __future__ import annotations

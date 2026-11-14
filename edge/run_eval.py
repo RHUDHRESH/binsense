@@ -17,7 +17,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from jev_edge import Cascade, EdgeJev  # noqa: E402
+from binsense import Cascade, BinSense  # noqa: E402
 
 EXT = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
 
@@ -70,21 +70,21 @@ def main():
         sys.exit("no images found")
 
     temp0 = vc("measure_temp")
-    jev = EdgeJev(args.pte, args.pack, threads=args.threads or None)
+    engine = BinSense(args.pte, args.pack, threads=args.threads or None)
     if args.gate_pte:
-        jev = Cascade(EdgeJev(args.gate_pte, args.gate_pack), jev, args.threshold)
+        engine = Cascade(BinSense(args.gate_pte, args.gate_pack), engine, args.threshold)
     for _ in range(args.warmup):
-        jev.decide(items[0][0])
+        engine.decide(items[0][0])
         if args.gate_pte:
-            jev.full.decide(items[0][0])
+            engine.full.decide(items[0][0])
     if args.gate_pte:
-        jev.fast = jev.slow = 0
+        engine.fast = engine.slow = 0
 
     rows, pre, inf = [], [], []
     wall0 = time.perf_counter()
     for path, truth in items:
         for _ in range(args.repeat):
-            d = jev.decide(path)
+            d = engine.decide(path)
             pre.append(d["ms"]["preprocess"])
             inf.append(d["ms"]["inference"])
         c = d["choice"]
@@ -96,14 +96,14 @@ def main():
                      **{f"score_{k}": round(v["level"], 2) for k, v in d["score"].items()}})
     wall = time.perf_counter() - wall0
 
-    known = [r for r in rows if r["label"] in jev.labels]
+    known = [r for r in rows if r["label"] in engine.labels]
     correct = sum(r["correct"] for r in known)
     stats = {
-        "tag": args.tag, "model": jev.meta["model"], "pretrained": jev.meta["pretrained"], "pte": jev.pte.name,
-        "pte_size_mb": round(jev.pte.stat().st_size / 1e6, 2), "resolution": jev.res, "threads": jev.threads,
+        "tag": args.tag, "model": engine.meta["model"], "pretrained": engine.meta["pretrained"], "pte": engine.pte.name,
+        "pte_size_mb": round(engine.pte.stat().st_size / 1e6, 2), "resolution": engine.res, "threads": engine.threads,
         "images": len(rows), "scored": len(known), "correct": correct,
         "accuracy": round(correct / max(1, len(known)), 4),
-        "load_ms": round(jev.load_ms, 1),
+        "load_ms": round(engine.load_ms, 1),
         "inference_ms": {"p50": round(pct(inf, .5), 1), "p90": round(pct(inf, .9), 1), "min": round(min(inf), 1), "max": round(max(inf), 1)},
         "preprocess_ms": {"p50": round(pct(pre, .5), 1), "p90": round(pct(pre, .9), 1)},
         "images_per_second": round(len(inf) / wall, 2),
@@ -113,9 +113,9 @@ def main():
         "throttled": vc("get_throttled"),
     }
     if args.gate_pte:
-        n = jev.fast + jev.slow
+        n = engine.fast + engine.slow
         stats["two_stage"] = {"gate": args.gate_pte.name, "threshold": args.threshold,
-                              "fast_path_share": round(jev.fast / max(1, n), 3),
+                              "fast_path_share": round(engine.fast / max(1, n), 3),
                               "gate_size_mb": round(args.gate_pte.stat().st_size / 1e6, 2)}
         fast_rows = [r for r in known if r.get("path") == "fast"]
         stats["two_stage"]["fast_path_accuracy"] = round(sum(r["correct"] for r in fast_rows) / max(1, len(fast_rows)), 4)

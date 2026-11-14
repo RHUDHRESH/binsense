@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Edge-Jev sorting service: watches a folder, decides, logs, and never guesses silently.
+"""BinSense sorting service: watches a folder, decides, logs, and never guesses silently.
 
   python service.py --config config.json          (runs until stopped; safe to start at boot)
 
@@ -23,7 +23,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from jev_edge import Cascade, EdgeJev  # noqa: E402
+from binsense import Cascade, BinSense  # noqa: E402
 
 EXT = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
 DEFAULTS = {"pte": "models/own_mobileclip2_s0_256_fp32.pte", "pack": "packs/own_mobileclip2_s0_256.npz",
@@ -59,16 +59,16 @@ def main():
     for k in ("inbox", "sorted", "review", "rejected"):
         P(k).mkdir(parents=True, exist_ok=True)
 
-    model = EdgeJev(P("pte"), P("pack"), threads=cfg["threads"])
+    model = BinSense(P("pte"), P("pack"), threads=cfg["threads"])
     ident = {"model": model.meta["model"], "pte": P("pte").name, "pte_sha256": sha(P("pte")), "pack_sha256": sha(P("pack"))}
     if cfg.get("gate_pte") and P("gate_pte").exists():
-        model = Cascade(EdgeJev(P("gate_pte"), P("gate_pack")), model, cfg["gate_threshold"])
+        model = Cascade(BinSense(P("gate_pte"), P("gate_pack")), model, cfg["gate_threshold"])
         ident["gate_pte_sha256"] = sha(P("gate_pte"))
     stats = {"started": time.time(), "decided": 0, "review": 0, "rejected": 0, "last_ms": None}
     stop = {"now": False}
     signal.signal(signal.SIGINT, lambda *_: stop.update(now=True))
     signal.signal(signal.SIGTERM, lambda *_: stop.update(now=True))
-    print("Edge-Jev service ready:", json.dumps(ident))
+    print("BinSense service ready:", json.dumps(ident))
 
     def move(src: Path, folder: Path) -> str:
         folder.mkdir(parents=True, exist_ok=True)

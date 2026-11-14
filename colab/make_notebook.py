@@ -14,9 +14,9 @@ def code(s):
     cells.append({"cell_type": "code", "metadata": {}, "execution_count": None, "outputs": [], "source": s.strip("\n")})
 
 
-md("# Edge-Jev: fine-tune our own waste models on GPU and export to ExecuTorch\n"
+md("# BinSense: fine-tune our own waste models on GPU and export to ExecuTorch\n"
    "Runtime > Change runtime type > **GPU**, then Runtime > **Run all**. "
-   "The last cell downloads `edge_jev_models.zip`; put it in the project folder on the laptop.")
+   "The last cell downloads `binsense_models.zip`; put it in the project folder on the laptop.")
 
 code(r'''
 !pip -q install "torch==2.12.1" "torchvision==0.27.1" "executorch==1.3.1" "torchao==0.17.0" timm open_clip_torch huggingface_hub
@@ -129,7 +129,7 @@ from executorch.exir import EdgeCompileConfig, to_edge_transform_and_lower
 from executorch.extension.pybindings.portable_lib import _load_for_executorch
 from torchao.quantization.pt2e.quantize_pt2e import convert_pt2e, prepare_pt2e
 from torchao.quantization.pt2e import move_exported_model_to_eval
-OUT = Path("edge_jev_models"); OUT.mkdir(exist_ok=True)
+OUT = Path("binsense_models"); OUT.mkdir(exist_ok=True)
 
 def lower(ep, path):
     prog = to_edge_transform_and_lower(ep, partitioner=[XnnpackPartitioner()],
@@ -176,8 +176,8 @@ json.dump(results, open(OUT / "results.json", "w"), indent=1)
 ''')
 
 code(r'''
-import shutil; shutil.make_archive("edge_jev_models", "zip", "edge_jev_models")
-from google.colab import files; files.download("edge_jev_models.zip")
+import shutil; shutil.make_archive("binsense_models", "zip", "binsense_models")
+from google.colab import files; files.download("binsense_models.zip")
 ''')
 
 for c in cells:

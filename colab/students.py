@@ -4,7 +4,7 @@ import timm, time, shutil
 from google.colab import files
 
 teacher = nets["mobileclip2_s0"].to(dev).eval()
-SOUT = Path("edge_jev_students"); SOUT.mkdir(exist_ok=True)
+SOUT = Path("binsense_students"); SOUT.mkdir(exist_ok=True)
 IMN_MEAN, IMN_STD = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
 
 
@@ -98,5 +98,5 @@ for arch, res in GRID:
         student_results.append({"arch": arch, "res": res, "error": repr(e)[:300]}); print("FAILED", arch, res, repr(e)[:200], flush=True)
     json.dump(student_results, open(SOUT / "students.json", "w"), indent=1)
 print("STUDENTS DONE")
-shutil.make_archive("edge_jev_students", "zip", "edge_jev_students")
-files.download("edge_jev_students.zip")
+shutil.make_archive("binsense_students", "zip", "binsense_students")
+files.download("binsense_students.zip")

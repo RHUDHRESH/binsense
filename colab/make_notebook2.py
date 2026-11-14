@@ -11,7 +11,7 @@ train = train.replace("num_workers=2", "num_workers=10").replace("bs=48", "bs=96
 train += '\nfor n in nets: nets[n].backbone = V(nets[n].backbone)   # attribute-named wrapper keeps exported parameter names valid'
 helpers = export.split("for name, net in nets.items():")[0]
 students = (here / "students.py").read_text().replace("num_workers=2", "num_workers=10").replace("bs=64", "bs=128")
-cells = [{"cell_type": "markdown", "metadata": {}, "source": "# Edge-Jev: teacher + distilled students (A100)"}]
+cells = [{"cell_type": "markdown", "metadata": {}, "source": "# BinSense: teacher + distilled students (A100)"}]
 for s in (install, data, train, helpers, students):
     ast.parse("\n".join(l for l in s.split("\n") if not l.startswith("!")))
     cells.append({"cell_type": "code", "metadata": {}, "execution_count": None, "outputs": [], "source": s})

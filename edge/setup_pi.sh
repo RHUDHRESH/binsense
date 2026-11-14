@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-shot Raspberry Pi 4 setup for Edge-Jev. Needs internet ONCE; after this everything runs offline.
+# One-shot Raspberry Pi 4 setup for BinSense. Needs internet ONCE; after this everything runs offline.
 #   bash setup_pi.sh
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -10,14 +10,14 @@ echo "== system =="; uname -m; cat /etc/os-release | grep PRETTY; python3 --vers
 sudo apt-get update -y
 sudo apt-get install -y python3-venv python3-pip libopenblas0 libjpeg62-turbo
 
-python3 -m venv ~/jev-venv
-source ~/jev-venv/bin/activate
+python3 -m venv ~/binsense-venv
+source ~/binsense-venv/bin/activate
 pip install --upgrade pip
 # Same versions as the export machine (ExecuTorch 1.3.1 ships aarch64 wheels for Python 3.10-3.13).
 pip install --extra-index-url https://download.pytorch.org/whl/cpu \
     "torch==2.12.1" "executorch==1.3.1" numpy pillow psutil
 # Keep a local wheel cache so the install can be repeated with the network unplugged.
-mkdir -p ~/jev-wheels && pip download -d ~/jev-wheels --extra-index-url https://download.pytorch.org/whl/cpu \
+mkdir -p ~/binsense-wheels && pip download -d ~/binsense-wheels --extra-index-url https://download.pytorch.org/whl/cpu \
     "torch==2.12.1" "executorch==1.3.1" numpy pillow psutil >/dev/null 2>&1 || true
 
 python - <<'EOF'
@@ -25,4 +25,4 @@ import torch, executorch, platform
 from executorch.extension.pybindings import portable_lib as pl
 print("torch", torch.__version__, "| python", platform.python_version(), "| threads", pl._threadpool_get_thread_count())
 EOF
-echo "== setup OK. Next: source ~/jev-venv/bin/activate && bash tune_pi.sh && bash bench_pi.sh =="
+echo "== setup OK. Next: source ~/binsense-venv/bin/activate && bash tune_pi.sh && bash bench_pi.sh =="
