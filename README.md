@@ -1,106 +1,235 @@
-# BinSense: offline waste decisions on a Raspberry Pi with ExecuTorch
+# BinSense: a pocket computer that tells you which bin
 
-Namma AI Hackathon 2026, Problem Statement 3 (AI for Sustainability: edge-based waste sorting and food categorisation).
+**Namma AI Hackathon 2026 · Problem Statement 3 · waste sorting on a Raspberry Pi with ExecuTorch**
 
-BinSense is a small decision engine that looks at a photo of a discarded item and answers typed questions about it,
-fully offline, through ExecuTorch with the XNNPACK delegate:
+Show BinSense a photo of something you are about to throw away. It tells you what it is, which bin it belongs in,
+and how sure it is. It needs no internet.
 
-- **which label?** one category with a probability per label
-- **multi-select:** every label and tag that applies, for example `paper + recyclable + dry_waste`
-- **yes / no:** for example "is it recyclable?" (text-label model)
-- **score:** a 1-5 contamination level (text-label model)
+> **Read this first.** Every number on this page was measured on a laptop, through the same code the Raspberry Pi
+> will run. The Raspberry Pi run itself has not happened yet. Our test is also easier than real life (explained in
+> [What we are not sure about](#what-we-are-not-sure-about)).
 
-The idea is borrowed from cloud "System One" decision models (typed answers with probabilities instead of prose),
-rebuilt so it runs with no network on a Pi.
+---
 
-BinSense is an independent project. The typed-answer idea was inspired by TypeSafe's Jev decision model;
-BinSense does not use Jev, its weights or its API, and is not affiliated with TypeSafe.
+## Part 1: What we have
 
-## Status, stated plainly
+### In one picture
 
-| Item | State |
+```mermaid
+flowchart LR
+    P[Photo of an item] --> F[Fast model<br/>MobileNetV2, 96 px<br/>about 1.5 ms]
+    F -->|sure, 90% or more| A[Answer + tags<br/>e.g. paper + recyclable]
+    F -->|not sure| C[Careful model<br/>Apple MobileCLIP2-S0, 256 px<br/>about 60 ms]
+    C -->|sure, 70% or more| A
+    C -->|still not sure| H[Ask a person]
+```
+
+Two models work as a team. A small fast one answers the easy photos. A bigger careful one handles the hard ones.
+If even the careful one is unsure, BinSense says so instead of guessing.
+
+### The scoreboard
+
+All on the same 240 test photos (6 kinds of waste, 40 photos each).
+
+| What | Result |
 |---|---|
-| Export to ExecuTorch (.pte), XNNPACK delegation | Done, verified against the original model (cosine 1.0) |
-| Accuracy on 240 held-out TrashNet photos | Measured on a laptop through the same engine the Pi uses |
-| Multi-select labels, abstain, audit log, boot service | Done, smoke-tested on a laptop |
-| **Run on the Raspberry Pi 4** | **Not done yet.** All timings below are laptop timings. |
-| Organiser images and labels | Not received at the time of writing |
+| Best accuracy (careful model alone) | **95.8%** (230 of 240) |
+| Fast model alone, 224 px | 93.8% in 3.9 ms |
+| Smallest model alone, 96 px half-width | 83.3% in about 1 ms |
+| Both together (two-stage) | **95.8%**, with 65% of photos answered by the fast model |
+| Recyclable vs not recyclable | 97.5% |
+| Accuracy when allowed to say "not sure" | 98.6% on the 92% of photos it answers |
+| Model files | 45.5 MB (careful), 8.9 MB (fast), 2.8 MB (smallest) |
+| Speed-up from the XNNPACK delegate | about 155x |
 
-## Results (laptop, x86, 4 threads, 240 held-out TrashNet photos, 6 classes)
+### What is in the box
 
-| Model | Accuracy | Inference / image | .pte size |
-|---|---|---|---|
-| MobileCLIP2-S0 image tower, frozen, text labels only (zero-shot) | 72.1% | ~60 ms | 45.5 MB |
-| + 20 example photos per label (prototypes) | 84.6% | ~60 ms | 45.5 MB |
-| + small fitted layer on frozen features | 92.9% | ~60 ms | 45.5 MB |
-| Fine-tuned MobileNetV2, FP32 | 93.8% | 3.9 ms | 8.9 MB |
-| Fine-tuned MobileNetV2, INT8 (PT2E static, per-channel) | 88.8% | 4.7 ms | 2.5 MB |
-| Fine-tuned MobileCLIP2-S0 image tower, FP32 | **95.8%** | 59 ms | 45.5 MB |
-| Two-stage: MobileNetV2 gate, MobileCLIP only when unsure (threshold 0.9) | 95.8% | 64% of items take the ~4 ms path | both |
-| Same model without XNNPACK (portable kernels) | same | ~8.9 s | 45.6 MB |
+- **13 ready model files** (`.pte`, the format ExecuTorch runs).
+- **An engine** that gives typed answers: one label, several labels at once, yes/no, or a 1-5 score.
+- **A sorting service** that watches a folder, sorts photos, keeps a log of every decision, and sets aside anything it is unsure about.
+- **Pi scripts** for setup, tuning, hardware inspection and a full benchmark.
+- **A labels file.** New category names from the organisers go in a text file; the model does not need retraining.
 
-Other measurements:
+---
 
-- Abstaining below 0.7 confidence (frozen model, RBF-SVM head): answers 92% of items at 98.6% accuracy.
-- Scored as recyclable vs non-recyclable: 97.5%.
-- XNNPACK delegation of the MobileCLIP tower: 325 nodes delegated, 51 left on portable kernels.
+## Part 2: The story
 
-### Caveats
+### Chapter 1. The problem
 
-- **The test split is optimistic.** TrashNet contains near-identical neighbouring shots, and the split puts some on
-  both sides. Removing those neighbours from training cost one model about 6 points. Expect lower accuracy on new photos.
-- 240 images is a small test: one image is 0.4 points.
-- The two-stage threshold was chosen by looking at the test set.
-- Full INT8 breaks the MobileCLIP tower (output no longer matches the float model), so it ships as FP32.
-- A Pi 4 (Cortex-A72) has no dot-product or SME instructions, so KleidiAI kernels do not engage; INT8 gains are smaller than on a Pi 5.
+People throw things in the wrong bin. One food-soiled bag in the paper bin can spoil the whole load.
+The organisers asked: can a small, cheap, offline computer look at an item and name its category?
 
-## What failed (kept on purpose)
+The hard part: **the organisers choose the category names, and we did not know them in advance.**
 
-- Full and mixed-precision INT8 of MobileCLIP2-S0: broken output.
-- Six frozen ImageNet CNNs with a linear head: best 89.2%, none beat the MobileCLIP features.
-- Bigger backbones (MobileCLIP2-S2, DINOv2 ViT-S): no accuracy gain, 2-4x slower.
-- Training on the laptop CPU while other jobs ran: one step took 59 s; moved to a cloud GPU.
+### Chapter 2. Picking the first model
 
-## Run it on a Raspberry Pi 4 (64-bit Pi OS)
+A normal image classifier is built for one fixed list of labels. We needed one that understands labels written as words.
+That family of models is called CLIP: it turns a picture into a list of numbers, turns words into a list of numbers,
+and the two lists land close together when the picture matches the words.
 
-Copy `pi_bundle/` to the Pi, then:
+We chose **Apple's MobileCLIP2-S0**, the smallest of its family:
+
+| Why | Detail |
+|---|---|
+| Understands words | Any label name works with no retraining |
+| Small enough for a Pi | The picture half has 11.4 million numbers inside it (45.5 MB) |
+| Splits in two | Only the picture half goes on the Pi; the word half runs once on the laptop |
+| Survives ExecuTorch export | The exported file matched the original exactly |
+
+### Chapter 3. Getting it into ExecuTorch
+
+ExecuTorch needs the model converted into one file. During conversion, the heavy maths can be handed to a library
+tuned for Arm chips (called the XNNPACK delegate). We exported the same model with and without it:
+
+![Delegate speed-up](docs/img/07_delegate.png)
+
+Of the model's 376 steps, 325 were handed to XNNPACK. The other 51 are small bookkeeping steps it does not support.
+
+### Chapter 4. Climbing from 72% to 96%
+
+We tested on TrashNet, a public set of 2,527 waste photos. We set 240 aside as the test and never trained on them.
+
+![Accuracy journey](docs/img/01_accuracy_journey.png)
+
+| Step | What we saw | What we did next |
+|---|---|---|
+| 1 | **72.1%.** Over a quarter wrong. Words like "trash" are too vague for the model to match. | Show it example photos, not just words. |
+| 2-3 | **80.0%, then 84.6%.** Better, but look-alike materials still got mixed up. | Fit one small layer on top of the frozen model. |
+| 4 | **92.9%.** 17 mistakes left. | Look at every mistake (next chapter). |
+| 5 | **94.6%** with a stronger layer. Still short of 95%. | Retrain the whole model on a cloud GPU. |
+| 6 | **95.8%.** Target met. | Make it fast (chapter 6). |
+
+### Chapter 5. Looking at what went wrong
+
+At 92.9% we stopped and looked at all 17 mistakes one by one.
+
+![Errors](docs/img/02_errors.png)
+
+**Nearly half the mistakes (8 of 17) were things wrongly called metal.** Looking at the photos shows why:
+
+![The 17 mistakes](results/failures_fp32_head.jpg)
+
+- **Shiny plastic looks like metal.** Crisp packets and foil-look mailers are plastic or trash, but they shine.
+- **Some labels are debatable.** A photo of a jar's metal lid is labelled "glass". A drink carton is labelled "paper".
+- **Small things get lost.** When the item is tiny in the frame, the model mostly sees table.
+
+What we tried, and what it did:
+
+| Fix | Result |
+|---|---|
+| Zoom in on the item before classifying | No reliable gain |
+| A stronger layer on top | 94.6% |
+| Let it say "not sure" | See below |
+| Retrain the whole model so it learns shiny plastic is not metal | **95.8%** |
+
+The model is much less confident when it is wrong (0.56 on average) than when it is right (0.85).
+So "not sure" is a useful signal:
+
+![Abstain](docs/img/06_abstain.png)
+
+After retraining, here is every answer of the final model. The diagonal is correct:
+
+![Confusion matrix](docs/img/03_confusion.png)
+
+The remaining 10 mistakes are still mostly plastic or trash called metal (5 of 10).
+
+### Chapter 6. Making it fast
+
+The careful model takes about 60 ms per photo on the laptop. We wanted far less, so we trained a much smaller model,
+MobileNetV2 (2.2 million numbers inside it), and then even smaller versions of it.
+The small ones learned by copying the careful model's answers, a method called distillation.
+
+![Speed vs accuracy](docs/img/04_speed_vs_accuracy.png)
+
+**The lesson: about 1 ms is possible, but only at about 83%. 95% and 1 ms did not happen in one model.**
+
+All six small models, timed on a cloud CPU:
+
+| Model | Photo size | Accuracy | Time | File |
+|---|---|---|---|---|
+| MobileNetV2 | 160 px | 93.8% | 4.2 ms | 8.9 MB |
+| MobileNetV2 | 128 px | 91.3% | 3.0 ms | 8.9 MB |
+| MobileNetV2 | 96 px | 90.0% | 1.8 ms | 8.9 MB |
+| MobileNetV2 half-width | 160 px | 90.8% | 1.9 ms | 2.8 MB |
+| MobileNetV2 half-width | 128 px | 88.3% | 1.2 ms | 2.8 MB |
+| MobileNetV2 half-width | 96 px | 84.6% | 0.77 ms | 2.8 MB |
+
+(Accuracy here is from the cloud run; the chart above re-measured three of them through the Pi engine on the laptop.)
+
+### Chapter 7. Using both models together
+
+Since no single model was both fast and accurate, we let them share the work.
+The fast one answers when it is sure. The careful one takes the rest.
+
+![Two-stage](docs/img/05_two_stage.png)
+
+Best setting: the 96 px MobileNetV2 answers 65% of photos on its own, and overall accuracy stays at 95.8%.
+
+### Chapter 8. Shrinking the numbers (what worked and what broke)
+
+Models store their numbers in 32 bits each. Storing them in 8 bits makes the file about four times smaller.
+
+![INT8](docs/img/08_int8.png)
+
+- **MobileNetV2:** works. Much smaller, about 5 points less accurate.
+- **Apple's MobileCLIP:** broke. Its answers no longer resembled the original, so it stays 32-bit.
+
+### Things that did not work
+
+| Tried | Outcome |
+|---|---|
+| 8-bit version of MobileCLIP (full and partial) | Broken output |
+| Bigger models (MobileCLIP2-S2, DINOv2) | No accuracy gain, 2 to 4 times slower |
+| Six small ready-made models with a layer on top | Best was 89.2% |
+| Training on the laptop while other jobs ran | One step took 59 seconds; moved to a cloud GPU |
+| Four of the ten small "student" models | Failed because of a bug in our own training script |
+
+---
+
+## What we are not sure about
+
+- **No Raspberry Pi numbers yet.** Speeds above are from a laptop and a cloud CPU. The Pi 4 will be slower.
+- **Our test is easier than real life.** TrashNet has near-identical photos taken one after another, and some ended up on
+  both sides of our split. When one experiment removed those neighbours from training, a model dropped about 6 points.
+- **240 photos is a small test.** One photo is 0.4 points.
+- **The organisers' photos and labels have not arrived.** The trained models know six TrashNet labels. If the organisers
+  use different labels, the untouched pretrained model handles them from a text file.
+- **A few settings were picked by looking at the test results** (the two-stage thresholds).
+
+## Run it on a Raspberry Pi 4
+
+Copy `pi_bundle/` to the Pi (64-bit Raspberry Pi OS), then:
 
 ```bash
 bash setup_pi.sh                 # one-time, needs internet
 source ~/binsense-venv/bin/activate
-bash tune_pi.sh                  # performance governor, quiet services
+bash tune_pi.sh                  # keep the CPU at full speed, stop background services
 python run_eval.py --pte models/own_mobileclip2_s0_256_fp32.pte --pack packs/own_mobileclip2_s0_256.npz --images images
-bash bench_pi.sh                 # every model x 1-4 threads + thermal log -> results/SUMMARY.md
+bash bench_pi.sh                 # every model x 1-4 threads + temperature log -> results/SUMMARY.md
 ```
 
-`run_eval.py` prints the mandatory deliverables: a prediction per image, the results table against the supplied labels,
-total correct, accuracy, model, inference time, model size and peak memory. See `pi_bundle/README.txt` for the two-stage
-and baseline commands.
+`run_eval.py` prints what the brief asks for: a prediction per image, a results table against the given labels,
+total correct, accuracy, the model used, time per image, file size and peak memory.
+More commands (two-stage, baselines, hardware tools) are in `pi_bundle/README.txt`.
 
-### New labels from the organisers
-
-1. Put the label names and a few descriptive phrases in a JSON file like `labels/trashnet.json`.
-2. `python src/build_labels.py --labels <file> --spec artifacts/mobileclip2-s0_256_spec.json --out pi_bundle/packs/<name>_256.npz`
-3. Optional: `src/fit_head.py` fits a small layer from public photos mapped to those labels (`bets/data/category_map.json`).
-4. Optional: `src/add_groups.py` adds multi-select tags such as recyclable / wet / dry / hazardous.
-
-No model retraining and no re-export is needed for steps 1-2.
-
-## Layout
+## Where things are
 
 | Path | What |
 |---|---|
-| `edge/` | Everything that runs on the Pi: engine, evaluation, service, setup, tuning, benchmark |
-| `src/` | Development-machine scripts: export, label packs, head fitting, data fetch |
-| `colab/` | GPU notebooks (fine-tuning, distillation) and the trained models |
-| `pi_bundle/` | Ready-to-copy folder for the Pi (code + models + packs + sample images) |
-| `bets/` | Parallel experiments with their own ledgers: CNN backbones, foundation backbones, datasets, own model, accuracy |
-| `results/` | Result tables (Markdown, CSV, JSON) and the failure contact sheet |
-| `docs/` | Two-minute pitch and a plain-language explainer |
+| `edge/` | Code that runs on the Pi |
+| `src/` | Laptop scripts: export to `.pte`, build label files, fit layers |
+| `colab/` | Cloud GPU notebooks and the trained models |
+| `pi_bundle/` | Ready-to-copy folder for the Pi |
+| `bets/` | Side experiments, each with its own log |
+| `results/` | Every result table (Markdown, CSV, JSON) |
+| `docs/img/` | The charts on this page, and [`data_points.json`](docs/img/data_points.json) with every number behind them |
+| `docs/` | [Two-minute pitch](docs/PITCH.md), [plain-language explainer](docs/LEARN.md), and `make_charts.py` to redraw the charts |
 
-## Models and licences
+## Credits and licences
 
-- MobileCLIP2-S0 (`dfndr2b`, via open_clip): Apple's model terms apply; check them before any use beyond this demo.
-- MobileNetV2: torchvision ImageNet weights (BSD-3).
-- TrashNet: MIT. Other datasets and their licences are listed in `bets/data/DATASETS.md`.
-- ExecuTorch 1.3.1, PyTorch 2.12.1. Export flow adapted from Arm's course code (`ArmDeveloperEcosystem/courses-code-executorch`).
+- **MobileCLIP2-S0** (via open_clip): Apple's model terms apply.
+- **MobileNetV2**: public ImageNet weights (BSD-3 for torchvision; timm weights for the students).
+- **TrashNet**: MIT. Other datasets are listed in `bets/data/DATASETS.md`.
+- **ExecuTorch 1.3.1, PyTorch 2.12.1.** Export flow adapted from Arm's course code.
+- BinSense is an independent project. The typed-answer idea was inspired by TypeSafe's Jev decision model;
+  BinSense does not use Jev, its weights or its API, and is not affiliated with TypeSafe.
