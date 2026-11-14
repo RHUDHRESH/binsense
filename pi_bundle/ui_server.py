@@ -95,6 +95,7 @@ def get_model(pte: str, pack: str) -> BinSense:
 
 
 THREADS = {"n": 0}
+RUN_LOCK = threading.Lock()
 
 
 def set_threads(n: int):
@@ -454,10 +455,10 @@ class H(BaseHTTPRequestHandler):
                     raise ValueError("not an image file")
                 (BASE / ds).mkdir(exist_ok=True); (BASE / ds / name).write_bytes(body); return self.send({"saved": f"{ds}/{name}", "dataset": ds})
             q = json.loads(body or b"{}")
-            if u.path == "/api/cam/classify":
-                return self.send(cam_classify(q))
-            if u.path == "/api/classify":
-                return self.send(classify(q))
+            if u.path in ("/api/cam/classify", "/api/classify", "/api/run_all", "/api/compare", "/api/bench"):
+                fn = {"/api/cam/classify": cam_classify, "/api/classify": classify, "/api/run_all": run_all, "/api/compare": compare, "/api/bench": bench}[u.path]
+                with RUN_LOCK:                      # one model run at a time: the runtime and its thread pool are shared
+                    return self.send(fn(q))
             if u.path == "/api/compare":
                 return self.send(compare(q))
             if u.path == "/api/bench":
