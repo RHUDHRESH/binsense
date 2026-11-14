@@ -15,25 +15,7 @@ and how sure it is. It needs no internet.
 
 ### In one picture
 
-```mermaid
-flowchart TD
-    IN["INPUT<br/>one JPEG photo, any size"]
-    PRE1["PREPROCESS A<br/>resize shortest side to 96, centre crop<br/>scale with ImageNet mean and std<br/>out: tensor 1 x 3 x 96 x 96"]
-    FAST["MODEL 1: fast gate<br/>MobileNetV2, distilled, FP32 .pte<br/>2.22 million weights, 8.9 MB<br/>in: 1 x 3 x 96 x 96, out: 1280 numbers<br/>laptop: about 1.5 ms"]
-    H1["DECISION TABLE 1<br/>6 labels x 1280 weights<br/>out: probability per label"]
-    D1{"top probability<br/>at least 0.90?"}
-    PRE2["PREPROCESS B<br/>resize shortest side to 256, centre crop<br/>scale 0 to 1<br/>out: tensor 1 x 3 x 256 x 256"]
-    SLOW["MODEL 2: careful<br/>Apple MobileCLIP2-S0 image tower, fine-tuned, FP32 .pte<br/>11.4 million weights, 45.5 MB<br/>in: 1 x 3 x 256 x 256, out: 512 numbers<br/>laptop: about 59 ms"]
-    H2["DECISION TABLE 2<br/>6 labels x 512 weights<br/>out: probability per label"]
-    D2{"top probability<br/>at least 0.70?"}
-    OUT["OUTPUT<br/>label, probability per label<br/>tags such as recyclable, dry_waste<br/>one line in the audit log"]
-    REV["REVIEW<br/>photo moved to review folder<br/>logged as not sure"]
-    IN --> PRE1 --> FAST --> H1 --> D1
-    D1 -- yes --> OUT
-    D1 -- no --> PRE2 --> SLOW --> H2 --> D2
-    D2 -- yes --> OUT
-    D2 -- no --> REV
-```
+![Pipeline](docs/img/00_pipeline.png)
 
 Both models run as `.pte` files through ExecuTorch with the XNNPACK delegate. The decision tables run in NumPy.
 On the 240-photo test, model 1 answers 65% of photos and the pipeline scores 95.8%.
