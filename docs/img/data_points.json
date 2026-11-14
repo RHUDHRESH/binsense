@@ -1,0 +1,284 @@
+{
+ "accuracy_journey": [
+  {
+   "step": "1  Labels as text only (zero-shot)",
+   "accuracy_pct": 72.1,
+   "correct_of_240": 173
+  },
+  {
+   "step": "2  + 5 example photos per label",
+   "accuracy_pct": 80.0,
+   "correct_of_240": 192
+  },
+  {
+   "step": "3  + 20 example photos per label",
+   "accuracy_pct": 84.6,
+   "correct_of_240": 203
+  },
+  {
+   "step": "4  + small fitted layer on frozen model",
+   "accuracy_pct": 92.9,
+   "correct_of_240": 223
+  },
+  {
+   "step": "5  + stronger fitted layer (RBF-SVM)",
+   "accuracy_pct": 94.6,
+   "correct_of_240": 227
+  },
+  {
+   "step": "6  Fine-tune the whole model",
+   "accuracy_pct": 95.8,
+   "correct_of_240": 230
+  }
+ ],
+ "errors_at_92_9": [
+  {
+   "true": "plastic",
+   "predicted": "metal",
+   "count": 3
+  },
+  {
+   "true": "trash",
+   "predicted": "metal",
+   "count": 3
+  },
+  {
+   "true": "cardboard",
+   "predicted": "paper",
+   "count": 1
+  },
+  {
+   "true": "cardboard",
+   "predicted": "metal",
+   "count": 1
+  },
+  {
+   "true": "glass",
+   "predicted": "metal",
+   "count": 1
+  },
+  {
+   "true": "glass",
+   "predicted": "plastic",
+   "count": 1
+  },
+  {
+   "true": "metal",
+   "predicted": "plastic",
+   "count": 1
+  },
+  {
+   "true": "paper",
+   "predicted": "cardboard",
+   "count": 1
+  },
+  {
+   "true": "paper",
+   "predicted": "trash",
+   "count": 1
+  },
+  {
+   "true": "paper",
+   "predicted": "plastic",
+   "count": 1
+  },
+  {
+   "true": "plastic",
+   "predicted": "glass",
+   "count": 1
+  },
+  {
+   "true": "plastic",
+   "predicted": "trash",
+   "count": 1
+  },
+  {
+   "true": "trash",
+   "predicted": "plastic",
+   "count": 1
+  }
+ ],
+ "confusion_final_model": {
+  "labels": [
+   "cardboard",
+   "glass",
+   "metal",
+   "paper",
+   "plastic",
+   "trash"
+  ],
+  "rows_true_cols_predicted": [
+   [
+    39,
+    0,
+    0,
+    1,
+    0,
+    0
+   ],
+   [
+    0,
+    39,
+    1,
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    0,
+    40,
+    0,
+    0,
+    0
+   ],
+   [
+    0,
+    0,
+    0,
+    39,
+    1,
+    0
+   ],
+   [
+    0,
+    0,
+    3,
+    0,
+    36,
+    1
+   ],
+   [
+    0,
+    0,
+    2,
+    0,
+    1,
+    37
+   ]
+  ]
+ },
+ "speed_vs_accuracy_laptop": [
+  {
+   "model": "MobileNetV2 half-width, 96 px",
+   "inference_ms_p50": 1.0,
+   "accuracy_pct": 83.3,
+   "pte_mb": 2.76
+  },
+  {
+   "model": "MobileNetV2 half-width, 160 px",
+   "inference_ms_p50": 1.5,
+   "accuracy_pct": 90.8,
+   "pte_mb": 2.76
+  },
+  {
+   "model": "MobileNetV2, 96 px",
+   "inference_ms_p50": 1.5,
+   "accuracy_pct": 91.2,
+   "pte_mb": 8.87
+  },
+  {
+   "model": "MobileNetV2, 224 px",
+   "inference_ms_p50": 3.9,
+   "accuracy_pct": 93.8,
+   "pte_mb": 8.87
+  },
+  {
+   "model": "MobileCLIP2-S0, 256 px",
+   "inference_ms_p50": 59.4,
+   "accuracy_pct": 95.8,
+   "pte_mb": 45.52
+  }
+ ],
+ "two_stage": [
+  {
+   "gate": "Half-width 96 px gate",
+   "threshold": 0.8,
+   "fast_path_share_pct": 52.9,
+   "overall_accuracy_pct": 95.8,
+   "fast_path_accuracy_pct": 97.6
+  },
+  {
+   "gate": "Half-width 96 px gate",
+   "threshold": 0.9,
+   "fast_path_share_pct": 30.4,
+   "overall_accuracy_pct": 95.8,
+   "fast_path_accuracy_pct": 98.6
+  },
+  {
+   "gate": "Half-width 160 px gate",
+   "threshold": 0.8,
+   "fast_path_share_pct": 59.2,
+   "overall_accuracy_pct": 95.4,
+   "fast_path_accuracy_pct": 97.9
+  },
+  {
+   "gate": "Half-width 160 px gate",
+   "threshold": 0.9,
+   "fast_path_share_pct": 34.2,
+   "overall_accuracy_pct": 95.8,
+   "fast_path_accuracy_pct": 98.8
+  },
+  {
+   "gate": "Full 96 px gate",
+   "threshold": 0.8,
+   "fast_path_share_pct": 84.6,
+   "overall_accuracy_pct": 94.6,
+   "fast_path_accuracy_pct": 96.1
+  },
+  {
+   "gate": "Full 96 px gate",
+   "threshold": 0.9,
+   "fast_path_share_pct": 65.4,
+   "overall_accuracy_pct": 95.8,
+   "fast_path_accuracy_pct": 99.4
+  }
+ ],
+ "abstain": [
+  {
+   "min_confidence": 0.0,
+   "answered_pct": 100.0,
+   "accuracy_on_answered_pct": 94.6
+  },
+  {
+   "min_confidence": 0.5,
+   "answered_pct": 97.5,
+   "accuracy_on_answered_pct": 95.3
+  },
+  {
+   "min_confidence": 0.6,
+   "answered_pct": 95.4,
+   "accuracy_on_answered_pct": 96.9
+  },
+  {
+   "min_confidence": 0.7,
+   "answered_pct": 92.1,
+   "accuracy_on_answered_pct": 98.6
+  },
+  {
+   "min_confidence": 0.8,
+   "answered_pct": 86.2,
+   "accuracy_on_answered_pct": 99.0
+  },
+  {
+   "min_confidence": 0.9,
+   "answered_pct": 76.7,
+   "accuracy_on_answered_pct": 99.5
+  }
+ ],
+ "delegate": {
+  "portable_ms": 8862.0,
+  "xnnpack_ms": 57.0,
+  "speedup_x": 155
+ },
+ "int8_mobilenetv2": {
+  "fp32": {
+   "mb": 8.87,
+   "accuracy_pct": 93.8
+  },
+  "int8": {
+   "mb": 2.47,
+   "accuracy_pct": 88.8
+  }
+ }
+}
