@@ -252,6 +252,67 @@ def system() -> dict:
             "backend": os.environ.get("BINSENSE_BACKEND", "executorch")}
 
 
+START = time.time()
+
+
+def telemetry() -> dict:
+    """Live hardware numbers for the machine this server runs on."""
+    def vc(*a):
+        try:
+            return subprocess.run(["vcgencmd", *a], capture_output=True, text=True, timeout=2).stdout.strip()
+        except Exception:  # noqa: BLE001
+            return ""
+    d = {"host": socket.gethostname(), "board": "not a Raspberry Pi", "cpu": [], "uptime_s": round(time.time() - START)}
+    try:
+        d["board"] = Path("/proc/device-tree/model").read_text().strip("\0")
+    except OSError:
+        pass
+    try:
+        import psutil
+        d["cpu"] = psutil.cpu_percent(interval=0.25, percpu=True)
+        m = psutil.virtual_memory(); d["mem_used_mb"] = round((m.total - m.available) / 1e6); d["mem_total_mb"] = round(m.total / 1e6)
+        d["server_mb"] = round(psutil.Process().memory_info().rss / 1e6)
+        busy = sorted(psutil.process_iter(["name", "cpu_percent"]), key=lambda q: -(q.info["cpu_percent"] or 0))[:3]
+        d["busiest"] = [f"{q.info['name']} {q.info['cpu_percent']:.0f}%" for q in busy if (q.info["cpu_percent"] or 0) > 1]
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        d["load"] = [round(v, 2) for v in os.getloadavg()]
+    except (AttributeError, OSError):
+        pass
+    t = vc("measure_temp"); c = vc("measure_clock", "arm"); th = vc("get_throttled")
+    if "=" in t:
+        d["temp_c"] = float(t.split("=")[1].split("'")[0])
+    if "=" in c:
+        d["clock_mhz"] = round(int(c.split("=")[1]) / 1e6)
+    if "=" in th:
+        v = int(th.split("=")[1], 16); d["throttled"] = th.split("=")[1]
+        d["throttle_text"] = "none" if v == 0 else ", ".join(n for b, n in ((0x1, "under-voltage now"), (0x2, "frequency capped now"), (0x4, "throttled now"),
+                                                                            (0x10000, "under-voltage earlier"), (0x20000, "capped earlier"), (0x40000, "throttled earlier")) if v & b)
+    try:
+        d["governor"] = Path("/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor").read_text().strip()
+    except OSError:
+        pass
+    try:
+        from importlib.metadata import version
+        d["executorch"] = version("executorch"); d["torch"] = version("torch")
+    except Exception:  # noqa: BLE001
+        pass
+    home = Path.home()
+    d["runtime_ready"] = not os.environ.get("BINSENSE_CAMERA_ONLY")
+    d["runtime_built_here"] = (home / "ET_BUILD_DONE").exists()
+    log = home / "et_build.log"
+    if log.exists() and not d["runtime_built_here"]:
+        try:
+            tail = log.read_text(errors="ignore")[-4000:]
+            d["build"] = "failed" if "BUILD FAILED" in tail else "compiling ExecuTorch on this device"
+        except OSError:
+            pass
+    d["threads"] = THREADS["n"] or (os.cpu_count() or 0); d["backend"] = os.environ.get("BINSENSE_BACKEND", "executorch")
+    d["models_loaded"] = sorted({k[0] for k in MODELS})
+    return d
+
+
 def can_text() -> bool:
     try:
         import open_clip  # noqa: F401
@@ -365,6 +426,14 @@ class H(BaseHTTPRequestHandler):
                 return self.send(f, "image/jpeg") if f else self.send({"error": CAM["err"] or "no frame"}, code=503)
             if u.path == "/api/state":
                 return self.send({**catalog(), "datasets": datasets(), "system": system()})
+            if u.path == "/api/telemetry":
+                return self.send(telemetry())
+            if u.path == "/api/pi/telemetry":            # the other device (e.g. the Pi), fetched server-side
+                from urllib.request import urlopen
+                base = os.environ.get("BINSENSE_PI_URL")
+                if not base:
+                    return self.send({"error": "no second device configured"}, code=404)
+                return self.send(urlopen(base + "/api/telemetry", timeout=5).read())
             if u.path == "/api/system":
                 return self.send(system())
             if u.path == "/img":

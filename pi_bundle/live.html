@@ -19,6 +19,13 @@ main{display:grid;grid-template-columns:minmax(320px,1.25fr) minmax(300px,1fr);g
 .steps{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.stepc{flex:1;min-width:120px;border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:13px;opacity:.45;transition:opacity .3s,border-color .3s}
 .stepc.lit{opacity:1;border-color:var(--blue)}.stepc b{display:block;font-size:13.5px}
 select{padding:7px 9px;border:1px solid var(--line);border-radius:7px;font:inherit;background:#fff;width:100%}label{display:block;font-size:13px;color:var(--ink2);margin:10px 0 3px}
+.wide{grid-column:1/-1}.cores{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:10px}
+.core{font-size:13px}.core span{display:block;height:12px;background:#eef1f5;border-radius:4px;overflow:hidden}.core i{display:block;height:100%;background:var(--blue);transition:width .5s}
+.flowt{font-size:12px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.04em;margin:10px 0 6px}
+.flow{display:flex;gap:6px;align-items:stretch;flex-wrap:wrap}.flow>i{align-self:center;color:var(--ink2);font-style:normal}
+.fb{flex:1;min-width:128px;border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:12.5px;color:var(--ink2);background:#fff}.fb b{display:block;color:var(--ink);font-size:13.5px;margin-bottom:2px}
+.fb.e{border-color:var(--blue);background:#f0f6fe}.et{display:inline-block;background:var(--blue);color:#fff;border-radius:4px;padding:0 6px;font-size:11px;font-weight:700;margin-bottom:3px}
+.fb.yes{border-color:var(--ok);background:var(--okbg)}.fb.unsure{border-color:#e0a030;background:var(--warnbg)}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.k{font-size:22px;font-weight:700}.kk{display:flex;gap:22px;flex-wrap:wrap;margin-top:8px}.kk span{display:block;font-size:12.5px;color:var(--ink2);font-weight:400}
 </style></head><body>
 <header><h1>BinSense live</h1><span id="net" class="pill">checking…</span><span id="sys" class="muted"></span>
@@ -39,7 +46,30 @@ select{padding:7px 9px;border:1px solid var(--line);border-radius:7px;font:inher
   <div class="steps"><div class="stepc" id="s1"><b>1 Camera frame</b><span id="s1t"></span></div><div class="stepc" id="s2"><b>2 Shrink</b><span id="s2t"></span></div><div class="stepc" id="s3"><b>3 Model</b><span id="s3t"></span></div><div class="stepc" id="s4"><b>4 Decide</b><span id="s4t"></span></div></div>
   <div id="bars"></div>
   <div class="kk"><div class="k" id="ms">–<span>model time per frame</span></div><div class="k" id="fps">–<span>decisions per second</span></div><div class="k" id="n">0<span>frames decided</span></div></div>
+  <div class="muted" id="where" style="margin-top:8px"></div>
   <div class="muted" id="err" style="margin-top:8px;color:#c23030"></div></div>
+
+ <div class="card wide"><div class="row" style="justify-content:space-between"><b style="font-size:16px">Device, live</b><span class="muted" id="dv_name"></span></div>
+  <div class="kk" id="dv_nums"></div>
+  <div class="cores" id="dv_cores"></div>
+  <canvas id="dv_chart" height="80" style="width:100%;margin-top:10px"></canvas>
+  <div class="muted"><span style="color:#2a78d6">■</span> processor use, all cores (%) &nbsp; <span style="color:#eb6834">■</span> temperature (°C) &nbsp; last two minutes</div>
+  <div class="muted" id="dv_note" style="margin-top:6px"></div></div>
+
+ <div class="card wide"><b style="font-size:16px">How it decides, and where ExecuTorch is used</b>
+  <div class="muted" style="margin:2px 0 8px"><span class="et">ExecuTorch</span> marks the steps ExecuTorch does. The rest is ordinary Python.</div>
+  <div class="flowt">Once, before the demo (laptop or cloud GPU)</div>
+  <div class="flow"><div class="fb"><b>PyTorch model</b>Apple MobileCLIP2-S0, pretrained</div><i>→</i>
+   <div class="fb e"><span class="et">ExecuTorch</span><b>Export</b>torch.export freezes it into a fixed list of steps</div><i>→</i>
+   <div class="fb e"><span class="et">ExecuTorch</span><b>Lower</b>XNNPACK partitioner hands 325 of 376 steps to fast Arm routines</div><i>→</i>
+   <div class="fb e"><span class="et">ExecuTorch</span><b>.pte file</b>steps + weights in one file, 45.5 MB</div></div>
+  <div class="flowt">Every frame (on the device)</div>
+  <div class="flow"><div class="fb"><b>1 Camera frame</b><span id="f_frame">waiting…</span></div><i>→</i>
+   <div class="fb"><b>2 Resize and scale</b><span id="f_tensor">…</span></div><i>→</i>
+   <div class="fb e"><span class="et">ExecuTorch</span><b>3 Run the .pte</b><span id="f_model">…</span></div><i>→</i>
+   <div class="fb"><b>4 Compare with labels</b><span id="f_labels">…</span></div><i>→</i>
+   <div class="fb"><b>5 Sure enough?</b><span id="f_sure">…</span></div><i>→</i>
+   <div class="fb" id="f_out"><b>6 Answer</b><span id="f_ans">…</span></div></div></div>
 </main>
 <script>
 const $=i=>document.getElementById(i),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));let S,run=true,n=0,times=[];
@@ -58,9 +88,22 @@ async function loop(){while(true){if(!run){await new Promise(r=>setTimeout(r,300
   const top=s.probs.indexOf(Math.max(...s.probs));$('bars').innerHTML=s.labels.map((l,i)=>[l,s.probs[i],i]).sort((a,b)=>b[1]-a[1]).map(([l,p,i])=>`<div class="bar ${i===top?'top':''}"><b>${esc(l)}</b><span><i style="width:${Math.max(.5,p*100)}%"></i></span><span>${(p*100).toFixed(1)}%</span></div>`).join('');
   $('s1t').textContent=r.frame_size+' from the webcam';$('s2t').textContent='to '+s.input[2]+' × '+s.input[3]+', '+r.pre_ms+' ms';$('s3t').textContent=s.file.replace('.pte','')+', '+r.infer_ms+' ms';$('s4t').textContent=s.labels.length+' labels compared';
   for(const i of[1,2,3,4])$('s'+i).classList.add('lit');
+  $('f_frame').textContent=r.frame_size==='remote camera'?'from the Raspberry Pi webcam':r.frame_size+' from the webcam';$('f_tensor').textContent='tensor '+s.input.join(' × ')+', '+r.pre_ms+' ms';
+  $('f_model').textContent=s.file+' · XNNPACK · '+$('threads').value+' cores · '+r.infer_ms+' ms → '+s.embedding+' numbers';$('f_labels').textContent=s.labels.length+' labels → a probability each';
+  $('f_sure').textContent='top is '+(r.confidence*100).toFixed(0)+'%, needs '+$('review').value+'%';$('f_ans').textContent=r.review?'Not sure: ask a person':r.answer+(r.multi.length>1?' + '+r.multi.slice(1).join(' + '):'');$('f_out').className='fb '+(r.review?'unsure':'yes');
+  $('where').textContent='Model running on: '+S.system.host+' ('+S.system.board+') · camera: '+(r.frame_size==='remote camera'?'Raspberry Pi webcam, sent over the network':'this device');
   $('ms').firstChild.textContent=r.infer_ms+' ms';$('fps').firstChild.textContent=(1000/(times.reduce((a,b)=>a+b,0)/times.length)).toFixed(1);$('n').firstChild.textContent=n;
  }catch(e){$('err').textContent=e.message;await new Promise(r=>setTimeout(r,1200))}
  await new Promise(r=>setTimeout(r,150))}}
+const hist=[];async function tele(){let d;try{d=await api('/api/pi/telemetry')}catch(e){try{d=await api('/api/telemetry')}catch(e2){return}}
+ const avg=d.cpu.length?d.cpu.reduce((a,b)=>a+b,0)/d.cpu.length:0;hist.push([avg,d.temp_c||0]);if(hist.length>60)hist.shift();
+ $('dv_name').textContent=d.board+' · '+d.host;const k=(v,l)=>`<div class="k">${esc(v)}<span>${esc(l)}</span></div>`;
+ $('dv_nums').innerHTML=k(avg.toFixed(0)+'%','processor in use')+(d.temp_c?k(d.temp_c.toFixed(1)+' °C','temperature'):'')+(d.clock_mhz?k(d.clock_mhz+' MHz','clock speed'):'')+k((d.mem_used_mb/1000).toFixed(1)+' / '+(d.mem_total_mb/1000).toFixed(1)+' GB','memory in use')+(d.load?k(d.load[0],'load (1 min)'):'')+(d.throttle_text?k(d.throttle_text,'throttling'):'')+(d.governor?k(d.governor,'speed mode'):'');
+ $('dv_cores').innerHTML=d.cpu.map((c,i)=>`<div class="core">Core ${i+1}: ${c.toFixed(0)}%<span><i style="width:${c}%"></i></span></div>`).join('');
+ $('dv_note').textContent='ExecuTorch '+(d.executorch||'?')+': '+(d.runtime_built_here?'compiled on this device and ready':d.build?d.build:d.runtime_ready?'ready':'not ready')+(d.busiest&&d.busiest.length?' · busiest: '+d.busiest.join(', '):'')+(d.models_loaded&&d.models_loaded.length?' · models loaded: '+d.models_loaded.join(', '):'');
+ const c=$('dv_chart'),w=c.width=c.clientWidth,h=c.height=80,x=c.getContext('2d');x.clearRect(0,0,w,h);x.strokeStyle='#e1e0d9';x.beginPath();x.moveTo(0,h-1);x.lineTo(w,h-1);x.moveTo(0,h/2);x.lineTo(w,h/2);x.stroke();
+ for(const[j,col]of[[0,'#2a78d6'],[1,'#eb6834']]){x.strokeStyle=col;x.lineWidth=2;x.beginPath();hist.forEach((v,i)=>{const px=i*(w/59),py=h-2-(Math.min(100,v[j])/100)*(h-6);i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke()}}
+setInterval(tele,2000);tele();
 const F={review:v=>v+'%',sharp:v=>(v/100).toFixed(1)+'×',brightness:v=>(v/100).toFixed(2)+'×',contrast:v=>(v/100).toFixed(2)+'×',blur:v=>(v/10).toFixed(1)+' px',threads:v=>v},D={review:50,sharp:100,brightness:100,contrast:100,blur:0};
 for(const k in F){const u=()=>{$('v_'+k).textContent=F[k]($(k).value)};$(k).oninput=u;u()}
 $('reset').onclick=()=>{for(const k in D){$(k).value=D[k];$(k).oninput()}$('crop').value='centre'};
