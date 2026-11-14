@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BinSense</title>
+<style>
+:root{--bg:#f6f6f3;--card:#fff;--ink:#16181c;--ink2:#5a5f68;--line:#dcdcd5;--blue:#2a78d6;--blue2:#e6f0fd;--ok:#0c7a0c;--bad:#c23030;--warn:#a86400}
+*{box-sizing:border-box}body{margin:0;font:15px/1.45 "Segoe UI",system-ui,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{display:flex;gap:16px;align-items:center;padding:12px 20px;background:var(--card);border-bottom:1px solid var(--line);flex-wrap:wrap}
+h1{font-size:19px;margin:0}.pill{padding:3px 10px;border-radius:99px;font-size:13px;font-weight:600}
+.off{background:#e3f4e3;color:var(--ok)}.on{background:#fdf0d8;color:var(--warn)}.muted{color:var(--ink2);font-size:13px}
+main{display:grid;grid-template-columns:330px 1fr;gap:16px;padding:16px 20px;align-items:start}
+@media(max-width:900px){main{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+.step{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.04em;text-transform:uppercase}
+h2{font-size:16px;margin:2px 0 10px}label{display:block;font-size:13px;color:var(--ink2);margin:10px 0 3px}
+select,textarea,input[type=text]{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:7px;font:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:104px;font-size:13.5px}input[type=range]{width:100%}
+button{padding:8px 14px;border:1px solid var(--blue);background:var(--blue);color:#fff;border-radius:7px;font:inherit;font-weight:600;cursor:pointer}
+button.ghost{background:#fff;color:var(--blue)}button:disabled{opacity:.5;cursor:default}
+.drop{border:2px dashed var(--line);border-radius:9px;padding:14px;text-align:center;color:var(--ink2);margin-top:8px;cursor:pointer}
+.drop.over{border-color:var(--blue);background:var(--blue2)}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
+.thumb{border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:#fff;position:relative}
+.thumb img{width:100%;height:84px;object-fit:cover;display:block}.thumb.sel{border-color:var(--blue)}
+.thumb span{display:block;font-size:11.5px;padding:2px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.two{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:18px}@media(max-width:1100px){.two{grid-template-columns:1fr}}
+.big{max-width:100%;max-height:300px;border-radius:8px;border:1px solid var(--line)}
+.answer{font-size:26px;font-weight:700;margin:2px 0}.bar{display:grid;grid-template-columns:120px 1fr 58px;gap:8px;align-items:center;margin:3px 0;font-size:13.5px}
+.bar i{display:block;height:13px;background:var(--blue);border-radius:0 4px 4px 0;min-width:2px}.bar.top b{font-weight:700}.bar:not(.top) i{background:#9ec5f4}
+.tag{display:inline-block;background:var(--blue2);color:#184f95;border-radius:99px;padding:2px 10px;margin:2px 4px 2px 0;font-size:13px}
+.stepbox{border-left:3px solid var(--blue);padding:4px 0 4px 12px;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:13.5px}th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{color:var(--ink2);font-weight:600}td img{width:54px;height:42px;object-fit:cover;border-radius:5px;display:block}
+.yes{color:var(--ok);font-weight:700}.no{color:var(--bad);font-weight:700}.sum{display:flex;gap:22px;flex-wrap:wrap;margin:8px 0 12px}
+.sum div b{display:block;font-size:22px}.sum div span{font-size:12.5px;color:var(--ink2)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.val{font-weight:600;color:var(--ink)}
+</style></head><body>
+<header><h1>BinSense</h1><span id="net" class="pill">checking…</span><span id="sys" class="muted"></span></header>
+<main>
+<div>
+ <div class="card"><div class="step">Step 1</div><h2>Photos</h2>
+  <label>Choose a set of photos</label><select id="dataset"></select>
+  <div class="drop" id="drop">Drop photos here, or click to pick files<br><span class="muted">they go into a set called <b>my_photos</b></span></div>
+  <input type="file" id="file" multiple accept="image/*" hidden></div>
+
+ <div class="card"><div class="step">Step 2</div><h2>Labels</h2>
+  <label>Label set</label><select id="pack"></select><div id="packlabels" class="muted" style="margin-top:6px"></div>
+  <div id="editor"><label>Or type your own: one label per line. Add words after a colon to describe it.</label>
+   <textarea id="labtext">organic: food scraps, fruit peels, dry leaves
+recyclable: plastic bottles, metal cans, paper, glass
+e-waste: circuit boards, old electronics
+mixed: a pile of mixed unsorted rubbish</textarea>
+   <div class="row" style="margin-top:8px"><input type="text" id="labname" value="my_labels" style="flex:1"><button id="build">Use these labels</button></div>
+   <div id="buildmsg" class="muted"></div></div></div>
+
+ <div class="card"><div class="step">Step 3</div><h2>Model and settings</h2>
+  <label>Model</label><select id="pte"></select><div id="modelinfo" class="muted" style="margin-top:6px"></div>
+  <div id="gatebox"><label class="row" style="color:var(--ink)"><input type="checkbox" id="gate" checked> Use a fast model first (two-stage)</label></div>
+  <label>Fast model must be this sure to answer: <span class="val" id="v_threshold"></span></label><input type="range" id="threshold" min="50" max="99" value="90">
+  <label>Below this, say “not sure”: <span class="val" id="v_review"></span></label><input type="range" id="review" min="0" max="95" value="50">
+  <label>Also list any label above: <span class="val" id="v_label_min"></span></label><input type="range" id="label_min" min="5" max="50" value="25">
+  <label>Decisiveness (how sharply it commits): <span class="val" id="v_sharp"></span></label><input type="range" id="sharp" min="20" max="300" value="100"></div>
+</div>
+
+<div>
+ <div class="card"><div class="row" style="justify-content:space-between"><div><div class="step">Step 4</div><h2 style="margin-bottom:0">Click a photo to see how it decides</h2></div>
+  <button id="runall">Run all photos</button></div>
+  <div class="thumbs" id="thumbs" style="margin-top:12px"></div></div>
+ <div class="card" id="one" hidden></div>
+ <div class="card" id="all" hidden></div>
+</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);let S=null,sel=null;
+const api=async(p,b)=>{const r=await fetch(p,b?{method:'POST',body:JSON.stringify(b)}:{});const j=await r.json();if(j.error)throw new Error(j.error);return j};
+const pct=v=>(v*100).toFixed(1)+'%';const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function params(){const m=S.models.find(x=>x.pte===$('pte').value);const q={pte:$('pte').value,pack:$('pack').value,threshold:$('threshold').value/100,review:$('review').value/100,label_min:$('label_min').value/100,sharp:$('sharp').value/100,dataset:$('dataset').value};
+ const g=gateFor();if(g&&$('gate').checked){q.gate_pte=g.pte;q.gate_pack=g.pack}return q}
+function gateFor(){const labels=JSON.stringify(S.packs[$('pack').value]?.labels);for(const m of S.models){if(!m.pte.startsWith('stu_')||m.pte.includes('int8'))continue;for(const p of m.packs)if(JSON.stringify(S.packs[p].labels)===labels&&m.pte!==$('pte').value)return{pte:m.pte,pack:p}}return null}
+function fillPacks(keep){const m=S.models.find(x=>x.pte===$('pte').value);const cur=keep||$('pack').value;$('pack').innerHTML=m.packs.map(p=>`<option>${p}</option>`).join('');if(m.packs.includes(cur))$('pack').value=cur;packInfo()}
+function packInfo(){const p=S.packs[$('pack').value];$('packlabels').innerHTML=p?'Labels: <b>'+p.labels.map(esc).join(', ')+'</b>':'';const m=S.models.find(x=>x.pte===$('pte').value);
+ $('modelinfo').textContent=`${m.kind} · ${m.mb} MB · ${m.res}×${m.res} input`;$('gatebox').hidden=!gateFor();$('editor').hidden=!(S.system.can_edit_labels&&p&&p.text)}
+function thumbs(){const d=S.datasets[$('dataset').value]||[];$('thumbs').innerHTML=d.map(i=>`<div class="thumb ${sel===i.path?'sel':''}" data-p="${esc(i.path)}"><img loading="lazy" src="/img?p=${encodeURIComponent(i.path)}"><span>${esc(i.name)}${i.truth?' · '+esc(i.truth):''}</span></div>`).join('')||'<span class="muted">No photos in this set.</span>';
+ document.querySelectorAll('.thumb').forEach(t=>t.onclick=()=>one(t.dataset.p))}
+async function load(keepPack){S=await api('/api/state');const dv=$('dataset').value,pv=$('pte').value;
+ $('dataset').innerHTML=Object.keys(S.datasets).map(d=>`<option value="${d}">${d} (${S.datasets[d].length})</option>`).join('');if(S.datasets[dv])$('dataset').value=dv;else if(S.datasets.organiser)$('dataset').value='organiser';
+ $('pte').innerHTML=S.models.map(m=>`<option value="${m.pte}">${m.pte.replace('.pte','')}</option>`).join('');
+ if(S.models.find(m=>m.pte===pv))$('pte').value=pv;else{const d=S.models.find(m=>m.pte.startsWith('mobileclip2-s0_256'));if(d)$('pte').value=d.pte}
+ fillPacks(keepPack||(S.packs['organiser_256.npz']&&!keepPack?'organiser_256.npz':null));sysline(S.system);thumbs()}
+function sysline(s){$('net').className='pill '+(s.online?'on':'off');$('net').textContent=s.online?'Internet reachable':'OFFLINE: no internet';
+ $('sys').textContent=`${s.host} · ${s.board} · temp ${s.temp.replace('temp=','')} · memory ${s.memory_mb} MB`}
+function bars(labels,probs){const top=probs.indexOf(Math.max(...probs));return labels.map((l,i)=>[l,probs[i],i]).sort((a,b)=>b[1]-a[1]).map(([l,p,i])=>`<div class="bar ${i===top?'top':''}"><b>${esc(l)}</b><span><i style="width:${Math.max(.5,p*100)}%"></i></span><span>${pct(p)}</span></div>`).join('')}
+async function one(p){sel=p;thumbs();const o=$('one');o.hidden=false;o.innerHTML='<span class="muted">working…</span>';
+ try{const r=await api('/api/classify',{...params(),image:p});
+ o.innerHTML=`<div class="two"><div><img class="big" src="/img?p=${encodeURIComponent(p)}"><div class="muted" style="margin-top:6px">${esc(p)}</div></div><div>
+  <div class="step">Answer</div><div class="answer" style="color:${r.review?'var(--warn)':'var(--ink)'}">${r.review?'Not sure':esc(r.answer)} <span class="muted" style="font-size:15px;font-weight:400">${pct(r.confidence)} sure${r.review?' · best guess '+esc(r.answer):''}</span></div>
+  <div>${r.multi.map(t=>`<span class="tag">${esc(t)}</span>`).join('')}</div>
+  <div class="muted" style="margin-top:6px">Decided by the ${r.used} · model time ${r.infer_ms} ms · photo prep ${r.pre_ms} ms</div>
+  ${r.steps.map((s,i)=>`<div class="stepbox"><b>${s.role}</b> <span class="muted">${esc(s.file)} · ${s.mb} MB</span>
+   <div class="muted">Photo → ${s.input.join(' × ')} numbers in → ${s.embedding} numbers out, in ${s.infer_ms} ms. Probabilities come from the ${s.how}.</div>
+   <div style="margin-top:6px">${bars(s.labels,s.probs)}</div>
+   ${i===0&&r.steps.length>1?'<div class="muted">Not sure enough, so the careful model was asked.</div>':''}</div>`).join('')}
+  ${Object.keys(r.tags).length?'<div class="muted">Yes/no checks: '+Object.entries(r.tags).map(([k,v])=>`${esc(k)} ${pct(v)}`).join(' · ')+'</div>':''}
+ </div></div>`}catch(e){o.innerHTML='<span class="no">'+esc(e.message)+'</span>'}}
+async function runAll(){const a=$('all');a.hidden=false;a.innerHTML='<span class="muted">running all photos…</span>';$('runall').disabled=true;
+ try{const r=await api('/api/run_all',params()),s=r.summary,labs=S.packs[$('pack').value].labels;
+ a.innerHTML=`<div class="step">Results</div><div class="sum"><div><b>${s.scored?s.correct+' / '+s.scored:'–'}</b><span>correct</span></div><div><b>${s.scored?s.accuracy+'%':'–'}</b><span>accuracy</span></div>
+  <div><b>${s.ms_median} ms</b><span>model time per photo (median)</span></div><div><b>${s.model_mb} MB</b><span>model file</span></div><div><b>${s.memory_mb} MB</b><span>memory in use</span></div>
+  <div><b>${s.review}</b><span>not sure</span></div>${params().gate_pte?`<div><b>${s.fast_share}%</b><span>answered by fast model</span></div>`:''}</div>
+  <div class="muted">Model ${esc(s.model)} · labels ${esc(s.labels)} · saved to ${esc(r.saved)}. Set the true label in the table to score a photo.</div>
+  <table><tr><th></th><th>Photo</th><th>True label</th><th>Predicted</th><th>Sure</th><th>Also</th><th>Time</th><th></th></tr>
+  ${r.rows.map(x=>`<tr><td><img src="/img?p=${encodeURIComponent(x.path)}"></td><td>${esc(x.image)}</td>
+   <td><select data-n="${esc(x.image)}" class="truth"><option value="">–</option>${labs.map(l=>`<option ${l===x.label?'selected':''}>${esc(l)}</option>`).join('')}${x.label&&!labs.includes(x.label)?`<option selected>${esc(x.label)}</option>`:''}</select></td>
+   <td><b>${esc(x.predicted)}</b></td><td>${pct(x.confidence)}</td><td class="muted">${esc(x.multi)}</td><td>${x.infer_ms} ms</td>
+   <td>${x.correct===null?'':x.correct?'<span class="yes">✓</span>':'<span class="no">✗</span>'}</td></tr>`).join('')}</table>`;
+ document.querySelectorAll('.truth').forEach(t=>t.onchange=async()=>{await api('/api/truth',{dataset:$('dataset').value,name:t.dataset.n,label:t.value});await load($('pack').value);runAll()})
+ }catch(e){a.innerHTML='<span class="no">'+esc(e.message)+'</span>'}$('runall').disabled=false}
+async function upload(files){for(const f of files){await fetch('/api/upload?dataset=my_photos&name='+encodeURIComponent(f.name),{method:'POST',body:f})}await load($('pack').value);$('dataset').value='my_photos';thumbs()}
+for(const id of['threshold','review','label_min','sharp']){const u=()=>{$('v_'+id).textContent=id==='sharp'?($(id).value/100).toFixed(1)+'×':$(id).value+'%'};$(id).oninput=u;$(id).onchange=()=>{if(sel)one(sel)};u()}
+$('dataset').onchange=()=>{sel=null;$('one').hidden=$('all').hidden=true;thumbs()};$('pte').onchange=()=>{fillPacks();if(sel)one(sel)};$('pack').onchange=()=>{packInfo();if(sel)one(sel)};$('gate').onchange=()=>{if(sel)one(sel)};
+$('runall').onclick=runAll;$('drop').onclick=()=>$('file').click();$('file').onchange=e=>upload(e.target.files);
+$('drop').ondragover=e=>{e.preventDefault();$('drop').classList.add('over')};$('drop').ondragleave=()=>$('drop').classList.remove('over');
+$('drop').ondrop=e=>{e.preventDefault();$('drop').classList.remove('over');upload(e.dataTransfer.files)};
+$('build').onclick=async()=>{$('buildmsg').textContent='building…';$('build').disabled=true;try{const r=await api('/api/build_pack',{name:$('labname').value,text:$('labtext').value});
+ const m=S.models.find(x=>x.pte===$('pte').value);await load(r.made.find(n=>n.endsWith('_'+m.res+'.npz')));$('buildmsg').textContent='Now using: '+r.labels.join(', ');if(sel)one(sel)}catch(e){$('buildmsg').textContent=e.message}$('build').disabled=false};
+load();setInterval(async()=>{try{sysline(await api('/api/system'))}catch(e){}},15000);
+</script></body></html>

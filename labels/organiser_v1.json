@@ -1,0 +1,16 @@
+{
+  "labels": {
+    "organic": ["food waste", "fruit and vegetable peels", "a banana peel", "kitchen scraps", "dry leaves and garden waste", "compostable organic waste"],
+    "recyclable": ["recyclable waste", "plastic bottles", "metal cans and tins", "crumpled paper and cardboard", "glass bottles", "clean recyclable packaging"],
+    "e-waste": ["electronic waste", "circuit boards", "discarded electronics", "old computer parts"],
+    "mixed": ["a pile of mixed unsorted rubbish", "mixed household garbage with food and packaging together", "a heap of assorted trash", "a landfill pile of many kinds of waste"]
+  },
+  "noul": {
+    "contains_food": {"yes": ["waste containing food scraps", "food leftovers and peels"], "no": ["waste with no food in it", "clean dry packaging"]},
+    "contains_plastic": {"yes": ["waste containing plastic bottles or plastic packaging"], "no": ["waste with no plastic in it"]},
+    "contains_metal": {"yes": ["waste containing metal cans or tins"], "no": ["waste with no metal in it"]},
+    "contains_paper": {"yes": ["waste containing paper or cardboard"], "no": ["waste with no paper in it"]},
+    "hazardous": {"yes": ["hazardous waste such as electronics or batteries"], "no": ["ordinary harmless household waste"]}
+  },
+  "score": {}
+}

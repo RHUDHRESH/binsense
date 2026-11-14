@@ -38,3 +38,7 @@ Live webcam (USB camera plugged into the Pi; prints in the terminal, no window):
   python live.py                 # classify continuously, announces a decision after 3 matching frames
   python live.py --snap          # press Enter to capture one frame
   python live.py --camera 1      # if camera 0 is not the webcam
+
+Web UI (no terminal needed):
+  Windows: double-click start_ui.bat          Pi: bash start_ui.sh, then open http://<pi-address>:8000
+  Step 1 choose or drop photos, Step 2 pick or type labels, Step 3 pick a model and move the sliders, Step 4 click a photo or Run all.

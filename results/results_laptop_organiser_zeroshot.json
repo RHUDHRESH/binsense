@@ -1,0 +1,32 @@
+{
+ "tag": "laptop_organiser_zeroshot",
+ "model": "MobileCLIP2-S0",
+ "pretrained": "dfndr2b",
+ "pte": "mobileclip2-s0_256_fp32.pte",
+ "pte_size_mb": 45.52,
+ "resolution": 256,
+ "threads": 4,
+ "images": 10,
+ "scored": 10,
+ "correct": 10,
+ "accuracy": 1.0,
+ "load_ms": 0.2,
+ "inference_ms": {
+  "p50": 45.9,
+  "p90": 49.3,
+  "min": 37.1,
+  "max": 51.0
+ },
+ "preprocess_ms": {
+  "p50": 23.5,
+  "p90": 33.2
+ },
+ "images_per_second": 14.42,
+ "peak_rss_mb": 426.5,
+ "machine": "AMD64",
+ "cpu_count": 12,
+ "temp_start": null,
+ "temp_end": null,
+ "clock_arm": null,
+ "throttled": null
+}

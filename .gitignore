@@ -9,3 +9,7 @@ pi_bundle/models/
 pi_bundle/results/
 __pycache__/
 *.pyc
+pi_bundle/organiser/*.png
+data/
+pi_bundle/my_photos/
+pi_bundle/results/
