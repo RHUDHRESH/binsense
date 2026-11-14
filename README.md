@@ -7,7 +7,7 @@ and how sure it is. It needs no internet.
 
 > **Read this first.** Every number on this page was measured on a laptop, through the same code the Raspberry Pi
 > will run. The Raspberry Pi run itself has not happened yet. Our test is also easier than real life (explained in
-> [What we are not sure about](#what-we-are-not-sure-about)).
+> [Limits](#limits)).
 
 ---
 
@@ -16,16 +16,27 @@ and how sure it is. It needs no internet.
 ### In one picture
 
 ```mermaid
-flowchart LR
-    P[Photo of an item] --> F[Fast model<br/>MobileNetV2, 96 px<br/>about 1.5 ms]
-    F -->|sure, 90% or more| A[Answer + tags<br/>e.g. paper + recyclable]
-    F -->|not sure| C[Careful model<br/>Apple MobileCLIP2-S0, 256 px<br/>about 60 ms]
-    C -->|sure, 70% or more| A
-    C -->|still not sure| H[Ask a person]
+flowchart TD
+    IN["INPUT<br/>one JPEG photo, any size"]
+    PRE1["PREPROCESS A<br/>resize shortest side to 96, centre crop<br/>scale with ImageNet mean and std<br/>out: tensor 1 x 3 x 96 x 96"]
+    FAST["MODEL 1: fast gate<br/>MobileNetV2, distilled, FP32 .pte<br/>2.22 million weights, 8.9 MB<br/>in: 1 x 3 x 96 x 96, out: 1280 numbers<br/>laptop: about 1.5 ms"]
+    H1["DECISION TABLE 1<br/>6 labels x 1280 weights<br/>out: probability per label"]
+    D1{"top probability<br/>at least 0.90?"}
+    PRE2["PREPROCESS B<br/>resize shortest side to 256, centre crop<br/>scale 0 to 1<br/>out: tensor 1 x 3 x 256 x 256"]
+    SLOW["MODEL 2: careful<br/>Apple MobileCLIP2-S0 image tower, fine-tuned, FP32 .pte<br/>11.4 million weights, 45.5 MB<br/>in: 1 x 3 x 256 x 256, out: 512 numbers<br/>laptop: about 59 ms"]
+    H2["DECISION TABLE 2<br/>6 labels x 512 weights<br/>out: probability per label"]
+    D2{"top probability<br/>at least 0.70?"}
+    OUT["OUTPUT<br/>label, probability per label<br/>tags such as recyclable, dry_waste<br/>one line in the audit log"]
+    REV["REVIEW<br/>photo moved to review folder<br/>logged as not sure"]
+    IN --> PRE1 --> FAST --> H1 --> D1
+    D1 -- yes --> OUT
+    D1 -- no --> PRE2 --> SLOW --> H2 --> D2
+    D2 -- yes --> OUT
+    D2 -- no --> REV
 ```
 
-Two models work as a team. A small fast one answers the easy photos. A bigger careful one handles the hard ones.
-If even the careful one is unsure, BinSense says so instead of guessing.
+Both models run as `.pte` files through ExecuTorch with the XNNPACK delegate. The decision tables run in NumPy.
+On the 240-photo test, model 1 answers 65% of photos and the pipeline scores 95.8%.
 
 ### The scoreboard
 
@@ -174,6 +185,36 @@ Models store their numbers in 32 bits each. Storing them in 8 bits makes the fil
 - **MobileNetV2:** works. Much smaller, about 5 points less accurate.
 - **Apple's MobileCLIP:** broke. Its answers no longer resembled the original, so it stays 32-bit.
 
+### Chapter 9. Two tricks borrowed from chip-image matching
+
+Both come from matching microscope images to chip layouts, where the same problems appear.
+
+**1. Score confidence by the gap to the runner-up, not the top score alone.**
+Using log(top probability / second probability) to decide when the fast model may answer:
+
+| Confidence score for the gate | Photos the fast model can answer at 95.8% overall |
+|---|---|
+| Top probability (what we used) | 66.2% |
+| Top minus second | 68.3% |
+| Log ratio of top to second | **71.7%** |
+
+A small gain, read off the test set. Not yet built into the engine.
+
+**2. Check robustness to lighting.** The final model under changed lighting, with and without normalising the photo first
+(grey-world white balance plus contrast stretch):
+
+| Lighting change | As is | Normalised first |
+|---|---|---|
+| Original | 95.8% | 88.8% |
+| Darker (x0.5) | 93.3% | 88.8% |
+| Brighter (x1.6) | 87.9% | 88.8% |
+| Gamma 2.2 | 94.6% | 87.5% |
+| Low contrast | 92.5% | 87.5% |
+| Warm colour cast | 90.8% | 88.8% |
+
+Normalising makes accuracy stable but lower, because the model was never trained on normalised photos. We did not adopt it.
+The real finding is the weakness: over-bright and colour-cast photos cost 5 to 8 points.
+
 ### Things that did not work
 
 | Tried | Outcome |
@@ -186,15 +227,14 @@ Models store their numbers in 32 bits each. Storing them in 8 bits makes the fil
 
 ---
 
-## What we are not sure about
+## Limits
 
-- **No Raspberry Pi numbers yet.** Speeds above are from a laptop and a cloud CPU. The Pi 4 will be slower.
-- **Our test is easier than real life.** TrashNet has near-identical photos taken one after another, and some ended up on
-  both sides of our split. When one experiment removed those neighbours from training, a model dropped about 6 points.
-- **240 photos is a small test.** One photo is 0.4 points.
-- **The organisers' photos and labels have not arrived.** The trained models know six TrashNet labels. If the organisers
-  use different labels, the untouched pretrained model handles them from a text file.
-- **A few settings were picked by looking at the test results** (the two-stage thresholds).
+- **Not run on a Raspberry Pi yet.** All timings are laptop or cloud CPU.
+- **Test is optimistic.** Near-duplicate TrashNet photos sit on both sides of the split; removing them cost one model about 6 points.
+- **Small test.** 240 photos; one photo is 0.4 points.
+- **Six TrashNet labels only.** Organiser labels not received. Other labels need the pretrained model plus a label file.
+- **Two-stage thresholds were tuned on the test set.**
+- **Lighting sensitive.** Accuracy drops to 87.9% on over-bright photos and 90.8% under a warm colour cast (see below).
 
 ## Run it on a Raspberry Pi 4
 

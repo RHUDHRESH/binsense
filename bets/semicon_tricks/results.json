@@ -1,0 +1,53 @@
+{
+ "A_auroc_spotting_wrong_answers": {
+  "careful model": {
+   "accuracy": 95.8,
+   "wrong": 10,
+   "max probability (what we used)": 0.769,
+   "margin p1 - p2": 0.771,
+   "log ratio log(p1/p2)": 0.785,
+   "negative entropy": 0.768
+  },
+  "fast gate": {
+   "accuracy": 91.2,
+   "wrong": 21,
+   "max probability (what we used)": 0.897,
+   "margin p1 - p2": 0.897,
+   "log ratio log(p1/p2)": 0.896,
+   "negative entropy": 0.899
+  }
+ },
+ "A_cascade_max_fast_share_at_full_accuracy": {
+  "target_correct": 230,
+  "max probability (what we used)": 66.2,
+  "margin p1 - p2": 68.3,
+  "log ratio log(p1/p2)": 71.7,
+  "negative entropy": 65.8
+ },
+ "B_accuracy_under_lighting_changes": {
+  "original": {
+   "as is": 95.8,
+   "normalised first": 88.8
+  },
+  "darker (x0.5)": {
+   "as is": 93.3,
+   "normalised first": 88.8
+  },
+  "brighter (x1.6)": {
+   "as is": 87.9,
+   "normalised first": 88.8
+  },
+  "gamma 2.2": {
+   "as is": 94.6,
+   "normalised first": 87.5
+  },
+  "low contrast": {
+   "as is": 92.5,
+   "normalised first": 87.5
+  },
+  "warm colour cast": {
+   "as is": 90.8,
+   "normalised first": 88.8
+  }
+ }
+}
