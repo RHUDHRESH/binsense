@@ -1,0 +1,44 @@
+{
+ "model": "MobileCLIP2-S0",
+ "pretrained": "dfndr2b",
+ "resolution": 192,
+ "image_tower_params_m": 11.36,
+ "laptop_eager_ms": 46.8,
+ "fp32": {
+  "pte": "mobileclip2-s0_192_fp32.pte",
+  "size_mb": 45.52,
+  "delegated_nodes": 325,
+  "non_delegated_nodes": 51,
+  "delegated_subgraphs": 8,
+  "non_delegated_ops": {
+   "aten_any_dim": 2,
+   "aten_eq_scalar": 2,
+   "aten_expand_copy_default": 8,
+   "aten_full_like_default": 2,
+   "aten_logical_not_default": 4,
+   "aten_mul_scalar": 4,
+   "aten_pow_tensor_scalar": 1,
+   "aten_squeeze_copy_dims": 6,
+   "aten_sum_dim_int_list": 1,
+   "aten_where_self": 2,
+   "getitem": 19
+  },
+  "laptop_ms": 63.1,
+  "cosine_vs_eager": 1.0
+ },
+ "preprocess": {
+  "size": 192,
+  "mean": [
+   0.0,
+   0.0,
+   0.0
+  ],
+  "std": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "interpolation": "bilinear",
+  "resize_mode": "shortest"
+ }
+}

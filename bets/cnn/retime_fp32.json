@@ -1,0 +1,50 @@
+{
+ "efficientvit_b0_224_fp32.pte": {
+  "median_ms": 5.57,
+  "round_medians": [
+   5.76,
+   5.57,
+   5.43
+  ]
+ },
+ "mobilenetv3_large_100_224_fp32.pte": {
+  "median_ms": 4.41,
+  "round_medians": [
+   5.49,
+   4.35,
+   4.41
+  ]
+ },
+ "mobilenetv3_small_100_224_fp32.pte": {
+  "median_ms": 2.12,
+  "round_medians": [
+   2.12,
+   2.63,
+   1.91
+  ]
+ },
+ "mobilenetv4_conv_medium_256_fp32.pte": {
+  "median_ms": 14.95,
+  "round_medians": [
+   14.54,
+   15.2,
+   14.95
+  ]
+ },
+ "mobilenetv4_conv_small_224_fp32.pte": {
+  "median_ms": 3.08,
+  "round_medians": [
+   3.08,
+   3.34,
+   3.01
+  ]
+ },
+ "repvit_m0_9_224_fp32.pte": {
+  "median_ms": 15.19,
+  "round_medians": [
+   14.8,
+   15.19,
+   15.94
+  ]
+ }
+}

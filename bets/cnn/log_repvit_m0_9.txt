@@ -1,0 +1,43 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Unexpected keys (head.head.bn.num_batches_tracked, head.head.bn.bias, head.head.bn.running_mean, head.head.bn.running_var, head.head.bn.weight, head.head_dist.bn.num_batches_tracked, head.head_dist.bn.bias, head.head_dist.bn.running_mean, head.head_dist.bn.running_var, head.head_dist.bn.weight) found while loading pretrained weights. This may be expected if model is being adapted.
+C:\Users\acer\Desktop\Namma AI hackathon\.venv\Lib\site-packages\torchao\quantization\quant_api.py:1745: SyntaxWarning: invalid escape sequence '\.'
+  * regex for parameter names, must start with `re:`, e.g. `re:language\.layers\..+\.q_proj.weight`.
+W1114 13:47:59.992000 14368 Lib\site-packages\torch\utils\_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\Desktop\Namma AI hackathon\.venv\Lib\site-packages\executorch\exir\tensor.py:84: FutureWarning: guard_size_oblivious will be removed. Consider using explicit unbacked handling     potentially utilizing guard_or_false, guard_or_true, or statically_known_true
+  return guard_size_oblivious(self.stride < other.stride)
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:71] Reading file /sys/devices/soc0/image_version
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:87] Failed to open midr file /sys/devices/soc0/image_version
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:100] Reading file /sys/devices/system/cpu/cpu0/regs/identification/midr_el1
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:109] Failed to open midr file /sys/devices/system/cpu/cpu0/regs/identification/midr_el1
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:125] CPU info and manual query on # of cpus dont match.
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\threadpool.cpp:65] Resetting threadpool to 4 threads.
+FP32 {"pte": "repvit_m0_9_224_fp32.pte", "size_mb": 18.81, "delegated_nodes": 197, "non_delegated_nodes": 3, "delegated_subgraphs": 2, "laptop_ms_t4": 19.41, "cos_vs_eager_mean": 1.0, "cos_vs_eager_min": 1.0, "head_bal": {"acc": 0.8208, "ci95": [0.7674, 0.8642], "correct": 197}}
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\Desktop\Namma AI hackathon\.venv\Lib\site-packages\executorch\exir\tensor.py:84: FutureWarning: guard_size_oblivious will be removed. Consider using explicit unbacked handling     potentially utilizing guard_or_false, guard_or_true, or statically_known_true
+  return guard_size_oblivious(self.stride < other.stride)
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\threadpool.cpp:65] Resetting threadpool to 4 threads.
+INT8 {"pte": "repvit_m0_9_224_int8.pte", "size_mb": 5.08, "delegated_nodes": 712, "non_delegated_nodes": 3, "delegated_subgraphs": 2, "scope": "all", "conv_cos_vs_eager_mean": 0.9733, "conv_cos_vs_eager_min": 0.9414, "pte_cos_on_laptop_unreliable": 0.973, "pte_ms_t4_on_laptop_unreliable": 13.4, "head_bal_fp32fit": {"acc": 0.6542, "ci95": [0.592, 0.7115], "correct": 157}, "int8_broken": false}
+wrote C:\Users\acer\Desktop\Namma AI hackathon\bets\cnn\result_repvit_m0_9_224.json

@@ -1,0 +1,32 @@
+{
+ "tag": "laptop_multi_demo",
+ "model": "open_clip MobileCLIP2-S0 dfndr2b (image tower), fine-tuned on TrashNet",
+ "pretrained": "fine-tuned",
+ "pte": "own_mobileclip2_s0_256_fp32.pte",
+ "pte_size_mb": 45.52,
+ "resolution": 256,
+ "threads": 4,
+ "images": 30,
+ "scored": 30,
+ "correct": 30,
+ "accuracy": 1.0,
+ "load_ms": 0.2,
+ "inference_ms": {
+  "p50": 41.4,
+  "p90": 42.9,
+  "min": 39.3,
+  "max": 44.5
+ },
+ "preprocess_ms": {
+  "p50": 3.3,
+  "p90": 3.5
+ },
+ "images_per_second": 22.35,
+ "peak_rss_mb": 424.0,
+ "machine": "AMD64",
+ "cpu_count": 12,
+ "temp_start": null,
+ "temp_end": null,
+ "clock_arm": null,
+ "throttled": null
+}

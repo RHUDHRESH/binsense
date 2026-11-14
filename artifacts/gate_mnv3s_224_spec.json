@@ -1,0 +1,44 @@
+{
+ "model": "mobilenetv3_small_100.lamb_in1k",
+ "pretrained": "imagenet-1k",
+ "resolution": 224,
+ "params_m": 1.52,
+ "preprocess": {
+  "size": 224,
+  "mean": [
+   0.485,
+   0.456,
+   0.406
+  ],
+  "std": [
+   0.229,
+   0.224,
+   0.225
+  ]
+ },
+ "fp32": {
+  "pte": "gate_mnv3s_224_fp32.pte",
+  "size_mb": 6.1,
+  "delegated_nodes": 216,
+  "non_delegated_nodes": 19,
+  "delegated_subgraphs": 1,
+  "non_delegated_ops": {
+   "dim_order_ops__to_dim_order_copy_default": 18,
+   "getitem": 1
+  },
+  "laptop_ms": 20.418600004632026
+ },
+ "int8": {
+  "pte": "gate_mnv3s_224_int8.pte",
+  "size_mb": 1.72,
+  "delegated_nodes": 420,
+  "non_delegated_nodes": 19,
+  "delegated_subgraphs": 1,
+  "non_delegated_ops": {
+   "dim_order_ops__to_dim_order_copy_default": 18,
+   "getitem": 1
+  },
+  "laptop_ms": 13.993000029586256,
+  "cosine_vs_eager_real_image": 0.2146
+ }
+}

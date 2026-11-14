@@ -1,0 +1,10 @@
+{
+ "prefix": "mobilenetv3_small_100_224_fp32",
+ "exact_dup_test_in_pool": 0,
+ "nn1_acc": 0.8375,
+ "nn1_is_sibling_shot_frac": 0.0708,
+ "nn1_cos_median": 0.7078,
+ "lr_full_acc": 0.85,
+ "lr_sibling_purged_acc": 0.7667,
+ "purged_pool_n": 1036
+}

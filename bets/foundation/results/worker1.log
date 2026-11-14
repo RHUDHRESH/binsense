@@ -1,0 +1,36 @@
+C:\Users\acer\Desktop\Namma AI hackathon\.venv\Lib\site-packages\torchao\quantization\quant_api.py:1745: SyntaxWarning: invalid escape sequence '\.'
+  * regex for parameter names, must start with `re:`, e.g. `re:language\.layers\..+\.q_proj.weight`.
+W1114 13:05:09.385000 12464 Lib\site-packages\torch\utils\_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:71] Reading file /sys/devices/soc0/image_version
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:87] Failed to open midr file /sys/devices/soc0/image_version
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:100] Reading file /sys/devices/system/cpu/cpu0/regs/identification/midr_el1
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:109] Failed to open midr file /sys/devices/system/cpu/cpu0/regs/identification/midr_el1
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:125] CPU info and manual query on # of cpus dont match.
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\threadpool.cpp:65] Resetting threadpool to 4 threads.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+{
+ "name": "s0_ref",
+ "kind": "existing",
+ "pte": "C:\\Users\\acer\\Desktop\\Namma AI hackathon\\artifacts\\mobileclip2-s0_256_fp32.pte",
+ "model": "MobileCLIP2-S0",
+ "pretrained": "dfndr2b",
+ "threadpool": 4,
+ "res": 256,
+ "mean": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "std": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "params_m": 11.36,
+ "eager_ms": 1710.3,
+ "feat_dim": 512,
+ "size_mb": 45.52,
+ "pte_ms_median20": 284.4,
+ "cosine_vs_eager_real": 0.408031
+}
+s0_ref trashnet (240, 512) 158s

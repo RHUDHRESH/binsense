@@ -1,0 +1,80 @@
+{
+ "model": "mobilenetv3_large_100.ra_in1k",
+ "seed": 0,
+ "torch": "2.12.1+cpu",
+ "timm": "1.0.31",
+ "params_m_raw": 4.202,
+ "params_m": 4.202,
+ "res": 224,
+ "mean": [
+  0.485,
+  0.456,
+  0.406
+ ],
+ "std": [
+  0.229,
+  0.224,
+  0.225
+ ],
+ "classes": [
+  "cardboard",
+  "glass",
+  "metal",
+  "paper",
+  "plastic",
+  "trash"
+ ],
+ "feat_dim": 1280,
+ "fp32": {
+  "pte": "mobilenetv3_large_100_224_fp32.pte",
+  "size_mb": 16.82,
+  "delegated_nodes": 255,
+  "non_delegated_nodes": 17,
+  "delegated_subgraphs": 1,
+  "non_delegated_ops": {
+   "dim_order_ops__to_dim_order_copy_default": 16,
+   "getitem": 1
+  },
+  "laptop_ms_t4": 8.92,
+  "cos_vs_eager_mean": 1.0,
+  "cos_vs_eager_min": 1.0,
+  "head_bal": {
+   "acc": 0.8875,
+   "ci95": [
+    0.8413,
+    0.9215
+   ],
+   "correct": 213
+  }
+ },
+ "int8_full_attempt": {
+  "conv_cos_mean": 0.8278,
+  "conv_cos_min": 0.6059
+ },
+ "int8": {
+  "pte": "mobilenetv3_large_100_224_int8.pte",
+  "size_mb": 8.18,
+  "delegated_nodes": 470,
+  "non_delegated_nodes": 17,
+  "delegated_subgraphs": 1,
+  "non_delegated_ops": {
+   "dim_order_ops__to_dim_order_copy_default": 16,
+   "getitem": 1
+  },
+  "scope": "all_except_head:conv_head,norm_head,head,classifier,global_pool,pre_logits",
+  "conv_cos_vs_eager_mean": 0.8331,
+  "conv_cos_vs_eager_min": 0.619,
+  "pte_cos_on_laptop_unreliable": 0.8334,
+  "pte_ms_t4_on_laptop_unreliable": 10.19,
+  "head_bal_fp32fit": {
+   "acc": 0.8292,
+   "ci95": [
+    0.7765,
+    0.8715
+   ],
+   "correct": 199
+  },
+  "int8_broken": true
+ },
+ "wall_s": 184.8
+}

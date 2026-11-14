@@ -1,0 +1,74 @@
+{
+ "model": "mobilenetv4_conv_medium.e500_r256_in1k",
+ "seed": 0,
+ "torch": "2.12.1+cpu",
+ "timm": "1.0.31",
+ "params_m_raw": 8.435,
+ "params_m": 8.435,
+ "res": 256,
+ "mean": [
+  0.485,
+  0.456,
+  0.406
+ ],
+ "std": [
+  0.229,
+  0.224,
+  0.225
+ ],
+ "classes": [
+  "cardboard",
+  "glass",
+  "metal",
+  "paper",
+  "plastic",
+  "trash"
+ ],
+ "feat_dim": 1280,
+ "fp32": {
+  "pte": "mobilenetv4_conv_medium_256_fp32.pte",
+  "size_mb": 33.66,
+  "delegated_nodes": 289,
+  "non_delegated_nodes": 1,
+  "delegated_subgraphs": 1,
+  "non_delegated_ops": {
+   "getitem": 1
+  },
+  "laptop_ms_t4": 45.03,
+  "cos_vs_eager_mean": 1.0,
+  "cos_vs_eager_min": 1.0,
+  "head_bal": {
+   "acc": 0.8917,
+   "ci95": [
+    0.846,
+    0.925
+   ],
+   "correct": 214
+  }
+ },
+ "int8": {
+  "pte": "mobilenetv4_conv_medium_256_int8.pte",
+  "size_mb": 8.88,
+  "delegated_nodes": 426,
+  "non_delegated_nodes": 1,
+  "delegated_subgraphs": 1,
+  "non_delegated_ops": {
+   "getitem": 1
+  },
+  "scope": "all",
+  "conv_cos_vs_eager_mean": 0.9744,
+  "conv_cos_vs_eager_min": 0.9483,
+  "pte_cos_on_laptop_unreliable": 0.976,
+  "pte_ms_t4_on_laptop_unreliable": 57.23,
+  "head_bal_fp32fit": {
+   "acc": 0.8625,
+   "ci95": [
+    0.8132,
+    0.9004
+   ],
+   "correct": 207
+  },
+  "int8_broken": false
+ },
+ "wall_s": 595.3
+}

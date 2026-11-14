@@ -1,0 +1,11 @@
+.venv/
+data/
+artifacts/emb_cache/
+artifacts/*.pte
+bets/*/cache/
+bets/*/artifacts/
+bets/*/pte/
+pi_bundle/models/
+pi_bundle/results/
+__pycache__/
+*.pyc

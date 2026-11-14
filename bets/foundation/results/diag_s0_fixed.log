@@ -1,0 +1,14 @@
+C:\Users\acer\Desktop\Namma AI hackathon\.venv\Lib\site-packages\torchao\quantization\quant_api.py:1745: SyntaxWarning: invalid escape sequence '\.'
+  * regex for parameter names, must start with `re:`, e.g. `re:language\.layers\..+\.q_proj.weight`.
+W1114 13:20:11.065000 13216 Lib\site-packages\torch\utils\_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:71] Reading file /sys/devices/soc0/image_version
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:87] Failed to open midr file /sys/devices/soc0/image_version
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:100] Reading file /sys/devices/system/cpu/cpu0/regs/identification/midr_el1
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:109] Failed to open midr file /sys/devices/system/cpu/cpu0/regs/identification/midr_el1
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:125] CPU info and manual query on # of cpus dont match.
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\threadpool.cpp:65] Resetting threadpool to 4 threads.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+rand: eager_vs_eager=1.0000 pte_vs_eager=1.0000 |eager|=1.16 |pte|=1.00
+pool[0]: eager_vs_eager=1.0000 pte_vs_eager=1.0000 cached_vs_pte=1.0000 |eager|=0.92 |pte|=1.00
+pool[500]: eager_vs_eager=1.0000 pte_vs_eager=1.0000 cached_vs_pte=1.0000 |eager|=0.79 |pte|=1.00
+pool[1500]: eager_vs_eager=1.0000 pte_vs_eager=1.0000 cached_vs_pte=1.0000 |eager|=0.64 |pte|=1.00

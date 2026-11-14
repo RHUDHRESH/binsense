@@ -1,0 +1,126 @@
+C:\Users\acer\Desktop\Namma AI hackathon\.venv\Lib\site-packages\torchao\quantization\quant_api.py:1745: SyntaxWarning: invalid escape sequence '\.'
+  * regex for parameter names, must start with `re:`, e.g. `re:language\.layers\..+\.q_proj.weight`.
+W1114 13:20:09.818000 15324 Lib\site-packages\torch\utils\_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:71] Reading file /sys/devices/soc0/image_version
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:87] Failed to open midr file /sys/devices/soc0/image_version
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:100] Reading file /sys/devices/system/cpu/cpu0/regs/identification/midr_el1
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:109] Failed to open midr file /sys/devices/system/cpu/cpu0/regs/identification/midr_el1
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\cpuinfo_utils.cpp:125] CPU info and manual query on # of cpus dont match.
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\threadpool.cpp:65] Resetting threadpool to 4 threads.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\Desktop\Namma AI hackathon\.venv\Lib\site-packages\executorch\exir\tensor.py:84: FutureWarning: guard_size_oblivious will be removed. Consider using explicit unbacked handling     potentially utilizing guard_or_false, guard_or_true, or statically_known_true
+  return guard_size_oblivious(self.stride < other.stride)
+{
+ "name": "dinov2_s14",
+ "kind": "timm",
+ "model": "vit_small_patch14_dinov2.lvd142m",
+ "threadpool": 4,
+ "res": 224,
+ "mean": [
+  0.485,
+  0.456,
+  0.406
+ ],
+ "std": [
+  0.229,
+  0.224,
+  0.225
+ ],
+ "params_m": 21.63,
+ "eager_ms": 513.1,
+ "feat_dim": 384,
+ "pte": "C:\\Users\\acer\\Desktop\\Namma AI hackathon\\bets\\foundation\\pte\\dinov2_s14_224_fp32.pte",
+ "size_mb": 86.69,
+ "delegated_nodes": 391,
+ "non_delegated_nodes": 342,
+ "delegated_subgraphs": 62,
+ "non_delegated_ops": {
+  "aten_any_dim": 12,
+  "aten_eq_scalar": 12,
+  "aten_expand_copy_default": 49,
+  "aten_full_like_default": 12,
+  "aten_logical_not_default": 24,
+  "aten_mul_scalar": 24,
+  "aten_native_layer_norm_default": 25,
+  "aten_select_copy_int": 1,
+  "aten_squeeze_copy_dims": 36,
+  "aten_where_self": 12,
+  "getitem": 135
+ },
+ "export_s": 160.8,
+ "pte_ms_median20": 209.2,
+ "cosine_vs_eager_real": 1.0
+}
+dinov2_s14 trashnet (240, 384) 247s
+dinov2_s14 trashnet_pool (597, 384) 419s
+done dinov2_s14 236.4 ms/img
+[C:\actions-runner\_work\executorch\executorch\et\executorch\extension\threadpool\threadpool.cpp:65] Resetting threadpool to 4 threads.
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\AppData\Local\uv\python\cpython-3.12-windows-x86_64-none\Lib\copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+C:\Users\acer\Desktop\Namma AI hackathon\.venv\Lib\site-packages\executorch\exir\tensor.py:84: FutureWarning: guard_size_oblivious will be removed. Consider using explicit unbacked handling     potentially utilizing guard_or_false, guard_or_true, or statically_known_true
+  return guard_size_oblivious(self.stride < other.stride)
+{
+ "name": "vitb32",
+ "kind": "openclip",
+ "model": "ViT-B-32",
+ "pretrained": "laion2b_s34b_b79k",
+ "threadpool": 4,
+ "res": 224,
+ "mean": [
+  0.48145466,
+  0.4578275,
+  0.40821073
+ ],
+ "std": [
+  0.26862954,
+  0.26130258,
+  0.27577711
+ ],
+ "params_m": 87.85,
+ "eager_ms": 107.8,
+ "feat_dim": 512,
+ "pte": "C:\\Users\\acer\\Desktop\\Namma AI hackathon\\bets\\foundation\\pte\\vitb32_224_fp32.pte",
+ "size_mb": 351.59,
+ "delegated_nodes": 451,
+ "non_delegated_nodes": 489,
+ "delegated_subgraphs": 63,
+ "non_delegated_ops": {
+  "aten_addmm_default": 36,
+  "aten_any_dim": 12,
+  "aten_eq_scalar": 12,
+  "aten_expand_copy_default": 49,
+  "aten_full_like_default": 12,
+  "aten_logical_not_default": 24,
+  "aten_mul_scalar": 24,
+  "aten_native_layer_norm_default": 26,
+  "aten_select_copy_int": 1,
+  "aten_split_with_sizes_copy_default": 24,
+  "aten_where_self": 12,
+  "getitem": 257
+ },
+ "export_s": 315.5,
+ "pte_ms_median20": 2660.2,
+ "cosine_vs_eager_real": 1.0
+}

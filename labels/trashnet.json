@@ -1,0 +1,25 @@
+{
+  "labels": {
+    "cardboard": ["cardboard", "a cardboard box", "corrugated cardboard packaging"],
+    "glass": ["glass", "a glass bottle", "a glass jar"],
+    "metal": ["metal", "a metal can", "an aluminium drink can", "tin foil"],
+    "paper": ["paper", "a sheet of paper", "a newspaper", "a paper flyer"],
+    "plastic": ["plastic", "a plastic bottle", "a plastic container", "a plastic bag"],
+    "trash": ["trash", "general waste", "a dirty food wrapper", "mixed non-recyclable rubbish"]
+  },
+  "noul": {
+    "recyclable": {
+      "yes": ["a recyclable item", "clean recyclable packaging", "a bottle, can, paper or cardboard for recycling"],
+      "no": ["non-recyclable rubbish", "dirty mixed waste for landfill", "a food-soiled wrapper"]
+    }
+  },
+  "score": {
+    "contamination": [
+      ["a spotless clean item"],
+      ["a slightly used item"],
+      ["a dirty item with some residue"],
+      ["an item soiled with food"],
+      ["a filthy item covered in food waste"]
+    ]
+  }
+}

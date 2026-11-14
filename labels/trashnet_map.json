@@ -1,0 +1,8 @@
+{
+  "cardboard": ["trashnet_pool/cardboard"],
+  "glass": ["trashnet_pool/glass"],
+  "metal": ["trashnet_pool/metal"],
+  "paper": ["trashnet_pool/paper"],
+  "plastic": ["trashnet_pool/plastic"],
+  "trash": ["trashnet_pool/trash"]
+}

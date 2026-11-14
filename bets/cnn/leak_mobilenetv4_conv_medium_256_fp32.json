@@ -1,0 +1,12 @@
+{
+ "prefix": "mobilenetv4_conv_medium_256_fp32",
+ "exact_dup_test_in_pool": 0,
+ "nn1_acc": 0.8875,
+ "nn1_is_sibling_shot_frac": 0.0625,
+ "nn1_cos_median": 0.8064,
+ "lr_full_acc": 0.8917,
+ "purge_radius": 1,
+ "lr_sibling_purged_acc": 0.825,
+ "purged_pool_n": 1823,
+ "lr_random_drop_same_n_acc": 0.8858
+}

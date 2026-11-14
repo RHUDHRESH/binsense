@@ -1,0 +1,32 @@
+{
+ "tag": "laptop_fp32_shot5",
+ "model": "MobileCLIP2-S0",
+ "pretrained": "dfndr2b",
+ "pte": "mobileclip2-s0_256_fp32.pte",
+ "pte_size_mb": 45.52,
+ "resolution": 256,
+ "threads": 12,
+ "images": 240,
+ "scored": 240,
+ "correct": 192,
+ "accuracy": 0.8,
+ "load_ms": 0.2,
+ "inference_ms": {
+  "p50": 69.5,
+  "p90": 74.2,
+  "min": 64.0,
+  "max": 104.7
+ },
+ "preprocess_ms": {
+  "p50": 2.9,
+  "p90": 3.3
+ },
+ "images_per_second": 13.6,
+ "peak_rss_mb": 428.8,
+ "machine": "AMD64",
+ "cpu_count": 12,
+ "temp_start": null,
+ "temp_end": null,
+ "clock_arm": null,
+ "throttled": null
+}

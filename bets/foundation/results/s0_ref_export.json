@@ -1,0 +1,28 @@
+{
+ "name": "s0_ref",
+ "kind": "existing",
+ "pte": "C:\\Users\\acer\\Desktop\\Namma AI hackathon\\artifacts\\mobileclip2-s0_256_fp32.pte",
+ "model": "MobileCLIP2-S0",
+ "pretrained": "dfndr2b",
+ "threadpool": 4,
+ "res": 256,
+ "mean": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "std": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "params_m": 11.36,
+ "eager_ms": 237.5,
+ "feat_dim": 512,
+ "size_mb": 45.52,
+ "pte_ms_median20": 118.7,
+ "cosine_vs_eager_real": 1.0,
+ "extract_ms_median": 138.4,
+ "extract_ms_p90": 182.1,
+ "total_s": 59.4
+}

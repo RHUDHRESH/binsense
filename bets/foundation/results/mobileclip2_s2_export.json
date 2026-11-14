@@ -1,0 +1,43 @@
+{
+ "name": "mobileclip2_s2",
+ "kind": "openclip",
+ "model": "MobileCLIP2-S2",
+ "pretrained": "dfndr2b",
+ "threadpool": 4,
+ "res": 256,
+ "mean": [
+  0.0,
+  0.0,
+  0.0
+ ],
+ "std": [
+  1.0,
+  1.0,
+  1.0
+ ],
+ "params_m": 35.7,
+ "eager_ms": 771.6,
+ "feat_dim": 512,
+ "pte": "C:\\Users\\acer\\Desktop\\Namma AI hackathon\\bets\\foundation\\pte\\mobileclip2_s2_256_fp32.pte",
+ "size_mb": 142.97,
+ "delegated_nodes": 647,
+ "non_delegated_nodes": 93,
+ "delegated_subgraphs": 13,
+ "non_delegated_ops": {
+  "aten_any_dim": 4,
+  "aten_eq_scalar": 4,
+  "aten_expand_copy_default": 16,
+  "aten_full_like_default": 4,
+  "aten_logical_not_default": 8,
+  "aten_mul_scalar": 8,
+  "aten_squeeze_copy_dims": 12,
+  "aten_where_self": 4,
+  "getitem": 33
+ },
+ "export_s": 225.9,
+ "pte_ms_median20": 435.3,
+ "cosine_vs_eager_real": 1.0,
+ "extract_ms_median": 353.9,
+ "extract_ms_p90": 467.3,
+ "total_s": 652.9
+}

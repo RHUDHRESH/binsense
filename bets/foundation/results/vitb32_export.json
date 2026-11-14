@@ -1,0 +1,43 @@
+{
+ "name": "vitb32",
+ "kind": "openclip",
+ "model": "ViT-B-32",
+ "pretrained": "laion2b_s34b_b79k",
+ "threadpool": 4,
+ "res": 224,
+ "mean": [
+  0.48145466,
+  0.4578275,
+  0.40821073
+ ],
+ "std": [
+  0.26862954,
+  0.26130258,
+  0.27577711
+ ],
+ "params_m": 87.85,
+ "eager_ms": 107.8,
+ "feat_dim": 512,
+ "pte": "C:\\Users\\acer\\Desktop\\Namma AI hackathon\\bets\\foundation\\pte\\vitb32_224_fp32.pte",
+ "size_mb": 351.59,
+ "delegated_nodes": 451,
+ "non_delegated_nodes": 489,
+ "delegated_subgraphs": 63,
+ "non_delegated_ops": {
+  "aten_addmm_default": 36,
+  "aten_any_dim": 12,
+  "aten_eq_scalar": 12,
+  "aten_expand_copy_default": 49,
+  "aten_full_like_default": 12,
+  "aten_logical_not_default": 24,
+  "aten_mul_scalar": 24,
+  "aten_native_layer_norm_default": 26,
+  "aten_select_copy_int": 1,
+  "aten_split_with_sizes_copy_default": 24,
+  "aten_where_self": 12,
+  "getitem": 257
+ },
+ "export_s": 315.5,
+ "pte_ms_median20": 2660.2,
+ "cosine_vs_eager_real": 1.0
+}

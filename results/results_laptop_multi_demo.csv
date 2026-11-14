@@ -1,0 +1,31 @@
+image,label,predicted,confidence,correct,multi_select,inference_ms
+cardboard1.jpg,cardboard,cardboard,0.914,True,cardboard + recyclable + dry_waste + paper_stream,39.9
+cardboard108.jpg,cardboard,cardboard,0.917,True,cardboard + recyclable + dry_waste + paper_stream,41.5
+cardboard117.jpg,cardboard,cardboard,0.92,True,cardboard + recyclable + dry_waste + paper_stream,40.8
+cardboard126.jpg,cardboard,cardboard,0.909,True,cardboard + recyclable + dry_waste + paper_stream,40.1
+cardboard135.jpg,cardboard,cardboard,0.932,True,cardboard + recyclable + dry_waste + paper_stream,42.1
+glass1.jpg,glass,glass,0.926,True,glass + recyclable + dry_waste,40.0
+glass11.jpg,glass,glass,0.919,True,glass + recyclable + dry_waste,41.3
+glass120.jpg,glass,glass,0.928,True,glass + recyclable + dry_waste,41.4
+glass131.jpg,glass,glass,0.925,True,glass + recyclable + dry_waste,39.7
+glass142.jpg,glass,glass,0.914,True,glass + recyclable + dry_waste,40.7
+metal1.jpg,metal,metal,0.915,True,metal + recyclable + dry_waste,42.9
+metal108.jpg,metal,metal,0.918,True,metal + recyclable + dry_waste,40.8
+metal117.jpg,metal,metal,0.92,True,metal + recyclable + dry_waste,41.5
+metal126.jpg,metal,metal,0.919,True,metal + recyclable + dry_waste,41.8
+metal135.jpg,metal,metal,0.898,True,metal + recyclable + dry_waste,41.4
+paper1.jpg,paper,paper,0.915,True,paper + recyclable + dry_waste + paper_stream,40.2
+paper111.jpg,paper,paper,0.922,True,paper + recyclable + dry_waste + paper_stream,41.7
+paper124.jpg,paper,paper,0.926,True,paper + recyclable + dry_waste + paper_stream,42.3
+paper137.jpg,paper,paper,0.925,True,paper + recyclable + dry_waste + paper_stream,40.1
+paper15.jpg,paper,paper,0.925,True,paper + recyclable + dry_waste + paper_stream,43.6
+plastic1.jpg,plastic,plastic,0.9,True,plastic + recyclable + dry_waste,44.5
+plastic11.jpg,plastic,plastic,0.826,True,plastic + recyclable + dry_waste,41.5
+plastic120.jpg,plastic,plastic,0.926,True,plastic + recyclable + dry_waste,40.3
+plastic131.jpg,plastic,plastic,0.915,True,plastic + recyclable + dry_waste,42.0
+plastic142.jpg,plastic,plastic,0.902,True,plastic + recyclable + dry_waste,41.4
+trash1.jpg,trash,trash,0.839,True,trash + dry_waste + landfill,39.3
+trash101.jpg,trash,trash,0.911,True,trash + dry_waste + landfill,41.4
+trash104.jpg,trash,trash,0.879,True,trash + dry_waste + landfill,43.6
+trash107.jpg,trash,trash,0.914,True,trash + dry_waste + landfill,41.0
+trash11.jpg,trash,trash,0.854,True,trash + dry_waste + landfill,41.9

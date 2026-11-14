@@ -1,0 +1,78 @@
+{
+ "model": "mobilenetv4_conv_small.e2400_r224_in1k",
+ "seed": 0,
+ "torch": "2.12.1+cpu",
+ "timm": "1.0.31",
+ "params_m_raw": 2.493,
+ "params_m": 2.493,
+ "res": 224,
+ "mean": [
+  0.485,
+  0.456,
+  0.406
+ ],
+ "std": [
+  0.229,
+  0.224,
+  0.225
+ ],
+ "classes": [
+  "cardboard",
+  "glass",
+  "metal",
+  "paper",
+  "plastic",
+  "trash"
+ ],
+ "feat_dim": 1280,
+ "fp32": {
+  "pte": "mobilenetv4_conv_small_224_fp32.pte",
+  "size_mb": 9.96,
+  "delegated_nodes": 180,
+  "non_delegated_nodes": 1,
+  "delegated_subgraphs": 1,
+  "non_delegated_ops": {
+   "getitem": 1
+  },
+  "laptop_ms_t4": 5.83,
+  "cos_vs_eager_mean": 1.0,
+  "cos_vs_eager_min": 1.0,
+  "head_bal": {
+   "acc": 0.8833,
+   "ci95": [
+    0.8366,
+    0.918
+   ],
+   "correct": 212
+  }
+ },
+ "int8_full_attempt": {
+  "conv_cos_mean": 0.9255,
+  "conv_cos_min": 0.8273
+ },
+ "int8": {
+  "pte": "mobilenetv4_conv_small_224_int8.pte",
+  "size_mb": 6.36,
+  "delegated_nodes": 257,
+  "non_delegated_nodes": 1,
+  "delegated_subgraphs": 1,
+  "non_delegated_ops": {
+   "getitem": 1
+  },
+  "scope": "all_except_head:conv_head,norm_head,head,classifier,global_pool,pre_logits",
+  "conv_cos_vs_eager_mean": 0.9256,
+  "conv_cos_vs_eager_min": 0.8271,
+  "pte_cos_on_laptop_unreliable": 0.9231,
+  "pte_ms_t4_on_laptop_unreliable": 7.13,
+  "head_bal_fp32fit": {
+   "acc": 0.85,
+   "ci95": [
+    0.7993,
+    0.8896
+   ],
+   "correct": 204
+  },
+  "int8_broken": true
+ },
+ "wall_s": 133.4
+}

@@ -1,0 +1,44 @@
+{
+ "name": "dinov2_s14",
+ "kind": "timm",
+ "model": "vit_small_patch14_dinov2.lvd142m",
+ "threadpool": 4,
+ "res": 224,
+ "mean": [
+  0.485,
+  0.456,
+  0.406
+ ],
+ "std": [
+  0.229,
+  0.224,
+  0.225
+ ],
+ "params_m": 21.63,
+ "eager_ms": 513.1,
+ "feat_dim": 384,
+ "pte": "C:\\Users\\acer\\Desktop\\Namma AI hackathon\\bets\\foundation\\pte\\dinov2_s14_224_fp32.pte",
+ "size_mb": 86.69,
+ "delegated_nodes": 391,
+ "non_delegated_nodes": 342,
+ "delegated_subgraphs": 62,
+ "non_delegated_ops": {
+  "aten_any_dim": 12,
+  "aten_eq_scalar": 12,
+  "aten_expand_copy_default": 49,
+  "aten_full_like_default": 12,
+  "aten_logical_not_default": 24,
+  "aten_mul_scalar": 24,
+  "aten_native_layer_norm_default": 25,
+  "aten_select_copy_int": 1,
+  "aten_squeeze_copy_dims": 36,
+  "aten_where_self": 12,
+  "getitem": 135
+ },
+ "export_s": 160.8,
+ "pte_ms_median20": 209.2,
+ "cosine_vs_eager_real": 1.0,
+ "extract_ms_median": 236.4,
+ "extract_ms_p90": 320.4,
+ "total_s": 419.3
+}

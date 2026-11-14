@@ -1,0 +1,122 @@
+{
+ "seed": 0,
+ "n_pool": 597,
+ "pool_cap_per_class": 100,
+ "n_test": 240,
+ "exact_dup_test_in_pool": 0,
+ "models": {
+  "s0_ref": {
+   "params_m": 11.36,
+   "size_mb": 45.52,
+   "delegated_nodes": null,
+   "non_delegated_nodes": null,
+   "cosine_vs_eager_real": 1.0,
+   "eager_ms": 237.5,
+   "pte_ms_median20": 118.7,
+   "extract_ms_median": 138.4,
+   "res": 256,
+   "feat_dim": 512,
+   "zeroshot": 61.3,
+   "proto20_mean": 80.5,
+   "proto20_sd": 1.4,
+   "proto20_min": 77.9,
+   "proto20_max": 84.2,
+   "linear": 93.3,
+   "linear_ci95": [
+    89.4,
+    95.9
+   ],
+   "linear_per_class": {
+    "cardboard": 95.0,
+    "glass": 95.0,
+    "metal": 97.5,
+    "paper": 90.0,
+    "plastic": 87.5,
+    "trash": 95.0
+   },
+   "test_maxcos_to_pool_median": 0.817,
+   "test_near_dup_ge_0.95": 3,
+   "linear_excl_neardup": 93.2,
+   "linear_fullpool": 92.9,
+   "linear_fullpool_ci95": [
+    89.0,
+    95.5
+   ]
+  },
+  "dinov2_s14": {
+   "params_m": 21.63,
+   "size_mb": 86.69,
+   "delegated_nodes": 391,
+   "non_delegated_nodes": 342,
+   "cosine_vs_eager_real": 1.0,
+   "eager_ms": 513.1,
+   "pte_ms_median20": 209.2,
+   "extract_ms_median": 236.4,
+   "res": 224,
+   "feat_dim": 384,
+   "proto20_mean": 78.4,
+   "proto20_sd": 1.7,
+   "proto20_min": 75.4,
+   "proto20_max": 82.5,
+   "linear": 90.0,
+   "linear_ci95": [
+    85.6,
+    93.2
+   ],
+   "linear_per_class": {
+    "cardboard": 87.5,
+    "glass": 92.5,
+    "metal": 97.5,
+    "paper": 92.5,
+    "plastic": 85.0,
+    "trash": 85.0
+   },
+   "test_maxcos_to_pool_median": 0.756,
+   "test_near_dup_ge_0.95": 0,
+   "linear_excl_neardup": 90.0,
+   "vs_s0_linear": {
+    "s0_only_right": 15,
+    "new_only_right": 7,
+    "mcnemar_p": 0.1338
+   }
+  },
+  "mobileclip2_s2": {
+   "params_m": 35.7,
+   "size_mb": 142.97,
+   "delegated_nodes": 647,
+   "non_delegated_nodes": 93,
+   "cosine_vs_eager_real": 1.0,
+   "eager_ms": 771.6,
+   "pte_ms_median20": 435.3,
+   "extract_ms_median": 353.9,
+   "res": 256,
+   "feat_dim": 512,
+   "zeroshot": 64.2,
+   "proto20_mean": 83.6,
+   "proto20_sd": 1.7,
+   "proto20_min": 79.6,
+   "proto20_max": 86.7,
+   "linear": 93.3,
+   "linear_ci95": [
+    89.4,
+    95.9
+   ],
+   "linear_per_class": {
+    "cardboard": 95.0,
+    "glass": 97.5,
+    "metal": 97.5,
+    "paper": 90.0,
+    "plastic": 87.5,
+    "trash": 92.5
+   },
+   "test_maxcos_to_pool_median": 0.863,
+   "test_near_dup_ge_0.95": 13,
+   "linear_excl_neardup": 93.0,
+   "vs_s0_linear": {
+    "s0_only_right": 6,
+    "new_only_right": 6,
+    "mcnemar_p": 1.0
+   }
+  }
+ }
+}

@@ -1,0 +1,84 @@
+{
+ "model": "efficientvit_b0.r224_in1k",
+ "seed": 0,
+ "torch": "2.12.1+cpu",
+ "timm": "1.0.31",
+ "params_m_raw": 2.129,
+ "params_m": 2.129,
+ "res": 224,
+ "mean": [
+  0.485,
+  0.456,
+  0.406
+ ],
+ "std": [
+  0.229,
+  0.224,
+  0.225
+ ],
+ "classes": [
+  "cardboard",
+  "glass",
+  "metal",
+  "paper",
+  "plastic",
+  "trash"
+ ],
+ "feat_dim": 1280,
+ "fp32": {
+  "pte": "efficientvit_b0_224_fp32.pte",
+  "size_mb": 8.58,
+  "delegated_nodes": 271,
+  "non_delegated_nodes": 60,
+  "delegated_subgraphs": 14,
+  "non_delegated_ops": {
+   "aten_expand_copy_default": 16,
+   "aten_native_layer_norm_default": 1,
+   "aten_split_with_sizes_copy_default": 4,
+   "getitem": 39
+  },
+  "laptop_ms_t4": 9.64,
+  "cos_vs_eager_mean": 1.0,
+  "cos_vs_eager_min": 1.0,
+  "head_bal": {
+   "acc": 0.8583,
+   "ci95": [
+    0.8086,
+    0.8968
+   ],
+   "correct": 206
+  }
+ },
+ "int8_full_attempt": {
+  "conv_cos_mean": 0.3675,
+  "conv_cos_min": 0.2675
+ },
+ "int8": {
+  "pte": "efficientvit_b0_224_int8.pte",
+  "size_mb": 6.64,
+  "delegated_nodes": 494,
+  "non_delegated_nodes": 60,
+  "delegated_subgraphs": 14,
+  "non_delegated_ops": {
+   "aten_expand_copy_default": 16,
+   "aten_native_layer_norm_default": 1,
+   "aten_split_with_sizes_copy_default": 4,
+   "getitem": 39
+  },
+  "scope": "all_except_head:conv_head,norm_head,head,classifier,global_pool,pre_logits",
+  "conv_cos_vs_eager_mean": 0.3677,
+  "conv_cos_vs_eager_min": 0.2649,
+  "pte_cos_on_laptop_unreliable": 0.3664,
+  "pte_ms_t4_on_laptop_unreliable": 13.32,
+  "head_bal_fp32fit": {
+   "acc": 0.3625,
+   "ci95": [
+    0.3043,
+    0.425
+   ],
+   "correct": 87
+  },
+  "int8_broken": true
+ },
+ "wall_s": 631.0
+}

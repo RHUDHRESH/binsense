@@ -1,0 +1,6 @@
+*.sh text eol=lf
+*.service text eol=lf
+*.py text eol=lf
+*.pte binary
+*.npz binary
+*.npy binary

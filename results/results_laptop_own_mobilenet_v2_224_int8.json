@@ -1,0 +1,32 @@
+{
+ "tag": "laptop_own_mobilenet_v2_224_int8",
+ "model": "torchvision mobilenet_v2 IMAGENET1K_V2, fine-tuned on TrashNet",
+ "pretrained": "fine-tuned",
+ "pte": "own_mobilenet_v2_224_int8.pte",
+ "pte_size_mb": 2.47,
+ "resolution": 224,
+ "threads": 4,
+ "images": 240,
+ "scored": 240,
+ "correct": 213,
+ "accuracy": 0.8875,
+ "load_ms": 0.3,
+ "inference_ms": {
+  "p50": 4.7,
+  "p90": 6.7,
+  "min": 3.3,
+  "max": 8.6
+ },
+ "preprocess_ms": {
+  "p50": 3.1,
+  "p90": 3.5
+ },
+ "images_per_second": 120.13,
+ "peak_rss_mb": 362.0,
+ "machine": "AMD64",
+ "cpu_count": 12,
+ "temp_start": null,
+ "temp_end": null,
+ "clock_arm": null,
+ "throttled": null
+}
