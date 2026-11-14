@@ -53,17 +53,33 @@ def catalog() -> dict:
     return {"models": out, "packs": {n: {"labels": m["labels"], "text": m["text"], "size": m["preprocess"]["size"]} for n, m in packs.items()}}
 
 
+SKIP = {"models", "packs", "results", "__pycache__", "sorted", "review", "rejected", "inbox", "support5", "support20", "organiser_raw", "trashnet_pool"}
+EXTRA = BASE.parent / "data"            # the project's downloaded photo sets, when running from the laptop
+MAX_PER_SET = 300
+
+
+def allowed(path: Path) -> bool:
+    path = path.resolve()
+    return (BASE in path.parents or EXTRA.resolve() in path.parents) and path.suffix.lower() in EXT and path.exists()
+
+
 def datasets() -> dict:
     out = {}
-    for d in sorted(p for p in BASE.iterdir() if p.is_dir() and p.name not in {"models", "packs", "results", "__pycache__", "sorted", "review", "rejected", "inbox"}):
-        files = sorted((p for p in d.rglob("*") if p.suffix.lower() in EXT), key=lambda p: (len(p.stem), p.stem))
+    roots = [d for d in sorted(BASE.iterdir()) if d.is_dir() and d.name not in SKIP]
+    if EXTRA.exists():
+        roots += [d for d in sorted(EXTRA.iterdir()) if d.is_dir() and d.name not in SKIP]
+    for d in roots:
+        files = sorted((f for f in d.rglob("*") if f.suffix.lower() in EXT), key=lambda f: (f.parent.name, len(f.stem), f.stem))
         if not files:
             continue
+        if len(files) > MAX_PER_SET:      # keep a spread across sub-folders, not just the first folder
+            files = files[:: max(1, len(files) // MAX_PER_SET)][:MAX_PER_SET]
         truth = {}
         if (d / "labels.csv").exists():
             truth = {r[0]: r[1] for r in csv.reader((d / "labels.csv").open(encoding="utf-8")) if len(r) > 1 and r[0] != "file"}
-        out[d.name] = [{"path": str(f.relative_to(BASE)).replace("\\", "/"), "name": f.name,
-                        "truth": truth.get(f.name, f.parent.name if f.parent != d else "")} for f in files]
+        name = d.name if d.name not in out else d.name + "_2"
+        out[name] = [{"path": (str(f.relative_to(BASE)) if BASE in f.parents else "../data/" + str(f.relative_to(EXTRA))).replace("\\", "/"),
+                      "name": f.name, "truth": truth.get(f.name, f.parent.name if f.parent != d else "")} for f in files]
     return out
 
 
@@ -125,7 +141,7 @@ def run_one(m: BinSense, path: Path, sharp: float, q: dict | None = None) -> dic
 
 def classify(q: dict) -> dict:
     path = (BASE / q["image"]).resolve()
-    if BASE not in path.parents or not path.exists():
+    if not allowed(path):
         raise ValueError("image not found")
     set_threads(int(q.get("threads", 0)))
     main = get_model(q["pte"], q["pack"]); sharp = float(q.get("sharp", 1)); steps = []; used = "single model"
@@ -286,7 +302,7 @@ class H(BaseHTTPRequestHandler):
                 return self.send(system())
             if u.path == "/img":
                 p = (BASE / unquote(parse_qs(u.query)["p"][0])).resolve()
-                if BASE in p.parents and p.suffix.lower() in EXT and p.exists():
+                if allowed(p):
                     return self.send(p.read_bytes(), "image/" + p.suffix.lower().strip(".").replace("jpg", "jpeg"))
             self.send({"error": "not found"}, code=404)
         except Exception as e:  # noqa: BLE001
@@ -313,7 +329,8 @@ class H(BaseHTTPRequestHandler):
             if u.path == "/api/build_pack":
                 return self.send(build_pack(q))
             if u.path == "/api/truth":
-                d = BASE / "".join(c for c in q["dataset"] if c.isalnum() or c in "-_"); f = d / "labels.csv"
+                dn = "".join(c for c in q["dataset"] if c.isalnum() or c in "-_")
+                d = BASE / dn if (BASE / dn).is_dir() else EXTRA / dn; f = d / "labels.csv"
                 t = {r[0]: r[1] for r in csv.reader(f.open(encoding="utf-8")) if len(r) > 1 and r[0] != "file"} if f.exists() else {}
                 t[Path(q["name"]).name] = q["label"]
                 with f.open("w", newline="", encoding="utf-8") as fh:

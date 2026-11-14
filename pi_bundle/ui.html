@@ -39,10 +39,12 @@ th{color:var(--ink2);font-weight:600}td img{width:54px;height:42px;object-fit:co
 <div>
  <div class="card"><div class="step">Step 1</div><h2>Photos</h2>
   <label>Choose a set of photos</label><select id="dataset"></select>
-  <div class="drop" id="drop">Drop photos here, or click to pick files<br><span class="muted">they go into a set called <b>my_photos</b></span></div>
+  <div class="drop" id="drop">Drop photos here, or click to pick files<br><span class="muted">they are added to a set called <b>my_photos</b></span></div>
+  <div id="setinfo" class="muted" style="margin-top:6px"></div>
   <input type="file" id="file" multiple accept="image/*" hidden></div>
 
  <div class="card"><div class="step">Step 2</div><h2>Labels</h2>
+  <div class="muted" style="margin-bottom:6px">Labels are the answers the model may choose from. Pick a ready set, or type your own below.</div>
   <label>Label set</label><select id="pack"></select><div id="packlabels" class="muted" style="margin-top:6px"></div>
   <div id="editor"><label>Or type your own: one label per line. Add words after a colon to describe it.</label>
    <textarea id="labtext">organic: food scraps, fruit peels, dry leaves
@@ -93,7 +95,8 @@ function fillPacks(keep){const m=S.models.find(x=>x.pte===$('pte').value);const 
 function packInfo(){const p=S.packs[$('pack').value];$('packlabels').innerHTML=p?'Labels: <b>'+p.labels.map(esc).join(', ')+'</b>':'';const m=S.models.find(x=>x.pte===$('pte').value);
  $('modelinfo').textContent=`${m.kind} · ${m.mb} MB · ${m.res}×${m.res} input`;$('gatebox').hidden=!gateFor();$('editor').hidden=!(S.system.can_edit_labels&&p&&p.text)}
 function thumbs(){const d=S.datasets[$('dataset').value]||[];$('thumbs').innerHTML=d.map(i=>`<div class="thumb ${sel===i.path?'sel':''}" data-p="${esc(i.path)}"><img loading="lazy" src="/img?p=${encodeURIComponent(i.path)}"><span>${esc(i.name)}${i.truth?' · '+esc(i.truth):''}</span></div>`).join('')||'<span class="muted">No photos in this set.</span>';
- document.querySelectorAll('.thumb').forEach(t=>t.onclick=()=>one(t.dataset.p))}
+ document.querySelectorAll('.thumb').forEach(t=>t.onclick=()=>one(t.dataset.p));
+ const known=[...new Set(d.map(i=>i.truth).filter(Boolean))];$('setinfo').textContent=d.length+' photos'+(known.length?' · true labels: '+known.slice(0,8).join(', ')+(known.length>8?'…':''):' · no true labels yet')}
 async function load(keepPack){S=await api('/api/state');const dv=$('dataset').value,pv=$('pte').value;
  $('dataset').innerHTML=Object.keys(S.datasets).map(d=>`<option value="${d}">${d} (${S.datasets[d].length})</option>`).join('');if(S.datasets[dv])$('dataset').value=dv;else if(S.datasets.organiser)$('dataset').value='organiser';
  $('pte').innerHTML=S.models.map(m=>`<option value="${m.pte}">${m.pte.replace('.pte','')}</option>`).join('');
