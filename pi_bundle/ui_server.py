@@ -313,6 +313,16 @@ def cam_loop(index: int):
 
 
 def cam_frame() -> bytes | None:
+    url = os.environ.get("BINSENSE_CAMERA_URL")          # take frames from another BinSense server (e.g. the Pi's camera)
+    if url:
+        try:
+            from urllib.request import urlopen
+            f = urlopen(url, timeout=4).read()
+            with CAM["lock"]:
+                CAM["frame"] = f; CAM["t"] = time.time(); CAM["size"] = "remote camera"; CAM["err"] = ""
+            return f
+        except Exception as e:  # noqa: BLE001
+            CAM["err"] = f"remote camera not reachable ({type(e).__name__})"; return None
     if not CAM["started"]:
         CAM["started"] = True; CAM["err"] = ""
         threading.Thread(target=cam_loop, args=(int(os.environ.get("BINSENSE_CAMERA", "0")),), daemon=True).start()

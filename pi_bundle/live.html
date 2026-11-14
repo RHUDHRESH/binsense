@@ -26,7 +26,15 @@ select{padding:7px 9px;border:1px solid var(--line);border-radius:7px;font:inher
 <main>
  <div class="card"><div class="cam" id="cam"><img id="img" alt="live camera"><div class="scan"></div></div>
   <div class="muted" id="caminfo" style="margin-top:8px">Hold one item in front of the camera, on a plain background if you can.</div>
-  <div class="row" style="margin-top:6px"><div style="flex:1"><label>Labels</label><select id="pack"></select></div><div style="flex:1"><label>Model</label><select id="pte"></select></div></div></div>
+  <div class="row" style="margin-top:6px"><div style="flex:1"><label>Labels</label><select id="pack"></select></div><div style="flex:1"><label>Model</label><select id="pte"></select></div></div>
+  <div style="margin-top:10px;border-top:1px solid var(--line);padding-top:6px"><div class="muted" style="font-weight:600;color:var(--ink)">Change a setting and watch the answer move</div>
+   <div class="row"><div style="flex:1;min-width:150px"><label>Say “not sure” below: <b id="v_review"></b></label><input type="range" id="review" min="0" max="95" value="50" style="width:100%"></div>
+    <div style="flex:1;min-width:150px"><label>Decisiveness: <b id="v_sharp"></b></label><input type="range" id="sharp" min="20" max="300" value="100" style="width:100%"></div></div>
+   <div class="row"><div style="flex:1;min-width:150px"><label>Brightness: <b id="v_brightness"></b></label><input type="range" id="brightness" min="30" max="250" value="100" style="width:100%"></div>
+    <div style="flex:1;min-width:150px"><label>Contrast: <b id="v_contrast"></b></label><input type="range" id="contrast" min="30" max="250" value="100" style="width:100%"></div></div>
+   <div class="row"><div style="flex:1;min-width:150px"><label>Blur: <b id="v_blur"></b></label><input type="range" id="blur" min="0" max="80" value="0" style="width:100%"></div>
+    <div style="flex:1;min-width:150px"><label>How the frame is fitted</label><select id="crop"><option value="centre">Centre crop</option><option value="whole">Whole frame, squashed</option><option value="zoom">Zoom into the middle</option></select></div></div>
+   <div class="row" style="margin-top:8px"><div style="flex:1;min-width:150px"><label>CPU cores: <b id="v_threads"></b></label><input type="range" id="threads" min="1" max="4" value="4" style="width:100%"></div><button id="reset">Reset settings</button></div></div></div>
  <div class="card"><div class="muted">It sees</div><div class="answer" id="ans">…</div><div class="conf" id="conf"></div><div id="tags" style="margin-top:8px"></div>
   <div class="steps"><div class="stepc" id="s1"><b>1 Camera frame</b><span id="s1t"></span></div><div class="stepc" id="s2"><b>2 Shrink</b><span id="s2t"></span></div><div class="stepc" id="s3"><b>3 Model</b><span id="s3t"></span></div><div class="stepc" id="s4"><b>4 Decide</b><span id="s4t"></span></div></div>
   <div id="bars"></div>
@@ -43,7 +51,7 @@ async function init(){S=await api('/api/state');sysline(S.system);$('pte').inner
  $('pte').onchange=fillPacks;frames();loop();setInterval(async()=>{try{sysline(await api('/api/system'))}catch(e){}},10000)}
 function frames(){const im=new Image();im.onload=()=>{$('img').src=im.src;if(run)setTimeout(frames,120)};im.onerror=()=>setTimeout(frames,800);im.src='/cam.jpg?t='+Date.now()}
 async function loop(){while(true){if(!run){await new Promise(r=>setTimeout(r,300));continue}
- try{const t0=performance.now(),r=await api('/api/cam/classify',{pte:$('pte').value,pack:$('pack').value,review:.5}),s=r.steps[r.steps.length-1];$('err').textContent='';
+ try{const t0=performance.now(),r=await api('/api/cam/classify',{pte:$('pte').value,pack:$('pack').value,review:$('review').value/100,sharp:$('sharp').value/100,brightness:$('brightness').value/100,contrast:$('contrast').value/100,blur:$('blur').value/10,crop:$('crop').value,threads:+$('threads').value}),s=r.steps[r.steps.length-1];$('err').textContent='';
   n++;times.push(performance.now()-t0);if(times.length>10)times.shift();
   $('ans').textContent=r.review?'Not sure':r.answer;$('ans').style.color=r.review?'var(--warn)':'var(--ink)';$('conf').textContent=(r.confidence*100).toFixed(0)+'% sure'+(r.review?' · best guess '+r.answer:'');
   $('cam').className='cam '+(r.review?'unsure':'sure');$('tags').innerHTML=r.multi.map(t=>`<span class="tag">${esc(t)}</span>`).join('');
@@ -53,5 +61,8 @@ async function loop(){while(true){if(!run){await new Promise(r=>setTimeout(r,300
   $('ms').firstChild.textContent=r.infer_ms+' ms';$('fps').firstChild.textContent=(1000/(times.reduce((a,b)=>a+b,0)/times.length)).toFixed(1);$('n').firstChild.textContent=n;
  }catch(e){$('err').textContent=e.message;await new Promise(r=>setTimeout(r,1200))}
  await new Promise(r=>setTimeout(r,150))}}
+const F={review:v=>v+'%',sharp:v=>(v/100).toFixed(1)+'×',brightness:v=>(v/100).toFixed(2)+'×',contrast:v=>(v/100).toFixed(2)+'×',blur:v=>(v/10).toFixed(1)+' px',threads:v=>v},D={review:50,sharp:100,brightness:100,contrast:100,blur:0};
+for(const k in F){const u=()=>{$('v_'+k).textContent=F[k]($(k).value)};$(k).oninput=u;u()}
+$('reset').onclick=()=>{for(const k in D){$(k).value=D[k];$(k).oninput()}$('crop').value='centre'};
 $('pause').onclick=()=>{run=!run;$('pause').textContent=run?'Pause':'Resume';if(run)frames()};init();
 </script></body></html>
